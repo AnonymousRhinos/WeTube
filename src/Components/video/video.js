@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Screen from './video-screen';
+import {Chat} from './Chat'
+
 
 class Video extends Component {
 
@@ -16,6 +18,7 @@ class Video extends Component {
     return (
       <div>
         <Screen videoId={this.state.videoId}/>
+        <Chat/>
       </div>
     );
   }
