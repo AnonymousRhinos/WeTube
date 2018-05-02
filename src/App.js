@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import Navbar from './Components/navbar'
-import {Chat} from './Chat'
+import Navbar from './Components/navbar';
+import Video from './Components/video/video';
+import Home from './Components/home/home';
+
 
 class App extends Component {
   render() {
@@ -11,15 +14,15 @@ class App extends Component {
         <Navbar />
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to WeTube</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Chat />
+        <Switch>
+          <Route path="/room/:id" component={Video} />
+          <Route path="/home" component={Home} />
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
