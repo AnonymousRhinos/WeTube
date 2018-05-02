@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import myFirebase, {messaging} from './Firebase/firebaseInit';
+import myFirebase, {messaging} from '../../Firebase/firebaseInit';
 
 
 const handleSubmit = event =>{
