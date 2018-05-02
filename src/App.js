@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 import Navbar from './Components/navbar';
@@ -11,15 +12,14 @@ class App extends Component {
         <Navbar />
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to weTube</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Video />
+        <Switch>
+          <Route path="/room/:id" component={Video} />
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
