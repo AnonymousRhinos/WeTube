@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import TrendingComponent from './home-trending';
+import logo from '../../logo.svg'
 
 export class Home extends Component {
   constructor(props) {
@@ -33,6 +34,10 @@ export class Home extends Component {
   render() {
     return (
       <div className="Home">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to WeTube</h1>
+        </header>
         <h2>Create a Theater:</h2>
         <form onSubmit={this.handleSubmit}>
           <input
@@ -43,7 +48,7 @@ export class Home extends Component {
             onChange={this.handleChange}
             required
           />
-          <button>Launch Theater</button>
+          <button className="btn">Launch Theater</button>
         </form>
         <h2>Trending Videos</h2>
         <TrendingComponent />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Screen from './video-screen';
 import VideoSearch from './video-search';
-import { Chat } from './Chat';
+import Chat from './Chat';
 
 class Video extends Component {
   constructor(props) {
