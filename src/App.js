@@ -14,6 +14,7 @@ class App extends Component {
         <Switch>
           <Route path="/room/:id" component={Video} />
           <Route path="/home" component={Home} />
+          <Route path="/" component={Home} />
         </Switch>
       </div>
     );
