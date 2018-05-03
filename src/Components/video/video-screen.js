@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import YouTube from 'react-youtube';
+import myFirebase from '../../Firebase/firebaseInit';
+
 
 class Screen extends Component {
+
+  handler = event =>{
+    console.log('event data', event.target, event.data)
+    const roomsRef = myFirebase.database().ref('rooms')
+
+  }
+
   render() {
     const opts = {
       height: '390',
@@ -18,7 +27,15 @@ class Screen extends Component {
     };
 
     return (
-      <YouTube videoId={this.props.videoId} opts={opts} onReady={this._onReady} />
+      <YouTube
+        videoId={this.props.videoId}
+        opts={opts}
+        onReady={this._onReady}
+        onPlay={this.handler}
+        onPause={this.handler}
+        onEnd={this.handler}
+        onStateChange={this.handler}
+        />
     );
   }
 

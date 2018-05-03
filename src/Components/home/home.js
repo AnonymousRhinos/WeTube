@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import TrendingComponent from './home-trending';
-import logo from '../../logo.svg'
+import logo from '../../logo.svg';
+import myFirebase from '../../Firebase/firebaseInit';
 
 class Home extends Component {
   constructor(props) {
@@ -26,9 +27,23 @@ class Home extends Component {
     if (endIndex > -1) {
       videoId = videoUrl.slice(begIndex, endIndex);
     } else videoId = videoUrl.slice(begIndex);
-    console.log('VIDEOURL', videoId);
-    console.log('HISTORY', this.props.history);
-    this.props.history.push(`/room/${Date.now() + '&' + videoId}`);
+    let roomId = Date.now() + '&' + videoId;
+
+    const roomsRef = myFirebase.database().ref('rooms');
+    let room = {
+      roomId: roomId,
+      playerStatus: -1
+    }
+    roomsRef.push(room)
+    const videosRef = myFirebase.database().ref('videos');
+    let video = {
+      [roomId]: {
+        videoId: videoId
+      }
+    }
+    videosRef.push(video)
+    this.props.history.push(`/room/${roomId}`);
+
   };
 
   render() {

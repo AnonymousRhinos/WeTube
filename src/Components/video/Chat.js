@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import myFirebase, {messaging} from '../../Firebase/firebaseInit';
+import myFirebase from '../../Firebase/firebaseInit';
 
 
 export default class Chat extends Component {
