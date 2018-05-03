@@ -5,13 +5,50 @@ import myFirebase from '../../Firebase/firebaseInit';
 
 class Screen extends Component {
 
-  handler = event =>{
-    console.log('event data', event.target, event.data)
-    const roomsRef = myFirebase.database().ref('rooms')
+  constructor() {
+    super();
+    this.state = {
+      player: {}
+    }
+  }
 
+  componentDidMount = () => {
+    const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
+    let startListening = () => {
+      roomRef.on('child_changed', (snapshot) => {
+        let status = snapshot.val();
+        let player = this.state.player
+        console.log("STATUS", status)
+        console.log("PLAYER", player)
+        if (status === 1) player.playVideo()
+        else if (status === 2) player.pauseVideo()
+        else if (status === 0) player.stopVideo()
+      });
+    }
+    startListening();
+  }
+
+  componentWillUnmount = () => {
+    myFirebase.database().ref().goOffline()
+  }
+
+  handler = event => {
+    myFirebase.database().ref('rooms/' + this.props.roomId).set({
+      roomId: this.props.roomId,
+      playerStatus: event.data
+    })
+  }
+
+  _onReady = (event) => {
+    // access to player in all event handlers via event.target
+    event.target.pauseVideo();
+    this.setState({
+      player: event.target
+    })
   }
 
   render() {
+    console.log(this.state)
     const opts = {
       height: '390',
       width: '640',
@@ -34,15 +71,10 @@ class Screen extends Component {
         onPlay={this.handler}
         onPause={this.handler}
         onEnd={this.handler}
-        onStateChange={this.handler}
-        />
+      />
     );
   }
 
-  _onReady(event) {
-    // access to player in all event handlers via event.target
-    event.target.pauseVideo();
-  }
 }
 
 export default Screen;

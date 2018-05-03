@@ -15,7 +15,7 @@ class Video extends Component {
   render() {
     return (
       <div>
-        <Screen videoId={this.state.videoId} />
+        <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
         <VideoSearch />
         <Chat videoId={this.state.videoId} roomId={this.state.roomId}/>
       </div>
