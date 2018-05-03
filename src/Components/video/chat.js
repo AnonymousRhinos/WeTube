@@ -10,9 +10,6 @@ export default class Chat extends Component {
     }
   }
 
-  componentWillUnmount = () => {
-    myFirebase.database().ref().goOffline()
-  }
 
   handleSubmit = event =>{
     event.preventDefault();
