@@ -5,7 +5,7 @@ import React from 'react';
 import enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Home } from '../home/home';
-import { Chat } from '../video/Chat';
+import { Chat } from '../video/chat';
 
 const adapter = new Adapter();
 enzyme.configure({ adapter });

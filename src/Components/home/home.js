@@ -63,6 +63,7 @@ export class Home extends Component {
       <div className="Home">
         <header className="App-header">
           <h1 className="App-title">Welcome to WeTube</h1>
+          <img className="logo-header" src="/logo.jpg" />
         </header>
         <h2>Create a Theater:</h2>
         <form onSubmit={this.handleSubmit}>

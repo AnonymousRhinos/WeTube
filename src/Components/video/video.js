@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Screen from './video-screen';
 import VideoSearch from './video-search';
-import Chat from './Chat';
+import Chat from './chat';
 
 class Video extends Component {
   constructor(props) {
@@ -13,12 +13,11 @@ class Video extends Component {
   }
 
   render() {
-    console.log('STATE IN VIDEO', this.state);
     return (
       <div>
         <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
         <VideoSearch />
-        <Chat />
+        <Chat videoId={this.state.videoId} roomId={this.state.roomId}/>
       </div>
     );
   }
