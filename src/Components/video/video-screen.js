@@ -18,7 +18,11 @@ class Screen extends Component {
     };
 
     return (
-      <YouTube videoId={this.props.videoId} opts={opts} onReady={this._onReady} />
+      <YouTube
+        videoId={this.props.videoId}
+        opts={opts}
+        onReady={this._onReady}
+      />
     );
   }
 

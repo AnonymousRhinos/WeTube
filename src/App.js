@@ -5,7 +5,6 @@ import Navbar from './Components/navbar';
 import Video from './Components/video/video';
 import Home from './Components/home/home';
 
-
 class App extends Component {
   render() {
     return (
