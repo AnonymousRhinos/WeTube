@@ -13,29 +13,32 @@ class Screen extends Component {
   }
 
   componentDidMount = () => {
+    // const statusRef = myFirebase.database().ref('rooms/' + this.props.roomId + '/playerStatus');
     const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     let startListening = () => {
-      roomRef.on('child_changed', (snapshot) => {
-        let status = snapshot.val();
+      roomRef.on('value', (snapshot) => {
+        let value = snapshot.val();
         let player = this.state.player
-        console.log("STATUS", status)
-        console.log("PLAYER", player)
-        if (status === 1) player.playVideo()
-        else if (status === 2) player.pauseVideo()
-        else if (status === 0) player.stopVideo()
+        let status = value.playerStatus
+        let currentTime = value.currentTime
+        if (status !== player.getPlayerState()) {
+          if (status === 1) {
+            player.seekTo(currentTime)
+            player.playVideo()
+          }
+          else if (status === 2) player.pauseVideo()
+          else if (status === 0) player.stopVideo()
+        }
       });
     }
     startListening();
   }
 
-  componentWillUnmount = () => {
-    myFirebase.database().ref().goOffline()
-  }
-
   handler = event => {
     myFirebase.database().ref('rooms/' + this.props.roomId).set({
       roomId: this.props.roomId,
-      playerStatus: event.data
+      playerStatus: event.data,
+      currentTime: event.target.getCurrentTime()
     })
   }
 
@@ -48,7 +51,7 @@ class Screen extends Component {
   }
 
   render() {
-    console.log(this.state)
+    console.log("I LOVE TO RENDER")
     const opts = {
       height: '390',
       width: '640',
@@ -59,7 +62,7 @@ class Screen extends Component {
         modestbranding: 1,
         //origin: ourdomain.com,
         //playlist: comma-separated list of video ids,
-        rel: 1,
+        rel: 0,
       },
     };
 
