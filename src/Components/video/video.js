@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Screen from './video-screen';
-import {Chat} from './Chat'
+import Chat from './Chat'
 
 
 class Video extends Component {

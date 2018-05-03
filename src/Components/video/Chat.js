@@ -2,31 +2,45 @@ import React, { Component } from 'react';
 import myFirebase, {messaging} from '../../Firebase/firebaseInit';
 
 
-const handleSubmit = event =>{
-  event.preventDefault();
-  const messagesRef = myFirebase.database().ref('messages');
-  const message = {
-    user: event.target.username.value,
-    message: event.target.text.value
+export default class Chat extends Component {
+  constructor() {
+    super();
+    this.state = {
+      messages: []
+    }
   }
-  messagesRef.push(message)
-}
 
-export function Chat () {
+  handleSubmit = event =>{
+    event.preventDefault();
+    const messagesRef = myFirebase.database().ref('messages');
+    const message = {
+      user: event.target.user.value,
+      message: event.target.text.value
+    }
+    messagesRef.push(message)
+  }
 
+  componentDidMount =() =>{
+    const messagesRef = myFirebase.database().ref('messages');
+    let startListening = () => {
+      messagesRef.on('child_added', (snapshot) => {
+        let msg = snapshot.val();
+        this.setState({messages: [...this.state.messages, msg]})
+      });
+    }
+    startListening();
+  }
 
-
+  render () {
     return (
       <div>
-        <form onSubmit={handleSubmit}>
-        <input id='username' type='text' placeholder='Name'/><br/>
+        <form onSubmit={this.handleSubmit}>
+        <input id='user' type='text' placeholder='Name'/><br/>
         <input id='text' type='text' placeholder='Message'/><br/>
         <button type='submit' id='post'>Post</button><br/>
         </form>
-        <div id='results'></div>
-
+        {this.state.messages.slice(0).reverse().map((message, index) => (<h1 key={index}>{message.user}: {message.message}</h1>))}
       </div>
     )
-
+  }
 }
-
