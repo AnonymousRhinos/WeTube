@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import TrendingComponent from './home-trending';
-import logo from '../../logo.svg'
 
 export class Home extends Component {
   constructor(props) {
@@ -35,7 +34,6 @@ export class Home extends Component {
     return (
       <div className="Home">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to WeTube</h1>
         </header>
         <h2>Create a Theater:</h2>
