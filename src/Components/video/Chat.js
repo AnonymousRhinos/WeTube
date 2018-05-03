@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import myFirebase, {messaging} from '../../Firebase/firebaseInit';
+import myFirebase from '../../Firebase/firebaseInit';
 
 
 export default class Chat extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       messages: []
     }
@@ -12,7 +12,8 @@ export default class Chat extends Component {
 
   handleSubmit = event =>{
     event.preventDefault();
-    const messagesRef = myFirebase.database().ref('messages');
+    
+    const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     const message = {
       user: event.target.user.value,
       message: event.target.text.value
@@ -21,7 +22,7 @@ export default class Chat extends Component {
   }
 
   componentDidMount =() =>{
-    const messagesRef = myFirebase.database().ref('messages');
+    const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     let startListening = () => {
       messagesRef.on('child_added', (snapshot) => {
         let msg = snapshot.val();
