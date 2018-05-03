@@ -8,5 +8,6 @@
         "decoratorsLegacy": true
       }
     ]
-  ]
+  ],
+  "ignore": ["src/logo.svg"]
 }
