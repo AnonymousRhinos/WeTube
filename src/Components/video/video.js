@@ -16,7 +16,7 @@ class Video extends Component {
     console.log('STATE IN VIDEO', this.state);
     return (
       <div>
-        <Screen videoId={this.state.videoId} />
+        <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
         <VideoSearch />
         <Chat />
       </div>

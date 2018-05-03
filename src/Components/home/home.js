@@ -28,12 +28,18 @@ export class Home extends Component {
     } else videoId = videoUrl.slice(begIndex);
     let roomId = Date.now() + '&' + videoId;
 
-    const roomsRef = myFirebase.database().ref('rooms');
-    let room = {
+    // const roomsRef = myFirebase.database().ref('rooms');
+    // let room = {
+    //   roomId: roomId,
+    //   playerStatus: -1
+    // }
+    // roomsRef.push(room)
+
+    myFirebase.database().ref('rooms/' + roomId).set({
       roomId: roomId,
       playerStatus: -1
-    }
-    roomsRef.push(room)
+    })
+
     const videosRef = myFirebase.database().ref('videos');
     let video = {
       [roomId]: {
@@ -41,6 +47,13 @@ export class Home extends Component {
       }
     }
     videosRef.push(video)
+
+    // myFirebase.database().ref('videos/' + roomId).set({
+    //   [roomId]: {
+    //         videoId: videoId
+    //       }
+    // })
+
     this.props.history.push(`/room/${roomId}`);
 
   };
