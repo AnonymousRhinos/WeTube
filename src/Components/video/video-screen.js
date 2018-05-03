@@ -28,6 +28,10 @@ class Screen extends Component {
     startListening();
   }
 
+  componentWillUnmount = () => {
+    myFirebase.database().ref().goOffline()
+  }
+
   handler = event => {
     myFirebase.database().ref('rooms/' + this.props.roomId).set({
       roomId: this.props.roomId,

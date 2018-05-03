@@ -11,6 +11,10 @@ export class Home extends Component {
     };
   }
 
+  componentWillUnmount = () => {
+    myFirebase.database().ref().goOffline()
+  }
+
   handleChange = evt => {
     this.setState({
       videoUrl: evt.target.value,
