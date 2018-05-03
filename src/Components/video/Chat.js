@@ -22,8 +22,6 @@ export default class Chat extends Component {
   }
 
   componentDidMount =() =>{
-    const videosRef = myFirebase.database().ref('videos');
-
     const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     let startListening = () => {
       messagesRef.on('child_added', (snapshot) => {
