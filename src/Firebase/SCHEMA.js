@@ -65,6 +65,10 @@ pauseVideo()
 loadVideoById()
 nextVideo()
 stopVideo()
+getCurrentTime()
+
+seekTo()
+playVideoAt()
 
 onReady={this._onReady}
 onPlay={this.handler}

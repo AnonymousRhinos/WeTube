@@ -18,21 +18,24 @@ class Screen extends Component {
     let startListening = () => {
       roomRef.on('value', (snapshot) => {
         let value = snapshot.val();
-        let player = this.state.player
-        let status = value.playerStatus
-        let currentTime = value.currentTime
-        if (status !== player.getPlayerState()) {
-          if (status === 1) {
-            player.seekTo(currentTime)
-            player.playVideo()
+        if (value > -1) {
+          let player = this.state.player
+          let status = value.playerStatus
+          let currentTime = value.currentTime
+          if (status !== player.getPlayerState()) {
+            if (status === 1) {
+              player.seekTo(currentTime)
+              player.playVideo()
+            }
+            else if (status === 2) player.pauseVideo()
+            else if (status === 0) player.stopVideo()
           }
-          else if (status === 2) player.pauseVideo()
-          else if (status === 0) player.stopVideo()
         }
       });
     }
     startListening();
   }
+
 
   handler = event => {
     myFirebase.database().ref('rooms/' + this.props.roomId).set({
@@ -43,15 +46,12 @@ class Screen extends Component {
   }
 
   _onReady = (event) => {
-    // access to player in all event handlers via event.target
-    event.target.pauseVideo();
     this.setState({
       player: event.target
-    })
+    }, () => { event.target.pauseVideo() })
   }
 
   render() {
-    console.log("I LOVE TO RENDER")
     const opts = {
       height: '390',
       width: '640',
