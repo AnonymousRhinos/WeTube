@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
-import TrendingComponent from './home-trending';
 
-export class Home extends Component {
+class VideoSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,11 +27,9 @@ export class Home extends Component {
     console.log('HISTORY', this.props.history);
     this.props.history.push(`/room/${Date.now() + '&' + videoId}`);
   };
-
   render() {
     return (
-      <div className="Home">
-        <h2>Create a Theater:</h2>
+      <div>
         <form onSubmit={this.handleSubmit}>
           <input
             size="80"
@@ -41,15 +37,12 @@ export class Home extends Component {
             className="form-control"
             placeholder="Video Url"
             onChange={this.handleChange}
-            required
           />
-          <button>Launch Theater</button>
+          <button>Add to Queue</button>
         </form>
-        <h2>Trending Videos</h2>
-        <TrendingComponent />
       </div>
     );
   }
 }
 
-export default withRouter(Home);
+export default VideoSearch;
