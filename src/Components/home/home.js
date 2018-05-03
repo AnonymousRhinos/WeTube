@@ -38,7 +38,8 @@ export class Home extends Component {
 
     myFirebase.database().ref('rooms/' + roomId).set({
       roomId: roomId,
-      playerStatus: -1
+      playerStatus: -1,
+      currentTime: 0
     })
 
     const videosRef = myFirebase.database().ref('videos');
