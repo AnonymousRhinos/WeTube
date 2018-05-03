@@ -5,7 +5,6 @@ import Navbar from './Components/navbar';
 import Video from './Components/video/video';
 import Home from './Components/home/home';
 
-
 class App extends Component {
   render() {
     return (
@@ -14,6 +13,7 @@ class App extends Component {
         <Switch>
           <Route path="/room/:id" component={Video} />
           <Route path="/home" component={Home} />
+          <Route path="/" component={Home} />
         </Switch>
       </div>
     );

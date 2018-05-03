@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import TrendingComponent from './home-trending';
-import logo from '../../logo.svg';
 import myFirebase from '../../Firebase/firebaseInit';
 
-class Home extends Component {
+export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,7 +49,6 @@ class Home extends Component {
     return (
       <div className="Home">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to WeTube</h1>
         </header>
         <h2>Create a Theater:</h2>
