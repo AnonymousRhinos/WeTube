@@ -5,15 +5,11 @@ import colors from '../../colors.js';
 export default class Chat extends Component {
   constructor(props) {
     super(props);
-
-
     this.state = {
       name: '',
       messages: [],
       color: '',
       users: [],
-       
-    
     };
   }
 
@@ -21,7 +17,7 @@ export default class Chat extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { name, color } = this.state;
-    let time = new Date().toUTCString().slice(-12,-4).split(':');
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
     const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
@@ -84,8 +80,8 @@ export default class Chat extends Component {
     let names = colors.names;
     let randomProperty = function (names) {
       let keys = Object.keys(names)
-      return names[keys[ keys.length * Math.random() << 0]];
-  };
+      return names[keys[keys.length * Math.random() << 0]];
+    };
     return randomProperty(names)
   }
 
@@ -112,14 +108,22 @@ export default class Chat extends Component {
           </button>
           </form>
         </div>
-        {this.state.messages
-          .slice(0)
-          .reverse()
-          .map((message, index) => (
-            <p key={index} className={`messages ${(index % 2 === 0 ? 'color1 message' : 'color2 message') style={message.user === this.state.name? {'backgroundColor': colors.names.blue} : {'backgroundColor': message.color}}`}>
-              {message.user} ({message.time}): {message.message}
-            </p>
-          ))}
+        <div>
+          {this.state.messages.slice(0).reverse().map((message, index) => {
+            const messClass = (message.user !== this.state.name) ? 'color1 message' : 'color2 message';
+            const messageColor = message.user === this.state.name ? { 'backgroundColor': colors.names.blue } : { 'backgroundColor': message.color };
+            return (
+              <p
+                key={index}
+                className={`messages ${messClass}`}
+                style={messageColor}
+              >
+                {message.user} ({message.time}): {message.message}
+              </p>
+            )
+          })
+          }
+        </div>
       </div>
     );
   }
