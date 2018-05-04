@@ -41,11 +41,13 @@ export class Chat extends Component {
     this.setState({ name: name, color: color });
 
     if (name) {
-      myFirebase.database().ref('users/' + this.props.roomId + '/' + name).set({ name, time });
+      let newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
+      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time });
+      console.log('name is: ', newName)
       const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
       const message = {
-        user: name,
-        message: `${name} has entered the theatre`,
+        user: newName,
+        message: `${newName} has entered the theatre`,
         time
       };
       joinRef.push(message);

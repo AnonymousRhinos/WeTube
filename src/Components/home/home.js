@@ -18,15 +18,15 @@ export class Home extends Component {
     });
   };
 
-  handleSubmit = evt => {
+  handleSubmit = (evt, videoInfo) => {
     evt.preventDefault();
-    let { videoUrl } = this.state;
+    let { videoUrl } = this.state; 
     let begIndex = videoUrl.indexOf('v=') + 2;
     let endIndex = videoUrl.indexOf('&');
     let videoId;
     if (endIndex > -1) {
-      videoId = videoUrl.slice(begIndex, endIndex);
-    } else videoId = videoUrl.slice(begIndex);
+      videoId = videoInfo || videoUrl.slice(begIndex, endIndex);
+    } else videoId = videoInfo || videoUrl.slice(begIndex);
     let roomId = Date.now() + '&' + videoId;
 
     // const roomsRef = myFirebase.database().ref('rooms');
@@ -81,7 +81,7 @@ export class Home extends Component {
           <button className="btn">Launch Theater</button>
         </form>
         </div>
-        <TrendingComponent />
+        <TrendingComponent makeRoom={this.handleSubmit} />
       </div>
     );
   }
