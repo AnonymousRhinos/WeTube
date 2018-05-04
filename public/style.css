@@ -105,6 +105,11 @@ body {
     /* flex-wrap: wrap; */
   }
 
+  .vid-view {
+    display: flex;
+    flex-direction: column;
+  }
+
   #text {
     width: 100%
   }
