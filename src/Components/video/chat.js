@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
+import { withRouter } from 'react-router';
 import colors from '../../colors.js';
 
-export default class Chat extends Component {
+export class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,9 +64,7 @@ export default class Chat extends Component {
     startListeningMessages();
 
     //listen for users and change state
-    const usersRef = myFirebase
-      .database()
-      .ref('users/' + this.props.roomId);
+    const usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
@@ -74,6 +73,16 @@ export default class Chat extends Component {
     };
     startListeningUsers();
   };
+
+  componentWillUnmount () {
+    let { name, users } = this.state
+    console.log("IM UNMOUNTING RIGHT NOW")
+    const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + name);
+    // userRef.delete();
+    let userIndex = users.indexOf(name)
+    let usersUpdate = users.splice(userIndex, 1)
+    console.log(users)
+  }
 
 
   establishColor = (colors) => {
@@ -92,11 +101,14 @@ export default class Chat extends Component {
         <div className="users-list">
           <h4 id="users-header">Participants: </h4>
           <p id="user-list">
-            {this.state.users
-              .map((user, index) => user.name)
+          {
+            this.state.users.length > 1 ?
+             this.state.users.map((user, index) => user.name)
               .join(", ")
               .slice(0, -2)
-            }
+            :
+            this.state.name
+          }
           </p>
         </div>
         <div id="chat-header">
@@ -128,3 +140,5 @@ export default class Chat extends Component {
     );
   }
 }
+
+export default withRouter(Chat);

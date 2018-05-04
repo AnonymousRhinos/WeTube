@@ -41,7 +41,7 @@ class Video extends Component {
     console.log('my state videoId is: ', this.state.roomId)
     return (
       <div className="vid-view">
-        <div>
+        <div className="share-btns">
           <FacebookShareButton
             url={"http://localhost:3000/room/" + this.state.roomId}
             className="share-button">
