@@ -5,13 +5,13 @@ class MyNavbar extends Component {
   render() {
     return (
       <header className="navbar">
-        <section className="navbar-section">
+          <section className="navbar-section">
+          <Link to={'/home'}>
+          <img className="logo-navbar" src="/logo.jpg" />
+          </Link>Ï
           <Link to={'/home'} className="btn btn-link">
             WeTube
           </Link>
-        </section>
-        <section className="navbar-center">
-          <img className="logo-navbar" src="/logo.jpg" />
         </section>
         <section className="navbar-section">
           <Link to="#" className="btn btn-link">

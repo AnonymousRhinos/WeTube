@@ -32,6 +32,31 @@ body {
     background-size: cover;
   }
 
+  #trend-head {
+    margin-bottom: 10px
+  }
+
+  .trend-scroll {
+    overflow: auto;
+    white-space: nowrap;
+    width: 90%;
+    align-items: center;
+    margin: 10px auto;
+  }
+
+  .trending-component {
+    padding: 30px 0
+  }
+
+  .mini-vid {
+    display: inline-block;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+    border: solid 2px black;
+    margin: 15px 15px;
+  }
+
   .theater-form {
     padding: 20px;
     color: #918fd8;
