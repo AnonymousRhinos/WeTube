@@ -14,10 +14,12 @@ class Video extends Component {
 
   render() {
     return (
-      <div>
-        <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
-        <VideoSearch />
-        <Chat videoId={this.state.videoId} roomId={this.state.roomId}/>
+      <div id="video">
+        <div id="screen">
+          <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
+          <VideoSearch />
+        </div>
+        <Chat videoId={this.state.videoId} roomId={this.state.roomId} />
       </div>
     );
   }
