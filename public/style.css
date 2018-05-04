@@ -1,3 +1,13 @@
+button {
+  margin-left: 10px
+}
+
+input.break {
+  word-wrap: break-word;
+  word-break: break-all;
+  height: 80px;
+}
+
 body {
     font-family: sans-serif;
   }
@@ -91,37 +101,68 @@ body {
     background-size: cover;
     display: flex;
     padding: 50px 20px;
-    justify-content: space-around
+    justify-content: space-around;
+    /* flex-wrap: wrap; */
   }
 
-  #add-message {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px
-  }
-
-  button {
-    margin-left: 10px
+  #text {
+    width: 100%
   }
 
   #chat {
     background-color: rgba(255, 255, 255, 0.3);
     padding: 20px 10px;
     margin-left: 20px;
-    width: 90%;
+    flex-grow: 2;
     overflow: auto;
     white-space: nowrap;
     max-height: 700px;
   }
 
+  .users-list {
+    display: flex;
+    color: white;
+  }
+
+  #user-list {
+    background-color: white;
+    border: solid rgb(70, 70, 70) 2px;
+    border-radius: 5px;
+    color: rgb(70, 70, 70);
+    padding: 5px;
+    margin: 0 10px 15px;
+    flex-grow: 2;
+    text-align: left;
+    flex-wrap: wrap;
+    overflow-wrap: break-word
+  }
+
+  #chat-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center
+  }
+
+  #add-message {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    flex-grow: 3
+  }
+
+  .messages {
+    flex-wrap: wrap;
+    overflow-wrap: break-word 
+  }
+
   .color1 {
-    background-color: #5755d9;
     float: left;
     text-align: left
   }
 
   .color2 {
-    background-color: cornflowerblue;
     float: right;
     text-align: right
   }
@@ -136,5 +177,6 @@ body {
   #username {
     color: white;
     font-size: 20px;
-    font-weight: 700
+    font-weight: 700;
+    margin-right: 15px;
   }

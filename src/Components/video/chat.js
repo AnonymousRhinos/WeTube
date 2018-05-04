@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
+import colors from '../../colors.js';
 
 export default class Chat extends Component {
   constructor(props) {
@@ -7,6 +8,7 @@ export default class Chat extends Component {
     this.state = {
       name: '',
       messages: [],
+      color: '',
       users: [],
     };
   }
@@ -14,16 +16,15 @@ export default class Chat extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { name } = this.state;
-    let time = new Date().toUTCString().slice(-12,-4).split(':');
+    const { name, color } = this.state;
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
-    const messagesRef = myFirebase
-      .database()
-      .ref('messages/' + this.props.roomId);
+    const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     const message = {
       user: name,
       message: event.target.text.value,
+      color: color,
       time
     };
     messagesRef.push(message);
@@ -31,25 +32,24 @@ export default class Chat extends Component {
   };
 
   componentDidMount = () => {
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    time[0] = (+time[0] + 7) % 12;
+    time = time.join(':');
     const name = prompt('Enter name:');
-    this.setState({ name: name });
-    //add user to database and listen for additional users
-    const usersRef = myFirebase.database().ref('users/' + this.props.roomId)
-    // usersRef.push(user);
-    let startListeningUsers = () => {
-      usersRef.on('child_added', snapshot => {
-        let user = snapshot.val();
-        const message = {
-          message: `${name} has entered the theatre`
-        }
-        this.setState({
-          users: [...this.state.users, user],
-          messages: [...this.state.messages, message]
-        });
-      });
-    };
-    startListeningUsers();
-    myFirebase.database().ref('users/' + this.props.roomId + '/' + name).set({name});
+    const color = this.establishColor(colors);
+    this.setState({ name: name, color: color });
+
+    if (name) {
+      myFirebase.database().ref('users/' + this.props.roomId + '/' + name).set({ name, time });
+      const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
+      const message = {
+        user: name,
+        message: `${name} has entered the theatre`,
+        time
+      };
+      joinRef.push(message);
+    }
+
     //listen for messages and change state
     const messagesRef = myFirebase
       .database()
@@ -61,35 +61,69 @@ export default class Chat extends Component {
       });
     };
     startListeningMessages();
+
+    //listen for users and change state
+    const usersRef = myFirebase
+      .database()
+      .ref('users/' + this.props.roomId);
+    let startListeningUsers = () => {
+      usersRef.on('child_added', snapshot => {
+        let user = snapshot.val();
+        this.setState({ users: [...this.state.users, user] });
+      });
+    };
+    startListeningUsers();
   };
 
+
+  establishColor = (colors) => {
+    let names = colors.names;
+    let randomProperty = function (names) {
+      let keys = Object.keys(names)
+      return names[keys[keys.length * Math.random() << 0]];
+    };
+    return randomProperty(names)
+  }
+
   render() {
+
     return (
       <div id="chat">
-        <span id="username" >{this.state.name}</span>
-        <form id="add-message" onSubmit={this.handleSubmit}>
-          <input id="text" type="text" placeholder="Message" />
-          <br />
-          <button className="btn" type="submit" id="post">
-            Post
+        <div className="users-list">
+          <h4 id="users-header">Participants: </h4>
+          <p id="user-list">
+            {this.state.users
+              .map((user, index) => user.name)
+              .join(", ")
+              .slice(0, -2)
+            }
+          </p>
+        </div>
+        <div id="chat-header">
+          <h5 id="username" >{this.state.name}:</h5>
+          <form id="add-message" onSubmit={this.handleSubmit}>
+            <input id="text" type="text" placeholder="Message" />
+            <button className="btn" type="submit" id="post">
+              Post
           </button>
-          <br />
-        </form>
-        <h1>Participants</h1>
-        {this.state.users
-          .map((user, index) => (
-            <h1 key={index}>
-              {user.name}
-            </h1>
-          ))}
-        {this.state.messages
-          .slice(0)
-          .reverse()
-          .map((message, index) => (
-            <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')}>
-              {message.user} ({message.time}): {message.message}
-            </h6>
-          ))}
+          </form>
+        </div>
+        <div>
+          {this.state.messages.slice(0).reverse().map((message, index) => {
+            const messClass = (message.user !== this.state.name) ? 'color1 message' : 'color2 message';
+            const messageColor = message.user === this.state.name ? { 'backgroundColor': colors.names.blue } : { 'backgroundColor': message.color };
+            return (
+              <p
+                key={index}
+                className={`messages ${messClass}`}
+                style={messageColor}
+              >
+                {message.user} ({message.time}): {message.message}
+              </p>
+            )
+          })
+          }
+        </div>
       </div>
     );
   }
