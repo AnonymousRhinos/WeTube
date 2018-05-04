@@ -75,3 +75,16 @@ onPlay={this.handler}
 onPause={this.handler}
 onEnd={this.handler}
 onStateChange={this.handler}
+
+
+
+<iframe
+src="https://tokbox.com/embed/embed/ot-embed.js?embedId=cd4f1ddb-58eb-49fc-a3b2-1c077cb1c31c&room=DEFAULT_ROOM&iframe=true"
+width="800px"
+height="640px"
+allow="microphone; camera"
+></iframe>
+
+
+<div id="otEmbedContainer" style="width:800px; height:640px"></div>
+                  <script src="https://tokbox.com/embed/embed/ot-embed.js?embedId=cd4f1ddb-58eb-49fc-a3b2-1c077cb1c31c&room=DEFAULT_ROOM"></script>
