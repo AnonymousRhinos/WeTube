@@ -6,40 +6,44 @@ class Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playlist: [props.videoId],
+      playlist: [],
+      currentIndex: 0
     };
     this.player = {};
   }
 
   componentDidMount = () => {
-    // const statusRef = myFirebase.database().ref('rooms/' + this.props.roomId + '/playerStatus');
+    let {playlist, currentIndex} = this.state;
+    //listen for changes in current time, player state in room
     const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     let startListening = () => {
       roomRef.on('value', snapshot => {
         let value = snapshot.val();
-        console.log('value', value);
         if (value.playerStatus > -1) {
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
-          if (status !== player.getPlayerState()) {
+          if (status !== player.getPlayerState() || status === 0) {
             if (status === 1) {
               player.seekTo(currentTime);
               player.playVideo();
             } else if (status === 2) player.pauseVideo();
-            else if (status === 0) player.stopVideo();
+            else if (status === 0) {
+              currentIndex++;
+              player.loadVideoById(playlist[currentIndex], 2);
+            }
           }
         }
       });
     };
     startListening();
-
-    const videosRef = myFirebase.database().ref('videos/' + this.props.roomId);
+    //add initial video and listen for additions to queue
+    myFirebase.database().ref('videos/' + this.props.roomId + '/' + this.props.videoId).set({queuedUrl: this.props.videoId});
+    const videosRef = myFirebase.database().ref('videos/' + this.props.roomId)
     let startListeningQueue = () => {
       videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        this.setState({ playlist: [...this.state.playlist, video.queuedUrl] });
-        console.log(this.state.playlist);
+        this.setState({ playlist: playlist.push(video.queuedUrl) });
       });
     };
     startListeningQueue();
@@ -57,9 +61,6 @@ class Screen extends Component {
   };
 
   _onReady = event => {
-    // this.setState({
-    //   player: event.target
-    // }, () => { event.target.pauseVideo() })
     this.player = event.target;
     event.target.pauseVideo();
   };
@@ -74,7 +75,6 @@ class Screen extends Component {
         enablejsapi: 1,
         modestbranding: 1,
         //origin: ourdomain.com,
-        playlist: this.state.playlist.join(','),
         rel: 0,
       },
     };
