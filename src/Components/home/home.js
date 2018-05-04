@@ -67,7 +67,8 @@ export class Home extends Component {
           <h1 className="App-title">Welcome to WeTube</h1>
           <img className="logo-header" src="/logo.jpg" />
         </header>
-        <h2>Create a Theater:</h2>
+        <div className="theater-form">
+        <h2 id="input-header">Create a Theater:</h2>
         <form onSubmit={this.handleSubmit}>
           <input
             size="80"
@@ -79,7 +80,7 @@ export class Home extends Component {
           />
           <button className="btn">Launch Theater</button>
         </form>
-        <h2>Trending Videos</h2>
+        </div>
         <TrendingComponent />
       </div>
     );

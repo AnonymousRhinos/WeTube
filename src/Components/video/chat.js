@@ -64,12 +64,12 @@ export default class Chat extends Component {
 
   render() {
     return (
-      <div>
-        <span>{this.state.name}</span>
-        <form onSubmit={this.handleSubmit}>
+      <div id="chat">
+        <span id="username" >{this.state.name}</span>
+        <form id="add-message" onSubmit={this.handleSubmit}>
           <input id="text" type="text" placeholder="Message" />
           <br />
-          <button type="submit" id="post">
+          <button className="btn" type="submit" id="post">
             Post
           </button>
           <br />
@@ -85,9 +85,9 @@ export default class Chat extends Component {
           .slice(0)
           .reverse()
           .map((message, index) => (
-            <h1 key={index}>
+            <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')}>
               {message.user} ({message.time}): {message.message}
-            </h1>
+            </h6>
           ))}
       </div>
     );

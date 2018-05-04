@@ -6,4 +6,131 @@ body {
     text-decoration: none;
   }
 
+  .navbar {
+    padding: 12px 10px;
+  }
 
+  .navbar a {
+    font-size: 25px;
+    text-shadow: 1px 1px 1px rgb(73, 73, 73);
+  }
+
+  #footer {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+  }
+
+  #git-logo {
+    height: 35px;
+    width: auto;
+    margin: 5px 0
+  }
+
+  .Home {
+    position: relative;
+  }
+
+  .Home::after {
+    content: "";
+    background: url("./images/home2.jpg");
+    opacity: 0.4;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+    background-size: cover;
+  }
+
+  #trend-head {
+    margin-bottom: 10px
+  }
+
+  .trend-scroll {
+    overflow: auto;
+    white-space: nowrap;
+    width: 90%;
+    align-items: center;
+    margin: 10px auto;
+  }
+
+  .trending-component {
+    padding: 30px 0
+  }
+
+  .mini-vid {
+    display: inline-block;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+    border: solid 2px black;
+    margin: 15px 15px;
+  }
+
+  .theater-form {
+    padding: 20px;
+    color: #918fd8;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; 
+  }
+
+  #input-header {
+    font-size: 40px;
+    font-weight: 700
+  }
+
+  #video {
+    background: url("./images/player-background.jpg");
+    background-size: cover;
+    display: flex;
+    padding: 50px 20px;
+    justify-content: space-around
+  }
+
+  #add-message {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px
+  }
+
+  button {
+    margin-left: 10px
+  }
+
+  #chat {
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 20px 10px;
+    margin-left: 20px;
+  }
+
+  .color1 {
+    background-color: #5755d9;
+    float: left;
+    text-align: left
+  }
+
+  .color2 {
+    background-color: cornflowerblue;
+    float: right;
+    text-align: right
+  }
+
+  .message {
+    padding: 10px;
+    color: white;
+    width: 90%;
+    border-radius: 10px
+  }
+
+  #username {
+    color: white;
+    font-size: 20px;
+    font-weight: 700
+  }

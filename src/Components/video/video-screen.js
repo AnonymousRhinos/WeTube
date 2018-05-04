@@ -69,6 +69,7 @@ class Screen extends Component {
 
     return (
       <YouTube
+      id="vidScreen"
         videoId={this.props.videoId}
         opts={opts}
         onReady={this._onReady}
