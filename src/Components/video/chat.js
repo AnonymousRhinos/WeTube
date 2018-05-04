@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
+import colors from '../../colors.js';
 
 export default class Chat extends Component {
   constructor(props) {
     super(props);
+
+
     this.state = {
       name: '',
       messages: [],
+      color: '',
       users: [],
+       
+    
     };
   }
 
 
   handleSubmit = event => {
     event.preventDefault();
-    const { name } = this.state;
+    const { name, color } = this.state;
     let time = new Date().toUTCString().slice(-12,-4).split(':');
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
@@ -24,6 +30,7 @@ export default class Chat extends Component {
     const message = {
       user: name,
       message: event.target.text.value,
+      color: color,
       time
     };
     messagesRef.push(message);
@@ -32,7 +39,9 @@ export default class Chat extends Component {
 
   componentDidMount = () => {
     const name = prompt('Enter name:');
-    this.setState({ name: name });
+
+    const color = this.establishColor(colors);
+    this.setState({ name: name, color: color });
     //add user to database and listen for additional users
     const usersRef = myFirebase.database().ref('users/' + this.props.roomId)
     // usersRef.push(user);
@@ -63,7 +72,18 @@ export default class Chat extends Component {
     startListeningMessages();
   };
 
+
+  establishColor = (colors) => {
+    let names = colors.names;
+    let randomProperty = function (names) {
+      let keys = Object.keys(names)
+      return names[keys[ keys.length * Math.random() << 0]];
+  };
+    return randomProperty(names)
+  }
+
   render() {
+
     return (
       <div id="chat">
         <span id="username" >{this.state.name}</span>
@@ -86,8 +106,8 @@ export default class Chat extends Component {
           .slice(0)
           .reverse()
           .map((message, index) => (
-            <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')}>
-              {message.user} ({message.time}): {message.message}
+            <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')} style={message.user === this.state.name? {'backgroundColor': colors.names.blue} : {'backgroundColor': message.color}}>
+              {message.user} ({message.time}) : {message.message}
             </h6>
           ))}
       </div>
