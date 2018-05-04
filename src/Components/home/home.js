@@ -81,7 +81,6 @@ export class Home extends Component {
           <button className="btn">Launch Theater</button>
         </form>
         </div>
-        <h2>Trending Videos</h2>
         <TrendingComponent />
       </div>
     );

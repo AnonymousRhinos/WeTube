@@ -15,6 +15,20 @@ body {
     text-shadow: 1px 1px 1px rgb(73, 73, 73);
   }
 
+  #footer {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+  }
+
+  #git-logo {
+    height: 35px;
+    width: auto;
+    margin: 5px 0
+  }
+
   .Home {
     position: relative;
   }
@@ -30,6 +44,31 @@ body {
     position: absolute;
     z-index: -1;   
     background-size: cover;
+  }
+
+  #trend-head {
+    margin-bottom: 10px
+  }
+
+  .trend-scroll {
+    overflow: auto;
+    white-space: nowrap;
+    width: 90%;
+    align-items: center;
+    margin: 10px auto;
+  }
+
+  .trending-component {
+    padding: 30px 0
+  }
+
+  .mini-vid {
+    display: inline-block;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+    border: solid 2px black;
+    margin: 15px 15px;
   }
 
   .theater-form {
@@ -67,7 +106,8 @@ body {
 
   #chat {
     background-color: rgba(255, 255, 255, 0.3);
-    padding: 20px 10px
+    padding: 20px 10px;
+    margin-left: 20px;
   }
 
   .color1 {

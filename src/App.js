@@ -5,6 +5,7 @@ import logo from './logo.png';
 import Navbar from './Components/navbar';
 import Video from './Components/video/video';
 import Home from './Components/home/home';
+import Footer from './Components/footer'
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <Route path="/home" component={Home} />
           <Route path="/" component={Home} />
         </Switch>
+        <Footer />
       </div>
     );
   }

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 class TrendingComponent extends Component {
   constructor() {
     super()
-    this.state = ({trendingVideos: []})
+    this.state = ({ trendingVideos: [] })
   }
   componentDidMount() {
 
@@ -14,7 +14,7 @@ class TrendingComponent extends Component {
         'ar&regionCode=NZ&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE')
       .then(results => {
         trendingVideos = results.data.items;
-        this.setState({trendingVideos: trendingVideos})
+        this.setState({ trendingVideos: trendingVideos })
       })
 
   }
@@ -22,18 +22,24 @@ class TrendingComponent extends Component {
   render() {
     return (
       <div className="trending-component">
-        <h2>Here is a trending video</h2>
+        <img id="trend-head" src="/images/TrendingNow.png" />
         {this.state.trendingVideos.length
-          ? this
-            .state
-            .trendingVideos
-            .map(video => {
-              return (
-                <p key={video.id}>
-                  Trending ID is: {video.id}
-                </p>
-              )
-            })
+          ?
+          <div className="trend-scroll">
+            {this
+              .state
+              .trendingVideos
+              .map(video => {
+                return (
+                  <div className="mini-vid">
+                    <p key={video.id}>
+                      Trending ID is: {video.id}
+                    </p>
+                  </div>
+                )
+              })
+            }
+          </div>
           : <p> No Videos Loaded
           </p>}
       </div>
