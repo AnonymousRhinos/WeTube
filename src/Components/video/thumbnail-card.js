@@ -8,7 +8,6 @@ constructor(props){
 //https://img.youtube.com/vi/<insert-youtube-video-id-here>/default.jpg
 
     render() {
-        console.log('the props are: ', this.props)
         const id = this.props.id
         const makeRoom = this.props.makeRoom;
         return (

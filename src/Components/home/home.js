@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import TrendingComponent from './home-trending';
+// import TrendingComponent from './home-trending';
+import {TrendingComponent} from '../index.js';
+import {testArr} from '../index.js'
 import myFirebase from '../../Firebase/firebaseInit';
+
 
 export class Home extends Component {
   constructor(props) {

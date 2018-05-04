@@ -3,7 +3,7 @@ import myFirebase from '../../Firebase/firebaseInit';
 import { withRouter } from 'react-router';
 import colors from '../../colors.js';
 
-export class Chat extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +43,6 @@ export class Chat extends Component {
     if (name) {
       let newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
       myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time });
-      console.log('name is: ', newName)
       const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
       const message = {
         user: newName,
@@ -122,7 +121,6 @@ export class Chat extends Component {
   }
 
   render() {
-    console.log("USERS: ", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">
