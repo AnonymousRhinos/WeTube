@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import myFirebase from '../../Firebase/firebaseInit';
 
 class VideoSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoUrl: '',
+      videoUrl: 'Video URL',
     };
   }
 
@@ -24,8 +25,13 @@ class VideoSearch extends Component {
       videoId = videoUrl.slice(begIndex, endIndex);
     } else videoId = videoUrl.slice(begIndex);
     console.log('VIDEOURL', videoId);
-    console.log('HISTORY', this.props.history);
-    this.props.history.push(`/room/${Date.now() + '&' + videoId}`);
+    myFirebase
+      .database()
+      .ref('videos/' + this.props.roomId + '/' + videoId)
+      .set({
+        queuedUrl: videoId,
+      });
+    // this.setState({ videoUrl: 'Video URL' });
   };
   render() {
     return (
@@ -35,7 +41,7 @@ class VideoSearch extends Component {
             size="50"
             name="videoUrl"
             className="form-control"
-            placeholder="Video Url"
+            placeholder={this.state.videoUrl}
             onChange={this.handleChange}
           />
           <button className="btn">Add to Queue</button>

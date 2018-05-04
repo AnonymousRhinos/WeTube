@@ -3,14 +3,16 @@ import Screen from './video-screen';
 import VideoSearch from './video-search';
 import Chat from './chat';
 import {
-  FacebookShareButton, GooglePlusShareButton, LinkedinShareButton, TwitterShareButton,
+  FacebookShareButton,
+  GooglePlusShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
   // TelegramShareButton,
   WhatsappShareButton,
   // PinterestShareButton, VKShareButton, OKShareButton,
   RedditShareButton,
   // TumblrShareButton, LivejournalShareButton,
   EmailShareButton,
-
   FacebookIcon,
   TwitterIcon,
   GooglePlusIcon,
@@ -27,18 +29,13 @@ class Video extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoId: this
-        .props
-        .match
-        .params
-        .id
-        .split('&')[1],
-      roomId: this.props.match.params.id
+      videoId: this.props.match.params.id.split('&')[1],
+      roomId: this.props.match.params.id,
     };
   }
 
   render() {
-    console.log('my state videoId is: ', this.state.roomId)
+    console.log('my state videoId is: ', this.state.roomId);
     return (
       <div className="vid-view">
         <div className="share-btns">
