@@ -27,6 +27,7 @@ export default class Chat extends Component {
       time
     };
     messagesRef.push(message);
+    event.target.text.value = ""
   };
 
   componentDidMount = () => {
