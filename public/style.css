@@ -101,7 +101,8 @@ body {
     background-size: cover;
     display: flex;
     padding: 50px 20px;
-    justify-content: space-around
+    justify-content: space-around;
+    /* flex-wrap: wrap; */
   }
 
   #text {
