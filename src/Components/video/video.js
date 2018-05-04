@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Screen from './video-screen';
 import VideoSearch from './video-search';
+import VideoChat from './video-chat';
 import Chat from './chat';
 import {
   FacebookShareButton, GooglePlusShareButton, LinkedinShareButton, TwitterShareButton,
@@ -41,6 +42,7 @@ class Video extends Component {
     console.log('my state videoId is: ', this.state.roomId)
     return (
       <div className="vid-view">
+      <VideoChat />
         <div className="share-btns">
           <FacebookShareButton
             url={"http://localhost:3000/room/" + this.state.roomId}
