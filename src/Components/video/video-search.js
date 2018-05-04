@@ -32,13 +32,13 @@ class VideoSearch extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <input
-            size="80"
+            size="50"
             name="videoUrl"
             className="form-control"
             placeholder="Video Url"
             onChange={this.handleChange}
           />
-          <button>Add to Queue</button>
+          <button className="btn">Add to Queue</button>
         </form>
       </div>
     );
