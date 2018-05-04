@@ -108,6 +108,10 @@ body {
     background-color: rgba(255, 255, 255, 0.3);
     padding: 20px 10px;
     margin-left: 20px;
+    width: 90%;
+    overflow: auto;
+    white-space: nowrap;
+    max-height: 700px;
   }
 
   .color1 {

@@ -10,45 +10,66 @@ export default class Chat extends Component {
     this.state = {
       name: '',
       messages: [],
-      color: ''
-        };
-
+      color: '',
+      users: [],
+       
+    
+    };
   }
 
 
   handleSubmit = event => {
     event.preventDefault();
     const { name, color } = this.state;
+    let time = new Date().toUTCString().slice(-12,-4).split(':');
+    time[0] = (+time[0] + 7) % 12;
+    time = time.join(':');
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
     const message = {
       user: name,
       message: event.target.text.value,
-      color: color
+      color: color,
+      time
     };
     messagesRef.push(message);
-    console.log(this.state, ' this is a color')
-
+    event.target.text.value = ""
   };
 
   componentDidMount = () => {
     const name = prompt('Enter name:');
+
     const color = this.establishColor(colors);
-    this.setState({ 
-      name: name,
-      color: color 
-    });
+    this.setState({ name: name, color: color });
+    //add user to database and listen for additional users
+    const usersRef = myFirebase.database().ref('users/' + this.props.roomId)
+    // usersRef.push(user);
+    let startListeningUsers = () => {
+      usersRef.on('child_added', snapshot => {
+        let user = snapshot.val();
+        const message = {
+          message: `${name} has entered the theatre`
+        }
+        this.setState({
+          users: [...this.state.users, user],
+          messages: [...this.state.messages, message]
+        });
+      });
+    };
+    startListeningUsers();
+    myFirebase.database().ref('users/' + this.props.roomId + '/' + name).set({name});
+    //listen for messages and change state
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
-    let startListening = () => {
+    let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
         let msg = snapshot.val();
         this.setState({ messages: [...this.state.messages, msg] });
       });
     };
-    startListening();
+    startListeningMessages();
   };
 
 
@@ -76,12 +97,19 @@ export default class Chat extends Component {
           </button>
           <br />
         </form>
+        <h1>Participants</h1>
+        {this.state.users
+          .map((user, index) => (
+            <h1 key={index}>
+              {user.name}
+            </h1>
+          ))}
         {this.state.messages
           .slice(0)
           .reverse()
           .map((message, index) => (
             <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')} style={{'backgroundColor': message.color}}>
-              {message.user}: {message.message}
+              {message.user} ({message.time}) : {message.message}
             </h6>
           ))}
       </div>
