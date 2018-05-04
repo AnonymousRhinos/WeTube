@@ -63,6 +63,7 @@ export default class Chat extends Component {
 
   render() {
 
+    console.log('these are messages ', this.state.messages.color)
 
     return (
       <div id="chat">
@@ -79,7 +80,7 @@ export default class Chat extends Component {
           .slice(0)
           .reverse()
           .map((message, index) => (
-            <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')} style={{'backgroundColor': this.state.color}}>
+            <h6 key={index} className={(index % 2 === 0 ? 'color1 message' : 'color2 message')} style={{'backgroundColor': message.color}}>
               {message.user}: {message.message}
             </h6>
           ))}
