@@ -2,55 +2,67 @@ import React, { Component } from 'react';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 
-
 class Screen extends Component {
-
-  constructor() {
-    super();
-    this.player = {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      playlist: [props.videoId],
+    };
+    this.player = {};
   }
 
   componentDidMount = () => {
     // const statusRef = myFirebase.database().ref('rooms/' + this.props.roomId + '/playerStatus');
     const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     let startListening = () => {
-      roomRef.on('value', (snapshot) => {
+      roomRef.on('value', snapshot => {
         let value = snapshot.val();
-        console.log('value', value)
+        console.log('value', value);
         if (value.playerStatus > -1) {
-          let player = this.player
-          let status = value.playerStatus
-          let currentTime = value.currentTime
+          let player = this.player;
+          let status = value.playerStatus;
+          let currentTime = value.currentTime;
           if (status !== player.getPlayerState()) {
             if (status === 1) {
-              player.seekTo(currentTime)
-              player.playVideo()
-            }
-            else if (status === 2) player.pauseVideo()
-            else if (status === 0) player.stopVideo()
+              player.seekTo(currentTime);
+              player.playVideo();
+            } else if (status === 2) player.pauseVideo();
+            else if (status === 0) player.stopVideo();
           }
         }
       });
-    }
+    };
     startListening();
-  }
 
+    const videosRef = myFirebase.database().ref('videos/' + this.props.roomId);
+    let startListeningQueue = () => {
+      videosRef.on('child_added', snapshot => {
+        let video = snapshot.val();
+        this.setState({ playlist: [...this.state.playlist, video.queuedUrl] });
+        console.log(this.state.playlist);
+      });
+    };
+    startListeningQueue();
+  };
 
   handler = event => {
-    myFirebase.database().ref('rooms/' + this.props.roomId).set({
-      roomId: this.props.roomId,
-      playerStatus: event.data,
-      currentTime: event.target.getCurrentTime()
-    })
-  }
+    myFirebase
+      .database()
+      .ref('rooms/' + this.props.roomId)
+      .set({
+        roomId: this.props.roomId,
+        playerStatus: event.data,
+        currentTime: event.target.getCurrentTime(),
+      });
+  };
 
-  _onReady = (event) => {
+  _onReady = event => {
     // this.setState({
     //   player: event.target
     // }, () => { event.target.pauseVideo() })
     this.player = event.target;
-    event.target.pauseVideo()
-  }
+    event.target.pauseVideo();
+  };
 
   render() {
     const opts = {
@@ -62,14 +74,14 @@ class Screen extends Component {
         enablejsapi: 1,
         modestbranding: 1,
         //origin: ourdomain.com,
-        //playlist: comma-separated list of video ids,
+        playlist: this.state.playlist.join(','),
         rel: 0,
       },
     };
 
     return (
       <YouTube
-      id="vidScreen"
+        id="vidScreen"
         videoId={this.props.videoId}
         opts={opts}
         onReady={this._onReady}
@@ -79,7 +91,6 @@ class Screen extends Component {
       />
     );
   }
-
 }
 
 export default Screen;
