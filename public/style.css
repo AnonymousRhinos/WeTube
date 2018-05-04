@@ -96,13 +96,23 @@ body {
     font-weight: 700
   }
 
-  #video {
-    background: url("./images/player-background.jpg");
-    background-size: cover;
+  .share-btns {
     display: flex;
-    padding: 50px 20px;
+    margin-bottom: 10px;
+  }
+
+  #video {
+    display: flex;
     justify-content: space-around;
     /* flex-wrap: wrap; */
+  }
+
+  .vid-view {
+    display: flex;
+    flex-direction: column;
+    background: url("./images/player-background.jpg");
+    background-size: cover;
+    padding: 50px 20px;
   }
 
   #text {

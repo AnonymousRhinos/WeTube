@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
+import { withRouter } from 'react-router';
 import colors from '../../colors.js';
 
-export default class Chat extends Component {
+export class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,21 +52,22 @@ export default class Chat extends Component {
     }
 
     //listen for messages and change state
+    
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
     let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
         let msg = snapshot.val();
-        this.setState({ messages: [...this.state.messages, msg] });
+          if (this.state.users.indexOf(this.state.name)) {
+            this.setState({ messages: [...this.state.messages, msg] });
+          }
       });
     };
     startListeningMessages();
 
     //listen for users and change state
-    const usersRef = myFirebase
-      .database()
-      .ref('users/' + this.props.roomId);
+    const usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
@@ -73,7 +75,39 @@ export default class Chat extends Component {
       });
     };
     startListeningUsers();
+
+    //listen for deleted users and change state
+    const usersRemRef = myFirebase.database().ref('users/' + this.props.roomId);
+    let listenUserRemove = () => {
+      usersRemRef.on('child_removed', snapshot => {
+        let user = snapshot.val().name;
+        let userIndex = this.state.users.indexOf(user)
+        let newUsers = this.state.users.slice(0)
+        newUsers.splice(userIndex, 1)
+        const exitRef = myFirebase.database().ref('messages/' + this.props.roomId);
+        const exitRoom = {
+          user: user,
+          message: `${user} has left the theatre`,
+          time
+        };
+        if (user !== this.state.name) {
+          this.setState({
+            users: newUsers
+          }, () => {
+            exitRef.push(exitRoom);
+          })
+        }
+      });
+    };
+    listenUserRemove();
+
   };
+
+  componentWillUnmount() {
+    let { name } = this.state
+    const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + name);
+    userRef.remove();
+  }
 
 
   establishColor = (colors) => {
@@ -86,16 +120,15 @@ export default class Chat extends Component {
   }
 
   render() {
-
+    console.log("USERS: ", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">
           <h4 id="users-header">Participants: </h4>
           <p id="user-list">
-            {this.state.users
-              .map((user, index) => user.name)
-              .join(", ")
-              .slice(0, -2)
+            {
+              this.state.users.map((user, index) => user.name)
+                .join(", ")
             }
           </p>
         </div>
@@ -128,3 +161,5 @@ export default class Chat extends Component {
     );
   }
 }
+
+export default withRouter(Chat);
