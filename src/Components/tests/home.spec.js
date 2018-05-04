@@ -23,10 +23,10 @@ describe('Home', () => {
     expect(true).to.equal(true);
   });
 
-  it('has two h2 tags', () => {
-    expect(home.find('h2')).to.have.length(2);
+  it('has one h2 tag', () => {
+    expect(home.find('h2')).to.have.length(1);
   });
-  it('first h2 tag says Create a Theater:', () => {
+  it('The h2 tag says "Create a Theater:"', () => {
     expect(
       home
         .find('h2')
