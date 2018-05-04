@@ -7,9 +7,7 @@ class Screen extends Component {
 
   constructor() {
     super();
-    this.state = {
-      player: {}
-    }
+    this.player = {}
   }
 
   componentDidMount = () => {
@@ -20,7 +18,7 @@ class Screen extends Component {
         let value = snapshot.val();
         console.log('value', value)
         if (value.playerStatus > -1) {
-          let player = this.state.player
+          let player = this.player
           let status = value.playerStatus
           let currentTime = value.currentTime
           if (status !== player.getPlayerState()) {
@@ -47,9 +45,11 @@ class Screen extends Component {
   }
 
   _onReady = (event) => {
-    this.setState({
-      player: event.target
-    }, () => { event.target.pauseVideo() })
+    // this.setState({
+    //   player: event.target
+    // }, () => { event.target.pauseVideo() })
+    this.player = event.target;
+    event.target.pauseVideo()
   }
 
   render() {
