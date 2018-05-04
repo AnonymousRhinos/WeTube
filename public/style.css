@@ -157,13 +157,11 @@ body {
   }
 
   .color1 {
-    background-color: #5755d9;
     float: left;
     text-align: left
   }
 
   .color2 {
-    background-color: cornflowerblue;
     float: right;
     text-align: right
   }

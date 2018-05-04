@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
+import colors from '../../colors.js';
 
 export default class Chat extends Component {
   constructor(props) {
     super(props);
+
+
     this.state = {
       name: '',
       messages: [],
+      color: '',
       users: [],
+       
+    
     };
   }
 
 
   handleSubmit = event => {
     event.preventDefault();
-    const { name } = this.state;
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    const { name, color } = this.state;
+    let time = new Date().toUTCString().slice(-12,-4).split(':');
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
     const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     const message = {
       user: name,
       message: event.target.text.value,
+      color: color,
       time
     };
     messagesRef.push(message);
@@ -33,7 +40,8 @@ export default class Chat extends Component {
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
     const name = prompt('Enter name:');
-    this.setState({ name: name });
+    const color = this.establishColor(colors);
+    this.setState({ name: name, color: color });
 
     if (name) {
       myFirebase.database().ref('users/' + this.props.roomId + '/' + name).set({ name, time });
@@ -71,7 +79,18 @@ export default class Chat extends Component {
     startListeningUsers();
   };
 
+
+  establishColor = (colors) => {
+    let names = colors.names;
+    let randomProperty = function (names) {
+      let keys = Object.keys(names)
+      return names[keys[ keys.length * Math.random() << 0]];
+  };
+    return randomProperty(names)
+  }
+
   render() {
+
     return (
       <div id="chat">
         <div className="users-list">
@@ -97,7 +116,7 @@ export default class Chat extends Component {
           .slice(0)
           .reverse()
           .map((message, index) => (
-            <p key={index} className={`messages ${(index % 2 === 0 ? 'color1 message' : 'color2 message')}`}>
+            <p key={index} className={`messages ${(index % 2 === 0 ? 'color1 message' : 'color2 message') style={message.user === this.state.name? {'backgroundColor': colors.names.blue} : {'backgroundColor': message.color}}`}>
               {message.user} ({message.time}): {message.message}
             </p>
           ))}
