@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Screen from './video-screen';
-import VideoSearch from './video-search';
-import VideoChat from './video-chat';
-import Chat from './chat';
+import {Screen} from '../index.js';
+// import {Screen} from './index.js';
+
+import {VideoSearch} from '../index.js';
+import {VideoChat} from '../index.js';
+import {Chat} from '../index.js';
 import {
   FacebookShareButton,
   GooglePlusShareButton,
@@ -36,7 +38,6 @@ class Video extends Component {
   }
 
   render() {
-    console.log('my state videoId is: ', this.state.roomId);
     return (
       <div className="vid-view">
       <VideoChat />
