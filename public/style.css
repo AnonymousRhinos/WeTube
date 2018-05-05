@@ -11,7 +11,7 @@ input.break {
 body {
     font-family: sans-serif;
   }
-  
+
   a {
     text-decoration: none;
   }
@@ -52,7 +52,7 @@ body {
     bottom: 0;
     right: 0;
     position: absolute;
-    z-index: -1;   
+    z-index: -1;
     background-size: cover;
   }
 
@@ -88,7 +88,7 @@ body {
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
-    1px 1px 0 #000; 
+    1px 1px 0 #000;
   }
 
   #input-header {
@@ -164,7 +164,7 @@ body {
 
   .messages {
     flex-wrap: wrap;
-    overflow-wrap: break-word 
+    overflow-wrap: break-word
   }
 
   .color1 {
@@ -194,3 +194,5 @@ body {
   .trendingThumbnail {
     height: 180px;
   }
+
+
