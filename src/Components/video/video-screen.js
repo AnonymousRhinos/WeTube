@@ -7,18 +7,19 @@ class Screen extends Component {
     super(props);
     this.state = {
       playlist: [],
-      currentIndex: 0
+      currentIndex: 0,
     };
     this.player = {};
   }
 
   componentDidMount = () => {
-    let {playlist, currentIndex} = this.state;
+    let { playlist, currentIndex } = this.state;
     const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     let startListening = () => {
       roomRef.on('value', snapshot => {
         let value = snapshot.val();
         if (value.playerStatus > -1) {
+          console.log('here is the playlist:', playlist);
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
@@ -36,11 +37,15 @@ class Screen extends Component {
       });
     };
     startListening();
-    myFirebase.database().ref('videos/' + this.props.roomId + '/' + this.props.videoId).set({queuedUrl: this.props.videoId});
-    const videosRef = myFirebase.database().ref('videos/' + this.props.roomId)
+    myFirebase
+      .database()
+      .ref('videos/' + this.props.roomId + '/' + this.props.videoId)
+      .set({ queuedUrl: this.props.videoId });
+    const videosRef = myFirebase.database().ref('videos/' + this.props.roomId);
     let startListeningQueue = () => {
       videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
+        console.log(video);
         this.setState({ playlist: playlist.push(video.queuedUrl) });
       });
     };
