@@ -125,7 +125,6 @@ body {
     margin-left: 20px;
     flex-grow: 2;
     overflow: auto;
-    white-space: nowrap;
     max-height: 700px;
   }
 
@@ -164,7 +163,7 @@ body {
 
   .messages {
     flex-wrap: wrap;
-    overflow-wrap: break-word 
+    overflow-wrap: break-word;
   }
 
   .color1 {
@@ -181,7 +180,9 @@ body {
     padding: 10px;
     color: white;
     width: 90%;
-    border-radius: 10px
+    border-radius: 10px;
+    word-break:break-all;
+
   }
 
   #username {
