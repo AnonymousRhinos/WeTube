@@ -14,13 +14,11 @@ class Screen extends Component {
 
   componentDidMount = () => {
     let {playlist, currentIndex} = this.state;
-    //listen for changes in current time, player state in room
     const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     let startListening = () => {
       roomRef.on('value', snapshot => {
         let value = snapshot.val();
-        console.log("VALUE", value)
-        if (value.playerStatus > -1) {
+        if (value && value.playerStatus > -1) {
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
@@ -38,7 +36,6 @@ class Screen extends Component {
       });
     };
     startListening();
-    //add initial video and listen for additions to queue
     myFirebase.database().ref('videos/' + this.props.roomId + '/' + this.props.videoId).set({queuedUrl: this.props.videoId});
     const videosRef = myFirebase.database().ref('videos/' + this.props.roomId)
     let startListeningQueue = () => {

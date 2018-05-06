@@ -3,11 +3,11 @@ import myFirebase from '../../Firebase/firebaseInit';
 import { withRouter } from 'react-router';
 import colors from '../../colors.js';
 
-export class Chat extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      name: this.props.guestName,
       messages: [],
       color: '',
       users: [],
@@ -36,14 +36,13 @@ export class Chat extends Component {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
-    const name = prompt('Enter name:');
+    const name = this.props.guestName;
     const color = this.establishColor(colors);
     this.setState({ name: name, color: color });
-
+    const token = this.props.token
     if (name) {
       let newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
-      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time });
-      console.log('name is: ', newName)
+      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time, token });
       const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
       const message = {
         user: newName,
@@ -122,7 +121,6 @@ export class Chat extends Component {
   }
 
   render() {
-    console.log("USERS: ", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">

@@ -25,27 +25,22 @@ class VideoChat extends Component {
                     position="relative"
                     allowFullScreen />
                 
-                    {/*
+
 
                     <div className="row">
                         <div className="col s8">
                           <OTSession
-                            apiKey={apiKey}
-                            sessionId={sessionId}
-                            token={token}
-                            onError={this.onSessionError}
-                            eventHandlers={this.sessionEventHandlers}
+                            apiKey={this.props.apiKey}
+                            sessionId={this.props.sessionId}
+                            token={this.props.token}
+                            onError={(err) => console.log(err)}
                           >
                             <OTPublisher
                               properties={{
-                                publishVideo,
                                 width: 150,
                                 height: 150,
-                                name: "BOB FOR NOW"
+                                name: this.props.guestName
                               }}
-                              onPublish={this.onPublish}
-                              onError={this.onPublishError}
-                              eventHandlers={this.publisherEventHandlers}
                             />
                             <OTStreams>
                               <OTSubscriber
@@ -55,15 +50,11 @@ class VideoChat extends Component {
                                   subscribeToAudio: true,
                                   subscribeToVideo: true
                                 }}
-                                onSubscribe={this.onSubscribe}
-                                onError={this.onSubscribeError}
-                                eventHandlers={this.subscriberEventHandlers}
                               />
                             </OTStreams>
                           </OTSession>
                         </div>
                   </div>
-                            */}
             </div>
         );
     }

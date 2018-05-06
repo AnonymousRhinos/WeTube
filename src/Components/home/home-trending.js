@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ThumbnailCard from '../video/thumbnail-card'
+import {ThumbnailCard} from '../index.js'
+// import ThumbnailCard from '../index.js'
 
 class TrendingComponent extends Component {
   constructor(props) {
@@ -42,7 +43,6 @@ class TrendingComponent extends Component {
 
   render() {
 
-    console.log('HEREIS FINAL STATE: ', this.state)
     return (
       <div className="trending-component">
         <img id="trend-head" src="/images/TrendingNow.png" />

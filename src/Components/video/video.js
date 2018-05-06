@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Screen from './video-screen';
-import VideoSearch from './video-search';
-import VideoChat from './video-chat';
-import Chat from './chat';
+import { Screen } from '../index.js';
+import myFirebase from '../../Firebase/firebaseInit';
+import OpenTok from "opentok";
+import { VideoSearch } from '../index.js';
+import { VideoChat } from '../index.js';
+import { Chat } from '../index.js';
 import {
   FacebookShareButton,
   GooglePlusShareButton,
@@ -25,6 +27,9 @@ import {
   EmailIcon,
   // LivejournalIcon,
 } from 'react-share';
+import tokbox from '../../tokboxConfig'
+const apiKey = tokbox.apiKey
+const secret = tokbox.secret
 
 class Video extends Component {
   constructor(props) {
@@ -32,14 +37,48 @@ class Video extends Component {
     this.state = {
       videoId: this.props.match.params.id.split('&')[1],
       roomId: this.props.match.params.id,
+      name: "",
+      sessionId: '',
+      token: ''
     };
   }
 
+  componentWillMount = () => {
+    const guestName = prompt('Enter name:');
+    const opentok = new OpenTok(apiKey, secret);
+    const roomRef = myFirebase.database().ref('rooms/' + this.props.match.params.id);
+    roomRef.once('value')
+      .then(snapshot => {
+        let value = snapshot.val()
+        console.log("IS THIS WORKING", snapshot.val())
+        if (value) {
+          let token = opentok.generateToken(value.sessionId)
+          this.setState({
+            name: guestName,
+            sessionId: value.sessionId,
+            token: token
+          })
+        }
+      })
+  }
+
   render() {
-    console.log('my state videoId is: ', this.state.roomId);
+    console.log("STATE", this.state)
+    console.log("PROPS", this.props)
     return (
       <div className="vid-view">
-      <VideoChat />
+      {
+        this.state.sessionId ?
+        <VideoChat
+          roomId={this.state.roomId}
+          guestName={this.state.name}
+          apiKey={apiKey}
+          sessionId={this.state.sessionId}
+          token={this.state.token}
+        />
+        :
+        <div />
+      }
         <div className="share-btns">
           <FacebookShareButton
             url={"http://localhost:3000/room/" + this.state.roomId}
@@ -82,7 +121,12 @@ class Video extends Component {
             <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
             <VideoSearch />
           </div>
-          <Chat videoId={this.state.videoId} roomId={this.state.roomId} />
+          <Chat
+            videoId={this.state.videoId}
+            roomId={this.state.roomId}
+            token={this.state.token}
+            guestName={this.state.name}
+          />
         </div>
       </div>
     );
