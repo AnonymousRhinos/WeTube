@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 // import TrendingComponent from './home-trending';
-import {TrendingComponent} from '../index.js';
-import {testArr} from '../index.js'
+import { TrendingComponent } from '../index.js';
+import { testArr } from '../index.js'
 import myFirebase from '../../Firebase/firebaseInit';
+import CssPlay from '../css-play'
 
 
 export class Home extends Component {
@@ -23,7 +24,7 @@ export class Home extends Component {
 
   handleSubmit = (evt, videoInfo) => {
     evt.preventDefault();
-    let { videoUrl } = this.state; 
+    let { videoUrl } = this.state;
     let begIndex = videoUrl.indexOf('v=') + 2;
     let endIndex = videoUrl.indexOf('&');
     let videoId;
@@ -67,22 +68,25 @@ export class Home extends Component {
     return (
       <div className="Home">
         <header className="App-header">
-          <h1 className="App-title">Welcome to WeTube</h1>
+          <div id="text open-sign">
+            <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
+          </div>
           <img className="logo-header" src="/logo.jpg" />
+
         </header>
         <div className="theater-form">
-        <h2 id="input-header">Create a Theater:</h2>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            size="80"
-            name="videoUrl"
-            className="form-control"
-            placeholder="Video Url"
-            onChange={this.handleChange}
-            required
-          />
-          <button className="btn">Launch Theater</button>
-        </form>
+          <h2 id="input-header">Create a Theater:</h2>
+          <form onSubmit={this.handleSubmit}>
+            <input
+              size="80"
+              name="videoUrl"
+              className="form-control"
+              placeholder="Video Url"
+              onChange={this.handleChange}
+              required
+            />
+            <button className="btn">Launch Theater</button>
+          </form>
         </div>
         <TrendingComponent makeRoom={this.handleSubmit} />
       </div>
