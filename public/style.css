@@ -131,6 +131,8 @@ body {
   .users-list {
     display: flex;
     color: white;
+    flex-wrap: wrap;
+    overflow-wrap: break-word
   }
 
   #user-list {
@@ -161,11 +163,6 @@ body {
     flex-grow: 3
   }
 
-  .messages {
-    flex-wrap: wrap;
-    overflow-wrap: break-word
-  }
-
   .color1 {
     float: left;
     text-align: left
@@ -177,6 +174,8 @@ body {
   }
 
   .message {
+    flex-wrap: wrap;
+    overflow-wrap: break-word;
     padding: 10px;
     color: white;
     width: 90%;

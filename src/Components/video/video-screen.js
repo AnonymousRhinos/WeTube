@@ -19,7 +19,6 @@ class Screen extends Component {
       roomRef.on('value', snapshot => {
         let value = snapshot.val();
         if (value.playerStatus > -1) {
-          console.log('here is the playlist:', playlist);
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
@@ -45,7 +44,6 @@ class Screen extends Component {
     let startListeningQueue = () => {
       videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        console.log(video);
         this.setState({ playlist: playlist.push(video.queuedUrl) });
       });
     };

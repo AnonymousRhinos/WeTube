@@ -19,7 +19,6 @@ class Queue extends Component {
     let startListeningQueue = () => {
       videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        console.log(video);
         this.setState({ playlist: playlist.push(video.queuedUrl) });
       });
     };

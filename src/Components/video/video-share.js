@@ -24,7 +24,6 @@ import {
 } from 'react-share';
 
 const VideoShare = (props) => {
-  console.log('this.props....>>>', props)
   return (
     <div className="share-btns">
           <FacebookShareButton
