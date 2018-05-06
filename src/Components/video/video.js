@@ -85,7 +85,7 @@ class Video extends Component {
         :
         <div />
       }
-        <VideoShare roomId={this.state.roomId}/>
+        <VideoShare roomId={this.state.roomId} />
         <div id="video">
           <div id="screen">
             <Screen videoId={this.state.videoId} roomId={this.state.roomId} />

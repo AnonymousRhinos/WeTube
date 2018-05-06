@@ -5,10 +5,10 @@ import { TrendingComponent } from '../index.js';
 import { testArr } from '../index.js'
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
+import CssPlay from '../css-play'
 import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
-import CssPlay from '../css-play'
 
 
 export class Home extends Component {
