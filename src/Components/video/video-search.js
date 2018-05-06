@@ -30,7 +30,6 @@ class VideoSearch extends Component {
       .set({
         queuedUrl: videoId,
       });
-    // this.setState({ videoUrl: 'Video URL' });
   };
   render() {
     return (
