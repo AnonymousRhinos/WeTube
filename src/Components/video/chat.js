@@ -121,13 +121,14 @@ class Chat extends Component {
   }
 
   render() {
+    console.log("USERS", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">
           <h4 id="users-header">Participants: </h4>
           <p id="user-list">
             {
-              this.state.users.map((user, index) => user.name)
+              this.state.users.map((user, index) => user.newName)
                 .join(", ")
             }
           </p>
@@ -143,12 +144,12 @@ class Chat extends Component {
         </div>
         <div>
           {this.state.messages.slice(0).reverse().map((message, index) => {
-            const messClass = (message.user !== this.state.name) ? 'color1 message' : 'color2 message';
+            const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
             const messageColor = message.user === this.state.name ? { 'backgroundColor': colors.names.blue } : { 'backgroundColor': message.color };
             return (
               <p
                 key={index}
-                className={`messages ${messClass}`}
+                className={`message ${messClass}`}
                 style={messageColor}
               >
                 {message.user} ({message.time}): {message.message}

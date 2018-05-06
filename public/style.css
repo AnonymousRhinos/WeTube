@@ -11,7 +11,7 @@ input.break {
 body {
     font-family: sans-serif;
   }
-  
+
   a {
     text-decoration: none;
   }
@@ -52,8 +52,14 @@ body {
     bottom: 0;
     right: 0;
     position: absolute;
-    z-index: -1;   
+    z-index: -1;
     background-size: cover;
+  }
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
   }
 
   #trend-head {
@@ -88,7 +94,7 @@ body {
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
-    1px 1px 0 #000; 
+    1px 1px 0 #000;
   }
 
   #input-header {
@@ -131,6 +137,8 @@ body {
   .users-list {
     display: flex;
     color: white;
+    flex-wrap: wrap;
+    overflow-wrap: break-word
   }
 
   #user-list {
@@ -161,11 +169,6 @@ body {
     flex-grow: 3
   }
 
-  .messages {
-    flex-wrap: wrap;
-    overflow-wrap: break-word;
-  }
-
   .color1 {
     float: left;
     text-align: left
@@ -177,6 +180,8 @@ body {
   }
 
   .message {
+    flex-wrap: wrap;
+    overflow-wrap: break-word;
     padding: 10px;
     color: white;
     width: 90%;

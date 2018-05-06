@@ -8,6 +8,7 @@ import OpenTok from "opentok";
 import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
+import CssPlay from '../css-play'
 
 
 export class Home extends Component {
@@ -73,8 +74,11 @@ export class Home extends Component {
     return (
       <div className="Home">
         <header className="App-header">
-          <h1 className="App-title">Welcome to WeTube</h1>
+          <div id="text open-sign">
+            <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
+          </div>
           <img className="logo-header" src="/logo.jpg" />
+
         </header>
         <div className="theater-form">
           <h2 id="input-header">Create a Theater:</h2>
