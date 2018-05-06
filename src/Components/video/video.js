@@ -45,20 +45,23 @@ class Video extends Component {
 
   componentWillMount = () => {
     const guestName = prompt('Enter name:');
+          this.setState({
+            name: guestName,
+          })
+  }
+
+  componentDidMount = () => {
     const opentok = new OpenTok(apiKey, secret);
     const roomRef = myFirebase.database().ref('rooms/' + this.props.match.params.id);
     roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
         console.log("IS THIS WORKING", snapshot.val())
-        if (value) {
           let token = opentok.generateToken(value.sessionId)
           this.setState({
-            name: guestName,
             sessionId: value.sessionId,
             token: token
           })
-        }
       })
   }
 
@@ -72,7 +75,6 @@ class Video extends Component {
         <VideoChat
           roomId={this.state.roomId}
           guestName={this.state.name}
-          apiKey={apiKey}
           sessionId={this.state.sessionId}
           token={this.state.token}
         />

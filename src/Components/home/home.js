@@ -36,10 +36,17 @@ export class Home extends Component {
     } else videoId = videoInfo || videoUrl.slice(begIndex);
     let roomId = Date.now() + '&' + videoId;
 
+    const videosRef = myFirebase.database().ref('videos');
+      let video = {
+        [roomId]: {
+          videoId: videoId
+        }
+      }
+      videosRef.push(video)
 
     let sessionId
+    let self = this;
     const opentok = new OpenTok(apiKey, secret);
-
     opentok.createSession({ mediaMode: "routed" }, function (err, session) {
       if (err) {
         console.log(err);
@@ -54,18 +61,12 @@ export class Home extends Component {
         sessionId: sessionId
       })
 
-      const videosRef = myFirebase.database().ref('videos');
-      let video = {
-        [roomId]: {
-          videoId: videoId
-        }
-      }
-      videosRef.push(video)
+      self.props.history.push({
+       pathname:  `/room/${roomId}`,
+       state: {sessionId: sessionId}
+      });
+
     })
-    
-    this.props.history.push(`/room/${roomId}`);
-
-
   };
 
   render() {
