@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import TrendingComponent from './home-trending';
 import myFirebase from '../../Firebase/firebaseInit';
+import OpenTok from "opentok";
 
 export class Home extends Component {
   constructor(props) {
@@ -36,12 +37,26 @@ export class Home extends Component {
     // }
     // roomsRef.push(room)
 
-    myFirebase.database().ref('rooms/' + roomId).set({
-      roomId: roomId,
-      playerStatus: -1,
-      currentTime: 0
-    })
+    let opentok = new OpenTok(
+      46113622,
+      '7bec09fd089ae49e5d90cc420cf9740e9e0de29b'
+    );
 
+    opentok.createSession({ mediaMode: "routed" }, function(err, session) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      let sessionId = session.sessionId;
+      
+      myFirebase.database().ref('rooms/' + roomId).set({
+        roomId: roomId,
+        playerStatus: -1,
+        currentTime: 0,
+        sessionId: sessionId
+      })
+    })
+      
     const videosRef = myFirebase.database().ref('videos');
     let video = {
       [roomId]: {
@@ -57,6 +72,7 @@ export class Home extends Component {
     // })
 
     this.props.history.push(`/room/${roomId}`);
+
 
   };
 
