@@ -2,16 +2,10 @@ import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
 
 class Queue extends Component {
-  // constructor(props){
-  //   super(props)
-  //   this.state = {
-  //     playlist: []
-  //   }
-  // }
 
   render(props){
     return (
-      <div className="video-queue">
+      <div className="trending-component">
         <h2>Playlist</h2>
           {this.props.playlist.length
           ?
@@ -19,8 +13,8 @@ class Queue extends Component {
         {
           this.props.playlist.map(queuedVid => {
             return (
-        <div key={queuedVid}>
-          <h2>Playlist Thumbnails</h2>
+        <div key={queuedVid} className="mini-vid">
+          <img src={`https://img.youtube.com/vi/${queuedVid}/hqdefault.jpg`} className='trendingThumbnail' />
         </div>
             )
           })
