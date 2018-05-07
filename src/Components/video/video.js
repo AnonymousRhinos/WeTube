@@ -60,7 +60,6 @@ class Video extends Component {
     roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
-        console.log("IS THIS WORKING", snapshot.val())
           let token = opentok.generateToken(value.sessionId)
           this.setState({
             sessionId: value.sessionId,

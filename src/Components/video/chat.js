@@ -121,7 +121,6 @@ class Chat extends Component {
   }
 
   render() {
-    console.log("USERS", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">
