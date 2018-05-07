@@ -9,32 +9,40 @@ class Screen extends Component {
       playlist: [],
       currentIndex: 0,
     };
+    this.readySetGo = false;
     this.player = {};
+
   }
 
   componentDidMount = () => {
-    let { playlist, currentIndex } = this.state;
-    const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
-    let startListening = () => {
-      roomRef.on('value', snapshot => {
-        let value = snapshot.val();
-        if (value.playerStatus > -1) {
-          let player = this.player;
-          let status = value.playerStatus;
-          let currentTime = value.currentTime;
-          if (status !== player.getPlayerState() || status === 0) {
-            if (status === 1) {
-              player.seekTo(currentTime);
-              player.playVideo();
-            } else if (status === 2) player.pauseVideo();
-            else if (status === 0) {
-              currentIndex++;
-              player.loadVideoById(playlist[currentIndex], 2);
+    if(this.readySetGo){
+
+      let { playlist, currentIndex } = this.state;
+      const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
+      let startListening = () => {
+        roomRef.on('value', snapshot => {
+          let value = snapshot.val();
+          if (value.playerStatus > -1) {
+            let player = this.player;
+            console.log('player is: ' , this.player)
+            let status = value.playerStatus;
+            let currentTime = value.currentTime;
+            if (status !== player.getPlayerState() || status === 0) {
+              if (status === 1) {
+                player.seekTo(currentTime);
+                player.playVideo();
+              } else if (status === 2) player.pauseVideo();
+              else if (status === 0) {
+                currentIndex++;
+                player.loadVideoById(playlist[currentIndex], 2);
+              }
             }
           }
-        }
-      });
-    };
+        });
+      };
+
+
+    
     startListening();
     myFirebase
       .database()
@@ -48,6 +56,7 @@ class Screen extends Component {
       });
     };
     startListeningQueue();
+  }
   };
 
   handler = event => {
@@ -64,6 +73,7 @@ class Screen extends Component {
   _onReady = event => {
     this.player = event.target;
     event.target.pauseVideo();
+    this.readySetGo = true;
   };
 
   render() {
