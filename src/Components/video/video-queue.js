@@ -2,41 +2,24 @@ import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
 
 class Queue extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      playlist: []
-    }
-  }
+  // constructor(props){
+  //   super(props)
+  //   this.state = {
+  //     playlist: []
+  //   }
+  // }
 
-  componentDidMount(){
-    let { playlist } = this.state;
-    myFirebase
-      .database()
-      .ref('videos/' + this.props.roomId + '/' + this.props.videoId)
-      .set({ queuedUrl: this.props.videoId });
-    const videosRef = myFirebase.database().ref('videos/' + this.props.roomId);
-    let startListeningQueue = () => {
-      videosRef.on('child_added', snapshot => {
-        let video = snapshot.val();
-        console.log(video);
-        this.setState({ playlist: playlist.push(video.queuedUrl) });
-      });
-    };
-    startListeningQueue();
-  }
-
-  render(){
+  render(props){
     return (
       <div className="video-queue">
         <h2>Playlist</h2>
-          {this.state.playlist.length
+          {this.props.playlist.length
           ?
         <div className="trend-scroll">
         {
-          this.state.playlist.map(queuedVid => {
+          this.props.playlist.map(queuedVid => {
             return (
-        <div>
+        <div key={queuedVid}>
           <h2>Playlist Thumbnails</h2>
         </div>
             )
