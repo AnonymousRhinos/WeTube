@@ -17,7 +17,7 @@ class Screen extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    if(prevProps !== this.props) {
+    if(prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
     }
