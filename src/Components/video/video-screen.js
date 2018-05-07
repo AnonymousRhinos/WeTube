@@ -91,6 +91,10 @@ class Screen extends Component {
     this.usersRef.off();
   }
 
+  componentDidUpdate(){
+
+  }
+
   handler = event => {
     this.roomRef.set({
       roomId: this.props.roomId,

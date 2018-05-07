@@ -13,12 +13,18 @@ class Video extends Component {
       videoId: this.props.match.params.id.split('&')[1],
       roomId: this.props.match.params.id,
       playlist: [],
+      newVideo: '',
     };
   }
 
   updatePlaylist = newVideo => {
     const { playlist } = this.state;
     this.setState(prevState => ({playlist: [...prevState.playlist, newVideo]}))
+  }
+
+  changeVideo = (newVideo) => {
+    let intermedStatus = 20;
+    this.setState({newVideo: newVideo})
   }
 
   render() {
@@ -31,6 +37,7 @@ class Video extends Component {
                     roomId={this.state.roomId}
                     playlist={this.state.playlist}
                     update={this.updatePlaylist}
+                    newVideo={this.state.newVideo}
                     />
             <VideoSearch roomId={this.state.roomId} />
           </div>
@@ -39,6 +46,7 @@ class Video extends Component {
         <Queue videoId={this.state.videoId}
                roomId={this.state.roomId}
                playlist={this.state.playlist}
+               changeVideo={this.changeVideo}
                />
       </div>
     );
