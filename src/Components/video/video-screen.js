@@ -6,14 +6,14 @@ class Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playlist: [],
       currentIndex: 0,
     };
     this.player = {};
   }
 
   componentDidMount = () => {
-    let { playlist, currentIndex } = this.state;
+    let { currentIndex } = this.state;
+    let { playlist, update } = this.props
     const roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     let startListening = () => {
       roomRef.on('value', snapshot => {
@@ -29,7 +29,7 @@ class Screen extends Component {
             } else if (status === 2) player.pauseVideo();
             else if (status === 0) {
               currentIndex++;
-              player.loadVideoById(playlist[currentIndex], 2);
+              player.loadVideoById(this.props.playlist[currentIndex], 2);
             }
           }
         }
@@ -44,7 +44,7 @@ class Screen extends Component {
     let startListeningQueue = () => {
       videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        this.setState({ playlist: playlist.push(video.queuedUrl) });
+        update(video.queuedUrl)
       });
     };
     startListeningQueue();
