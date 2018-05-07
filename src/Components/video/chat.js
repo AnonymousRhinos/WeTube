@@ -81,7 +81,7 @@ class Chat extends Component {
     const usersRemRef = myFirebase.database().ref('users/' + this.props.roomId);
     let listenUserRemove = () => {
       usersRemRef.on('child_removed', snapshot => {
-        let user = snapshot.val().name;
+        let user = snapshot.key;
         let userIndex = this.state.users.indexOf(user)
         let newUsers = this.state.users.slice(0)
         newUsers.splice(userIndex, 1)
