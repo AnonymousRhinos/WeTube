@@ -34,7 +34,7 @@ class Screen extends Component {
         let user = snapshot.val();
         let currentTime = this.player.getCurrentTime();
         let playerStatus = this.player.getPlayerState();
-        console.log('running, currentTime:', currentTime)
+        // console.log('running, currentTime:', currentTime)
         this.roomRef.set({
           roomId: this.props.roomId,
           playerStatus,
@@ -51,7 +51,7 @@ class Screen extends Component {
           let status = value.playerStatus;
           let currentTime = value.currentTime;
           if(this.isJoining) {
-            console.log('status', status, 'current time', currentTime)
+            // console.log('status', status, 'current time', currentTime)
             player.seekTo(currentTime);
             if (status === 1) player.playVideo();
             else if (status === 2) player.pauseVideo();
