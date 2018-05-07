@@ -24,7 +24,6 @@ class Video extends Component {
   render() {
     return (
       <div className="vid-view">
-        <VideoChat />
         <VideoShare roomId={this.state.roomId}/>
         <div id="video">
           <div id="screen">
