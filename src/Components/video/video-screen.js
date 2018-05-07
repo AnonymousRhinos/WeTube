@@ -17,9 +17,14 @@ class Screen extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    if(prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
+    if(prevProps.videoId !== this.props.videoId ||
+      prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
+    }
+    if(prevProps.newVideo !== this.props.newVideo) {
+      let player = this.player;
+      player.loadVideoById(this.props.newVideo)
     }
   }
 
@@ -91,9 +96,6 @@ class Screen extends Component {
     this.usersRef.off();
   }
 
-  componentDidUpdate(){
-
-  }
 
   handler = event => {
     this.roomRef.set({

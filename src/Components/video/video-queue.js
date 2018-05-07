@@ -15,7 +15,7 @@ class Queue extends Component {
           this.props.playlist.map(queuedVid => {
             return (
         <div key={queuedVid} className="mini-vid"
-        onClick={(event) =>{props.changeVideo(queuedVid)}}>
+        onClick={(event) =>{this.props.changeVideo(queuedVid)}}>
           <img src={`https://img.youtube.com/vi/${queuedVid}/hqdefault.jpg`} className='trendingThumbnail' />
         </div>
             )
