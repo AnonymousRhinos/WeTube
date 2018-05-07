@@ -6,7 +6,6 @@ class Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playlist: [],
       currentIndex: 0,
     };
     this.player = {};
@@ -25,7 +24,8 @@ class Screen extends Component {
   }
 
   listenToFirebase = () =>{
-    let { playlist, currentIndex } = this.state;
+    let { currentIndex } = this.state;
+    let { playlist, update } = this.props
     this.usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     this.roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
 
@@ -63,7 +63,7 @@ class Screen extends Component {
             } else if (status === 2) player.pauseVideo();
             else if (status === 0) {
               currentIndex++;
-              player.loadVideoById(playlist[currentIndex], 2);
+              player.loadVideoById(this.props.playlist[currentIndex], 2);
             }
           }
         }
@@ -79,9 +79,7 @@ class Screen extends Component {
     let startListeningQueue = () => {
       this.videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        console.log('playlist', this.state.playlist)
-        // this.setState({ playlist: [...playlist, video.queuedUrl] });
-        this.setState({ playlist: playlist.push(video.queuedUrl) });
+        update(video.queuedUrl)
       });
     };
     startListeningQueue();
