@@ -8,7 +8,7 @@ class MyNavbar extends Component {
           <section className="navbar-section">
           <Link to={'/home'}>
           <img className="logo-navbar" src="/logo.jpg" />
-          </Link>Ï
+          </Link>
           <Link to={'/home'} className="btn btn-link">
             WeTube
           </Link>
