@@ -29,47 +29,97 @@ class VideoChat extends Component {
     super(props);
     this.state = {
       videoUrl: '',
+      joinChat: false,
+      myAudioOn: false,
+      myVideoOn: true,
+      allAudioOn: true
+
     };
   }
 
+  joinVideo = () => {
+    this.setState({
+      joinChat: !this.state.joinChat
+    })
+  }
+
+  toggleMyAudio = () => {
+    this.setState({
+      myAudioOn: !this.state.myAudioOn
+    })
+  }
+
+  toggleMyVideo = () => {
+    this.setState({
+      myVideoOn: !this.state.myVideoOn
+    })
+  }
+
+  toggleAllAudio = () => {
+    this.setState({
+      allAudioOn: !this.state.allAudioOn
+    })
+  }
 
   render() {
-    console.log("NEW USER JOINS. SESSION ID: ", this.props.sessionId)
-    console.log("NEW USER JOINS. Token: ", this.props.token)
-    console.log("NEW USER JOINS. Name: ", this.props.guestName)
+    // console.log("NEW USER JOINS. SESSION ID: ", this.props.sessionId)
+    // console.log("NEW USER JOINS. Token: ", this.props.token)
+    // console.log("NEW USER JOINS. Name: ", this.props.guestName)
+    console.log("STATE", this.state)
     return (
       <div>
-
-        <div className="row">
-          <div className="col s8">
-            <OTSession
-              apiKey={apiKey}
-              sessionId={this.props.sessionId}
-              token={this.props.token}
-              onError={(err) => console.log(err)}
-            >
-              <OTPublisher
-                properties={{
-                  width: 200,
-                  height: 200,
-                  publishAudio: true,
-                  publishVideo: true,
-                  name: this.props.guestName
-                }}
-              />
-              <OTStreams>
-                <OTSubscriber
-                  properties={{
-                    width: 200,
-                    height: 200,
-                    subscribeToAudio: true,
-                    subscribeToVideo: true
-                  }}
-                />
-              </OTStreams>
-            </OTSession>
-          </div>
-        </div>
+        {
+          this.state.joinChat ?
+            <div className="row">
+              <div className="col s8">
+                <OTSession
+                  apiKey={apiKey}
+                  sessionId={this.props.sessionId}
+                  token={this.props.token}
+                  onError={(err) => console.log(err)}
+                >
+                  <div className="mute-btn-container">
+                    <button
+                      className={this.state.myVideoOn ? "unMute-btn" : "mute-btn"}
+                      onClick={this.toggleMyVideo}
+                    >{this.state.myVideoOn ? 'Hide Self' : 'Show Self'}
+                    </button>
+                    <button
+                      className="unMute-btn"
+                      onClick={this.toggleAllAudio}
+                    >{this.state.allAudioOn ? 'Mute All' : 'Unmute All'}
+                    </button>
+                  </div>
+                  <OTPublisher
+                    properties={{
+                      width: 200,
+                      height: 200,
+                      publishAudio: this.state.myAudioOn,
+                      publishVideo: this.state.myVideoOn,
+                      name: this.props.guestName
+                    }}
+                  />
+                  <OTStreams>
+                    <OTSubscriber
+                      properties={{
+                        width: 200,
+                        height: 200,
+                        subscribeToAudio: this.state.allAudioOn,
+                        subscribeToVideo: true
+                      }}
+                    />
+                  </OTStreams>
+                </OTSession>
+              </div>
+            </div>
+            :
+            <div>
+              <button
+                className="btn"
+                onClick={this.joinVideo}
+              >Join Chat</button>
+            </div>
+        }
       </div>
     );
   }

@@ -223,3 +223,18 @@ body {
   .OT_publisher {
     float: left;
   }
+
+  .mute-btn-container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 0 10px 18px
+  }
+
+  .mute-btn, .unMute-btn {
+    font-size: 12px;
+    border-radius: 5px;
+  }
+
+  .mute-btn {
+    background-color: red
+  }
