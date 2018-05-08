@@ -4,7 +4,11 @@ import { withRouter } from 'react-router';
 import { TrendingComponent } from '../index.js';
 import { testArr } from '../index.js'
 import myFirebase from '../../Firebase/firebaseInit';
+import OpenTok from "opentok";
 import CssPlay from '../css-play'
+import tokbox from '../../tokboxConfig'
+const apiKey = tokbox.apiKey
+const secret = tokbox.secret
 
 
 export class Home extends Component {
@@ -33,35 +37,37 @@ export class Home extends Component {
     } else videoId = videoInfo || videoUrl.slice(begIndex);
     let roomId = Date.now() + '&' + videoId;
 
-    // const roomsRef = myFirebase.database().ref('rooms');
-    // let room = {
-    //   roomId: roomId,
-    //   playerStatus: -1
-    // }
-    // roomsRef.push(room)
-
-    myFirebase.database().ref('rooms/' + roomId).set({
-      roomId: roomId,
-      playerStatus: -1,
-      currentTime: 0
-    })
-
     const videosRef = myFirebase.database().ref('videos');
-    let video = {
-      [roomId]: {
-        videoId: videoId
+      let video = {
+        [roomId]: {
+          videoId: videoId
+        }
       }
-    }
-    videosRef.push(video)
+      videosRef.push(video)
 
-    // myFirebase.database().ref('videos/' + roomId).set({
-    //   [roomId]: {
-    //         videoId: videoId
-    //       }
-    // })
+    let sessionId
+    let self = this;
+    const opentok = new OpenTok(apiKey, secret);
+    opentok.createSession({ mediaMode: "routed" }, function (err, session) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      sessionId = session.sessionId;
 
-    this.props.history.push(`/room/${roomId}`);
+      myFirebase.database().ref('rooms/' + roomId).set({
+        roomId: roomId,
+        playerStatus: -1,
+        currentTime: 0,
+        sessionId: sessionId
+      })
 
+      self.props.history.push({
+       pathname:  `/room/${roomId}`,
+       state: {sessionId: sessionId}
+      });
+
+    })
   };
 
   render() {

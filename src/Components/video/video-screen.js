@@ -46,7 +46,7 @@ class Screen extends Component {
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
         let value = snapshot.val();
-        if (value.playerStatus > -1) {
+        if (value && value.playerStatus > -1) {
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
