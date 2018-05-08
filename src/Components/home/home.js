@@ -4,7 +4,11 @@ import { withRouter } from 'react-router';
 import { TrendingComponent } from '../index.js';
 import { testArr } from '../index.js'
 import myFirebase from '../../Firebase/firebaseInit';
+import OpenTok from "opentok";
 import CssPlay from '../css-play'
+import tokbox from '../../tokboxConfig'
+const apiKey = tokbox.apiKey
+const secret = tokbox.secret
 
 
 export class Home extends Component {
@@ -39,13 +43,29 @@ export class Home extends Component {
       currentTime: 0
     })
 
-    // myFirebase
-    // .database()
-    // .ref('videos/' + roomId + '/' + videoId)
-    // .set({ videoId });
+    let sessionId
+    let self = this;
+    const opentok = new OpenTok(apiKey, secret);
+    opentok.createSession({ mediaMode: "routed" }, function (err, session) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      sessionId = session.sessionId;
 
-    this.props.history.push(`/room/${roomId}`);
+      myFirebase.database().ref('rooms/' + roomId).set({
+        roomId: roomId,
+        playerStatus: -1,
+        currentTime: 0,
+        sessionId: sessionId
+      })
 
+      self.props.history.push({
+       pathname:  `/room/${roomId}`,
+       state: {sessionId: sessionId}
+      });
+
+    })
   };
 
   render() {
