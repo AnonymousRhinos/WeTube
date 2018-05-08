@@ -50,9 +50,9 @@ class Video extends Component {
     this.isJoining = true;
   }
 
-  componentDidMount = () => {
-    this.listenToFirebase();
-  };
+  // componentDidMount = () => {
+
+  // };
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
@@ -161,11 +161,13 @@ class Video extends Component {
   }
 
   componentDidMount = () => {
+    this.listenToFirebase();
     const opentok = new OpenTok(apiKey, secret);
     const roomRef = myFirebase.database().ref('rooms/' + this.props.match.params.id);
     roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
+        console.log('her is the value>>>', value)
           let token = opentok.generateToken(value.sessionId)
           this.setState({
             sessionId: value.sessionId,
