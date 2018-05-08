@@ -6,7 +6,7 @@ import { VideoShare } from '../index.js';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
-import { VideoSearch } from '../index.js';
+import {VideoSearch} from '../index.js';
 import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
@@ -15,14 +15,19 @@ class Video extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoId: this.props.match.params.id.split('&')[1],
+      videoId: this
+        .props
+        .match
+        .params
+        .id
+        .split('&')[1],
       roomId: this.props.match.params.id,
       name: "",
       sessionId: '',
       token: '',
       playlist: [],
       newVideo: '',
-      currentIndex: 0,
+      currentIndex: 0
     };
     this.player = {};
     this.isJoining = true;
@@ -33,7 +38,7 @@ class Video extends Component {
       this.stopListening();
       this.listenToFirebase();
     }
-    if(prevState.newVideo !== this.state.newVideo) {
+    if (prevState.newVideo !== this.state.newVideo) {
       let player = this.player;
       player.loadVideoById(this.state.newVideo)
     }
@@ -78,13 +83,32 @@ class Video extends Component {
               }
             }
           }
-
         }
       });
-    };
-    startListeningRoom();
 
-    this.videosRef = myFirebase.database().ref('videos/' + roomId);
+    };
+
+    let startPresence = () => {
+
+      setTimeout(() => {
+        let clientUserRef = myFirebase
+          .database()
+          .ref(`users/${roomId}/${name}`);
+        clientUserRef.update({
+          handshake: new Date().getTime()
+        })
+        if (this.stopTicking !== true) {
+          startPresence();
+        }
+      }, 1000)
+    }
+
+    startListeningRoom();
+    startPresence();
+
+    this.videosRef = myFirebase
+      .database()
+      .ref('videos/' + roomId);
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
@@ -95,7 +119,7 @@ class Video extends Component {
     myFirebase
       .database()
       .ref('videos/' + roomId + '/' + videoId)
-      .set({ videoId });
+      .set({videoId});
   }
 
   stopListening = () => {
@@ -113,31 +137,30 @@ class Video extends Component {
 
   _onReady = event => {
     this.player = event.target;
-    event.target.pauseVideo();
+    event
+      .target
+      .pauseVideo();
   };
 
   componentWillUnmount = () => {
     this.stopListening();
+    this.stopTicking = true;
   }
 
   componentWillMount = () => {
     const guestName = prompt('Enter name:');
-          this.setState({
-            name: guestName,
-          })
+    this.setState({name: guestName})
   }
 
   componentDidMount = () => {
     this.listenToFirebase();
     const opentok = new OpenTok(apiKey, secret);
+
     this.roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
-          let token = opentok.generateToken(value.sessionId)
-          this.setState({
-            sessionId: value.sessionId,
-            token: token
-          })
+        let token = opentok.generateToken(value.sessionId)
+        this.setState({sessionId: value.sessionId, token: token})
       })
   }
 
@@ -163,24 +186,21 @@ class Video extends Component {
         enablejsapi: 1,
         modestbranding: 1,
         //origin: ourdomain.com,
-        rel: 0,
-      },
+        rel: 0
+      }
     };
 
     return (
       <div className="vid-view">
-      {
-        this.state.sessionId ?
-        <VideoChat
-          roomId={this.state.roomId}
-          guestName={this.state.name}
-          sessionId={this.state.sessionId}
-          token={this.state.token}
-        />
-        :
-        <div />
-      }
-        <VideoShare roomId={this.state.roomId} />
+        {this.state.sessionId
+          ? <VideoChat
+              roomId={this.state.roomId}
+              guestName={this.state.name}
+              sessionId={this.state.sessionId}
+              token={this.state.token}/>
+          : <div/>
+}
+        <VideoShare roomId={this.state.roomId}/>
         <div id="video">
           <div id="screen">
             <YouTube
@@ -190,23 +210,21 @@ class Video extends Component {
               onReady={this._onReady}
               onPlay={this.handler}
               onPause={this.handler}
-              onEnd={this.handler}
-            />
-            <VideoSearch roomId={this.state.roomId} />
+              onEnd={this.handler}/>
+            <VideoSearch roomId={this.state.roomId}/>
           </div>
 
           <Chat
             videoId={this.state.videoId}
             roomId={this.state.roomId}
             token={this.state.token}
-            guestName={this.state.name}
-          />
+            guestName={this.state.name}/>
         </div>
-        <Queue videoId={this.state.videoId}
-               roomId={this.state.roomId}
-               playlist={this.state.playlist}
-               changeVideo={this.changeVideo}
-               />
+        <Queue
+          videoId={this.state.videoId}
+          roomId={this.state.roomId}
+          playlist={this.state.playlist}
+          changeVideo={this.changeVideo}/>
       </div>
     );
   }
