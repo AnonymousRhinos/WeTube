@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Screen } from '../index.js';
 import { Queue } from '../index.js';
 import { VideoChat } from '../index.js';
 import { Chat } from '../index.js';
@@ -41,7 +40,7 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let { currentIndex, playlist, update, roomId, videoId } = this.state;
+    let { roomId, videoId } = this.state;
     this.usersRef = myFirebase.database().ref('users/' + roomId);
     this.roomRef = myFirebase.database().ref('rooms/' + roomId);
 
@@ -143,7 +142,6 @@ class Video extends Component {
   }
 
   updatePlaylist = newVideo => {
-    const { playlist } = this.state;
     this.setState(prevState => ({ playlist: [...prevState.playlist, newVideo] }))
   }
 
