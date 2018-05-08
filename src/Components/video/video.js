@@ -22,16 +22,21 @@ class Video extends Component {
       sessionId: '',
       token: '',
       playlist: [],
+      newVideo: '',
       currentIndex: 0,
     };
     this.player = {};
     this.isJoining = true;
   }
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
+    }
+    if(prevState.newVideo !== this.state.newVideo) {
+      let player = this.player;
+      player.loadVideoById(this.state.newVideo)
     }
   }
 
@@ -143,7 +148,6 @@ class Video extends Component {
     roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
-        console.log('her is the value>>>', value)
           let token = opentok.generateToken(value.sessionId)
           this.setState({
             sessionId: value.sessionId,
@@ -155,6 +159,11 @@ class Video extends Component {
   updatePlaylist = newVideo => {
     const { playlist } = this.state;
     this.setState(prevState => ({ playlist: [...prevState.playlist, newVideo] }))
+  }
+
+  changeVideo = (newVideo) => {
+    this.setState({newVideo: newVideo})
+
   }
 
   render() {
@@ -207,9 +216,10 @@ class Video extends Component {
           />
         </div>
         <Queue videoId={this.state.videoId}
-          roomId={this.state.roomId}
-          playlist={this.state.playlist}
-        />
+               roomId={this.state.roomId}
+               playlist={this.state.playlist}
+               changeVideo={this.changeVideo}
+               />
       </div>
     );
   }

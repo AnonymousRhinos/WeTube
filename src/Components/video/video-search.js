@@ -24,11 +24,15 @@ class VideoSearch extends Component {
     if (endIndex > -1) {
       videoId = videoUrl.slice(begIndex, endIndex);
     } else videoId = videoUrl.slice(begIndex);
+    const roomRef = myFirebase.database().ref('videos/' + this.props.roomId)
+    console.log('roomref', roomRef)
+    let index = Object.keys(roomRef).length;
     myFirebase
       .database()
       .ref('videos/' + this.props.roomId + '/' + videoId)
       .set({
         videoId,
+        // index
       });
   };
   render() {
