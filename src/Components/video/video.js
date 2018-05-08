@@ -15,12 +15,7 @@ class Video extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoId: this
-        .props
-        .match
-        .params
-        .id
-        .split('&')[1],
+      videoId: this.props.match.params.id.split('&')[1],
       roomId: this.props.match.params.id,
       name: "",
       sessionId: '',
@@ -39,13 +34,6 @@ class Video extends Component {
       this.stopListening();
       this.listenToFirebase();
     }
-    // if (prevState.videoId !== this.state.videoId) {
-    //   console.log("getting here?!?!")
-    //   let player = this.player;
-    //   // player.loadVideoById({videoId: this.state.videoId, startSeconds: 2})
-    //   player.playVideo()
-
-    // }
   }
 
   listenToFirebase = () => {
@@ -55,22 +43,18 @@ class Video extends Component {
 
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
-        console.log("start of the method")
         let value = snapshot.val();
         if(value.currentVideo !== this.state.videoId) {
-          console.log(1)
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
           this.setState({videoId: value.currentVideo, currentIndex: newIndex})
         }
 
         else{
           if (value.playerStatus > -1) {
-            console.log(2)
             let status = value.playerStatus;
             let currentTime = value.currentTime;
 
             if (this.isJoining && this.player.seekTo) {
-              console.log(3)
               this.player.seekTo(currentTime);
               if (status === 1) this.player.playVideo();
               else if (status === 2) this.player.pauseVideo();
@@ -79,7 +63,6 @@ class Video extends Component {
             
             else if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
-                console.log("IS IT COMING HERE???????")
                 this.player.seekTo(currentTime);
                 this.player.playVideo();
               } else if (status === 2) this.player.pauseVideo();
@@ -97,7 +80,6 @@ class Video extends Component {
                   // this.player.loadVideoById(this.state.playlist[this.state.currentIndex], 2);
                 }
                 else {
-                  console.log(6)
                   this.setState({currentIndex: this.state.currentIndex + 1});
                   this.player.stopVideo();
                 }
@@ -157,11 +139,8 @@ class Video extends Component {
   };
 
   _onReady = event => {
-    console.log("JUST MAKING URE")
     this.player = event.target;
-    event
-      .target
-      .stopVideo();
+    event.target.stopVideo();
   };
 
   componentWillUnmount = () => {
