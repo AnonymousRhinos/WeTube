@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 // import TrendingComponent from './home-trending';
 import { TrendingComponent } from '../index.js';
-import { testArr } from '../index.js'
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
 import tokbox from '../../tokboxConfig'
@@ -69,7 +68,7 @@ export class Home extends Component {
           <div id="text open-sign">
             <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
           </div>
-          <img className="logo-header" src="/logo.jpg" />
+          <img className="logo-header" src="/logo.jpg" alt="alt-logo"/>
 
         </header>
         <div className="theater-form">
