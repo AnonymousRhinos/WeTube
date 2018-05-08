@@ -1,22 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 
-class ThumbnailCard extends Component {
-constructor(props){
-    super(props)
-}
-//https://img.youtube.com/vi/<insert-youtube-video-id-here>/default.jpg
+const ThumbnailCard = (props) => {
 
-    render() {
-        const id = this.props.id
-        const makeRoom = this.props.makeRoom;
-        return (
-            <div onClick={(event)=> {makeRoom(event, id)}}>
-                <img src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`} className='trendingThumbnail' />
-            </div>
-        )
+    const id = props.id
+    const makeRoom = props.makeRoom;
+    return (
+        <div onClick={(event) => { makeRoom(event, id) }}>
+            <img src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+            className='trendingThumbnail'
+            alt="alt-thing"
+            />
+        </div>
+    )
 
-    }
 }
 
 export default ThumbnailCard

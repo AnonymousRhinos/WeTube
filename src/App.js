@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
-import { preloadScript } from "opentok-react";
 import './App.css';
-import logo from './logo.png';
 import Navbar from './Components/navbar';
 import Video from './Components/video/video';
 import Home from './Components/home/home';
