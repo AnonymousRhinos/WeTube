@@ -28,7 +28,7 @@ class VideoSearch extends Component {
       .database()
       .ref('videos/' + this.props.roomId + '/' + videoId)
       .set({
-        queuedUrl: videoId,
+        videoId,
       });
   };
   render() {
