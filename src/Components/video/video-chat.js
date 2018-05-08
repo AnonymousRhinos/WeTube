@@ -50,8 +50,8 @@ class VideoChat extends Component {
             >
               <OTPublisher
                 properties={{
-                  width: 150,
-                  height: 150,
+                  width: 200,
+                  height: 200,
                   publishAudio: true,
                   publishVideo: true,
                   name: this.props.guestName
