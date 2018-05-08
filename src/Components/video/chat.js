@@ -116,7 +116,7 @@ class Chat extends Component {
     let names = colors.names;
     let randomProperty = function (names) {
       let keys = Object.keys(names)
-      return names[keys[keys.length * Math.random() << 0]];
+      return names[keys[Math.floor(keys.length * Math.random())]];
     };
     return randomProperty(names)
   }
@@ -145,7 +145,7 @@ class Chat extends Component {
         <div>
           {this.state.messages.slice(0).reverse().map((message, index) => {
             const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
-            const messageColor = message.user === this.state.name ? { 'backgroundColor': colors.names.blue } : { 'backgroundColor': message.color };
+            const messageColor = message.user === this.state.name ? { 'backgroundColor': '#000000' } : { 'backgroundColor': message.color };
             return (
               <p
                 key={index}
