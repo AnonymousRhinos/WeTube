@@ -24,7 +24,6 @@ class VideoSearch extends Component {
     if (endIndex > -1) {
       videoId = videoUrl.slice(begIndex, endIndex);
     } else videoId = videoUrl.slice(begIndex);
-    const roomRef = myFirebase.database().ref('videos/' + this.props.roomId)
     myFirebase
       .database()
       .ref('videos/' + this.props.roomId + '/' + videoId)
