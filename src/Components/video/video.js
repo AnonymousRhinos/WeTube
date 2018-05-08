@@ -43,6 +43,30 @@ class Video extends Component {
       let player = this.player;
       player.loadVideoById(this.state.newVideo)
     }
+
+  }
+
+  getFurthestTime = () => {
+    console.log('running')
+    this.usersRef.on('value', snapshot => {
+      let furthestTime = 0;
+      this.roomRef.once('value', snapshot => {
+        furthestTime = snapshot.val().currentTime
+      })
+        .then(()=>{
+          for(let key in snapshot.val()){
+            console.log('key', snapshot.val(), key)
+            if((snapshot.val()[key].userTime) > furthestTime + 1){
+              console.log('there is a key')
+              furthestTime = snapshot.val()[key].userTime;
+            }
+          }
+          this.roomRef.update({
+            currentTime: furthestTime
+
+          })
+        })
+    })
   }
 
   listenToFirebase = () => {
@@ -66,16 +90,19 @@ class Video extends Component {
         .usersRef
         .on('child_added', snapshot => {
           let user = snapshot.val();
-          let currentTime = this
-            .player
-            .getCurrentTime();
+          let currentTime = this.player.getCurrentTime();
           let playerStatus = this
             .player
             .getPlayerState();
           // console.log('running, currentTime:', currentTime)
           this
             .roomRef
-            .set({roomId: roomId, playerStatus, currentTime, sessionId: this.state.sessionId});
+            .set({
+              roomId: roomId,
+              playerStatus,
+              currentTime,
+              sessionId: this.state.sessionId
+            });
         })
     }
 
@@ -88,16 +115,7 @@ class Video extends Component {
             let player = this.player;
             let status = value.playerStatus;
             let currentTime = value.currentTime;
-            if (this.isJoining && this.player.seekTo) {
-              this
-                .player
-                .seekTo(currentTime);
-              if (status === 1) 
-                this.player.playVideo();
-              else if (status === 2) 
-                this.player.pauseVideo();
-              this.isJoining = false;
-            } else if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
+            if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
                 this
                   .player
@@ -105,7 +123,7 @@ class Video extends Component {
                 this
                   .player
                   .playVideo();
-              } else if (status === 2) 
+              } else if (status === 2)
                 this.player.pauseVideo();
               else if (status === 0) {
                 if (currentIndex + 1 < this.state.playlist.length) {
@@ -126,14 +144,18 @@ class Video extends Component {
     };
 
     let startPresence = () => {
-
       setTimeout(() => {
-        let clientUserRef = myFirebase
+        this.getFurthestTime();
+        this.clientUserRef = myFirebase
           .database()
           .ref(`users/${roomId}/${name}`);
-        clientUserRef.update({
-          handshake: new Date().getTime()
-        })
+        if(Object.keys(this.player).length > 0){
+          this.clientUserRef.update({
+            handshake: new Date().getTime(),
+            userTime: this.player.getCurrentTime(),
+            playbackRate: this.player.getPlaybackRate()
+          })
+        }
         if (this.stopTicking !== true) {
           startPresence();
         }
@@ -142,6 +164,18 @@ class Video extends Component {
 
     startListeningRoom();
     startPresence();
+
+    const timeCatchUp = () => {
+      this.roomRef.on('value', snapshot => {
+        if(this.player.getCurrentTime && (snapshot.val().currentTime - this.player.getCurrentTime() > 10000)) {
+          console.log('roomtime snapshot', snapshot.val().currentTime, this.player.getCurrentTime())
+
+          this.player.seekTo(snapshot.val().currentTime)
+        }
+      })
+    }
+
+    timeCatchUp();
 
     this.videosRef = myFirebase
       .database()
@@ -183,7 +217,8 @@ class Video extends Component {
         currentTime: event
           .target
           .getCurrentTime(),
-        sessionId: this.state.sessionId
+        sessionId: this.state.sessionId,
+        playbackRate: event.target.getPlaybackRate()
       });
   };
 
