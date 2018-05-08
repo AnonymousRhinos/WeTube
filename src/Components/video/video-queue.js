@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import myFirebase from '../../Firebase/firebaseInit';
 
 class Queue extends Component {
 
@@ -16,7 +15,7 @@ class Queue extends Component {
             return (
         <div key={queuedVid} className="mini-vid"
         onClick={(event) =>{this.props.changeVideo(queuedVid)}}>
-          <img src={`https://img.youtube.com/vi/${queuedVid}/hqdefault.jpg`} className='trendingThumbnail' />
+          <img src={`https://img.youtube.com/vi/${queuedVid}/hqdefault.jpg`} className='trendingThumbnail' alt='thumbnail' />
         </div>
             )
           })
