@@ -38,10 +38,10 @@ class Chat extends Component {
     time = time.join(':');
     const name = this.props.guestName;
     const color = this.establishColor(colors);
-    this.setState({ name: name, color: color });
     const token = this.props.token
+    let newName = '';
     if (name) {
-      let newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
+      newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
       myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time, token });
       const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
       const message = {
@@ -51,6 +51,7 @@ class Chat extends Component {
       };
       joinRef.push(message);
     }
+    this.setState({ name: newName, color: color });
 
     //listen for messages and change state
     

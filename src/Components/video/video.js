@@ -67,25 +67,24 @@ class Video extends Component {
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
-          if (this.isJoining) {
-            // console.log('status', status, 'current time', currentTime)
-            player.seekTo(currentTime);
-            if (status === 1) player.playVideo();
-            else if (status === 2) player.pauseVideo();
+          if (this.isJoining && this.player.seekTo) {
+            this.player.seekTo(currentTime);
+            if (status === 1) this.player.playVideo();
+            else if (status === 2) this.player.pauseVideo();
             this.isJoining = false;
-          } else if (status !== player.getPlayerState() || status === 0) {
+          } else if (this.player.getPlayerState &&(status !== this.player.getPlayerState() || status === 0)) {
             if (status === 1) {
-              player.seekTo(currentTime);
-              player.playVideo();
-            } else if (status === 2) player.pauseVideo();
+              this.player.seekTo(currentTime);
+              this.player.playVideo();
+            } else if (status === 2) this.player.pauseVideo();
             else if (status === 0) {
               if (currentIndex + 1 < this.state.playlist.length) {
                 currentIndex++;
-                player.loadVideoById(this.state.playlist[currentIndex], 2);
+                this.player.loadVideoById(this.state.playlist[currentIndex], 2);
               }
               else {
                 currentIndex++;
-                player.stopVideo();
+                this.player.stopVideo();
               }
             }
           }
@@ -126,7 +125,6 @@ class Video extends Component {
 
   _onReady = event => {
     this.player = event.target;
-    console.log(this.player)
     event.target.pauseVideo();
   };
 
