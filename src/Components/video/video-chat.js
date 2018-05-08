@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import Iframe from 'react-iframe'
 import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
-import OpenTok from "opentok";
 import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
-const secret = tokbox.secret
 
 /*
 https://tokbox.com/developer/sdks/js/reference/Publisher.html#publishAudio
