@@ -6,7 +6,7 @@ import {ThumbnailCard} from '../index.js'
 class TrendingComponent extends Component {
   constructor(props) {
     super(props)
-    this.state = ({ 
+    this.state = ({
       trendingVideos: [],
       titles: []
       })
@@ -44,7 +44,7 @@ class TrendingComponent extends Component {
 
     return (
       <div className="trending-component">
-        <img id="trend-head" src="/images/TrendingNow.png" />
+        <img id="trend-head" src="/images/TrendingNow.png" alt="alt-thing"/>
         {this.state.trendingVideos.length
           ?
           <div className="trend-scroll">

@@ -53,7 +53,6 @@ class Video extends Component {
         }
         else{
           if (value.playerStatus > -1) {
-            let player = this.player;
             let status = value.playerStatus;
             let currentTime = value.currentTime;
             if (this.isJoining && this.player.seekTo) {
@@ -68,11 +67,11 @@ class Video extends Component {
               } else if (status === 2) this.player.pauseVideo();
               else if (status === 0) {
                 if (this.state.currentIndex + 1 < this.state.playlist.length) {
-                  this.state.currentIndex++;
+                  this.setState({currentIndex: this.state.currentIndex + 1});
                   this.player.loadVideoById(this.state.playlist[this.state.currentIndex], 2);
                 }
                 else {
-                  this.state.currentIndex++;
+                  this.setState({currentIndex: this.state.currentIndex + 1});
                   this.player.stopVideo();
                 }
               }
