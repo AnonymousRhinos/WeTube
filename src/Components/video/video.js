@@ -45,7 +45,7 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let { roomId, videoId } = this.state;
+    let { roomId, videoId, name } = this.state;
     this.usersRef = myFirebase.database().ref('users/' + roomId);
     this.roomRef = myFirebase.database().ref('rooms/' + roomId);
 
@@ -84,6 +84,7 @@ class Video extends Component {
           }
         }
       });
+    }
 
     let startPresence = () => {
 
