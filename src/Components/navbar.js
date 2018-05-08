@@ -7,7 +7,7 @@ class MyNavbar extends Component {
       <header className="navbar">
           <section className="navbar-section">
           <Link to={'/home'}>
-          <img className="logo-navbar" src="/logo.jpg" />
+          <img className="logo-navbar" src="/logo.jpg" alt="logo"/>
           </Link>Ï
           <Link to={'/home'} className="btn btn-link">
             WeTube
