@@ -45,49 +45,41 @@ class Video extends Component {
     this.usersRef = myFirebase.database().ref('users/' + roomId);
     this.roomRef = myFirebase.database().ref('rooms/' + roomId);
 
-    let startListeningUsers = () => {
-      this.usersRef.on('child_added', snapshot => {
-        let user = snapshot.val();
-        let currentTime = this.player.getCurrentTime();
-        let playerStatus = this.player.getPlayerState();
-        // console.log('running, currentTime:', currentTime)
-        this.roomRef.set({
-          roomId: roomId,
-          playerStatus,
-          currentTime,
-          sessionId: this.state.sessionId,
-        });
-      })
-    }
-
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
         let value = snapshot.val();
-        if (value.playerStatus > -1) {
-          let player = this.player;
-          let status = value.playerStatus;
-          let currentTime = value.currentTime;
-          if (this.isJoining && this.player.seekTo) {
-            this.player.seekTo(currentTime);
-            if (status === 1) this.player.playVideo();
-            else if (status === 2) this.player.pauseVideo();
-            this.isJoining = false;
-          } else if (this.player.getPlayerState &&(status !== this.player.getPlayerState() || status === 0)) {
-            if (status === 1) {
+        if(value.currentVideo !== this.state.newVideo){
+          const newIndex = this.state.playlist.indexOf(value.currentVideo)
+          this.setState({newVideo: value.currentVideo, currentIndex: newIndex})
+        }
+        else{
+          if (value.playerStatus > -1) {
+            let player = this.player;
+            let status = value.playerStatus;
+            let currentTime = value.currentTime;
+            if (this.isJoining && this.player.seekTo) {
               this.player.seekTo(currentTime);
-              this.player.playVideo();
-            } else if (status === 2) this.player.pauseVideo();
-            else if (status === 0) {
-              if (currentIndex + 1 < this.state.playlist.length) {
-                currentIndex++;
-                this.player.loadVideoById(this.state.playlist[currentIndex], 2);
-              }
-              else {
-                currentIndex++;
-                this.player.stopVideo();
+              if (status === 1) this.player.playVideo();
+              else if (status === 2) this.player.pauseVideo();
+              this.isJoining = false;
+            } else if (this.player.getPlayerState &&(status !== this.player.getPlayerState() || status === 0)) {
+              if (status === 1) {
+                this.player.seekTo(currentTime);
+                this.player.playVideo();
+              } else if (status === 2) this.player.pauseVideo();
+              else if (status === 0) {
+                if (this.state.currentIndex + 1 < this.state.playlist.length) {
+                  this.state.currentIndex++;
+                  this.player.loadVideoById(this.state.playlist[this.state.currentIndex], 2);
+                }
+                else {
+                  this.state.currentIndex++;
+                  this.player.stopVideo();
+                }
               }
             }
           }
+
         }
       });
     };
@@ -97,7 +89,6 @@ class Video extends Component {
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        console.log('running', video.videoId)
         this.updatePlaylist(video.videoId)
       });
     };
@@ -111,15 +102,13 @@ class Video extends Component {
   stopListening = () => {
     this.roomRef.off();
     this.videosRef.off();
-    this.usersRef.off();
   }
 
   handler = event => {
-    this.roomRef.set({
+    this.roomRef.update({
       roomId: this.state.roomId,
       playerStatus: event.data,
       currentTime: event.target.getCurrentTime(),
-      sessionId: this.state.sessionId,
     });
   };
 
@@ -142,8 +131,7 @@ class Video extends Component {
   componentDidMount = () => {
     this.listenToFirebase();
     const opentok = new OpenTok(apiKey, secret);
-    const roomRef = myFirebase.database().ref('rooms/' + this.props.match.params.id);
-    roomRef.once('value')
+    this.roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
           let token = opentok.generateToken(value.sessionId)
@@ -160,8 +148,11 @@ class Video extends Component {
   }
 
   changeVideo = (newVideo) => {
-    this.setState({newVideo: newVideo})
-
+    this.roomRef.update({
+      currentVideo: newVideo,
+      currentTime: 0,
+      playerStatus: 2,
+    })
   }
 
   render() {
