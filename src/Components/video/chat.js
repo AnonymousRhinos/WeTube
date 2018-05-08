@@ -73,6 +73,7 @@ class Chat extends Component {
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
+        console.log('USER IS: ', user)
         this.setState({ users: [...this.state.users, user] });
       });
     };
@@ -101,7 +102,21 @@ class Chat extends Component {
         }
       });
     };
+    const timedoutUserRemove = () => {
+      usersRemRef.on('value', snapshot => {
+        const time = new Date().getTime()
+        for(let key in snapshot.val()){
+
+          if((time - snapshot.val()[key].handshake) > 5000){
+
+            let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
+            deletedRef.remove();
+          }
+        }
+      })
+    }
     listenUserRemove();
+    timedoutUserRemove();
 
   };
 
@@ -116,7 +131,7 @@ class Chat extends Component {
     let names = colors.names;
     let randomProperty = function (names) {
       let keys = Object.keys(names)
-      return names[keys[keys.length * Math.random() << 0]];
+      return names[keys[Math.floor(keys.length * Math.random())]];
     };
     return randomProperty(names)
   }
@@ -145,7 +160,7 @@ class Chat extends Component {
         <div>
           {this.state.messages.slice(0).reverse().map((message, index) => {
             const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
-            const messageColor = message.user === this.state.name ? { 'backgroundColor': colors.names.blue } : { 'backgroundColor': message.color };
+            const messageColor = message.user === this.state.name ? { 'backgroundColor': '#000000' } : { 'backgroundColor': message.color };
             return (
               <p
                 key={index}
