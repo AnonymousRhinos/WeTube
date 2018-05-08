@@ -8,28 +8,6 @@ import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
 import { VideoSearch } from '../index.js';
-import {
-  FacebookShareButton,
-  GooglePlusShareButton,
-  LinkedinShareButton,
-  TwitterShareButton,
-  // TelegramShareButton,
-  WhatsappShareButton,
-  // PinterestShareButton, VKShareButton, OKShareButton,
-  RedditShareButton,
-  // TumblrShareButton, LivejournalShareButton,
-  EmailShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  GooglePlusIcon,
-  LinkedinIcon,
-  // PinterestIcon, VKIcon, OKIcon, TelegramIcon,
-  WhatsappIcon,
-  RedditIcon,
-  // TumblrIcon, MailruIcon,
-  EmailIcon,
-  // LivejournalIcon,
-} from 'react-share';
 import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
@@ -49,10 +27,6 @@ class Video extends Component {
     this.player = {};
     this.isJoining = true;
   }
-
-  // componentDidMount = () => {
-
-  // };
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
@@ -76,6 +50,7 @@ class Video extends Component {
           roomId: roomId,
           playerStatus,
           currentTime,
+          sessionId: this.state.sessionId,
         });
       })
     }
@@ -140,6 +115,7 @@ class Video extends Component {
       roomId: this.state.roomId,
       playerStatus: event.data,
       currentTime: event.target.getCurrentTime(),
+      sessionId: this.state.sessionId,
     });
   };
 
