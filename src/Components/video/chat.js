@@ -73,6 +73,7 @@ class Chat extends Component {
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
+        console.log('USER IS: ', user)
         this.setState({ users: [...this.state.users, user] });
       });
     };
@@ -101,7 +102,21 @@ class Chat extends Component {
         }
       });
     };
+    const timedoutUserRemove = () => {
+      usersRemRef.on('value', snapshot => {
+        const time = new Date().getTime()
+        for(let key in snapshot.val()){
+
+          if((time - snapshot.val()[key].handshake) > 5000){
+
+            let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
+            deletedRef.remove();
+          }
+        }
+      })
+    }
     listenUserRemove();
+    timedoutUserRemove();
 
   };
 
