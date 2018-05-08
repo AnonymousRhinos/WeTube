@@ -43,7 +43,8 @@ class Video extends Component {
       roomId: this.props.match.params.id,
       name: "",
       sessionId: '',
-      token: ''
+      token: '',
+      playlist: [],
     };
   }
 
@@ -68,6 +69,11 @@ class Video extends Component {
       })
   }
 
+  updatePlaylist = newVideo => {
+    const { playlist } = this.state;
+    this.setState(prevState => ({playlist: [...prevState.playlist, newVideo]}))
+  }
+
   render() {
     console.log("STATE", this.state)
     console.log("PROPS", this.props)
@@ -87,7 +93,11 @@ class Video extends Component {
         <VideoShare roomId={this.state.roomId} />
         <div id="video">
           <div id="screen">
-            <Screen videoId={this.state.videoId} roomId={this.state.roomId} />
+            <Screen videoId={this.state.videoId}
+                    roomId={this.state.roomId}
+                    playlist={this.state.playlist}
+                    update={this.updatePlaylist}
+                    />
             <VideoSearch roomId={this.state.roomId} />
           </div>
           <Chat
@@ -97,7 +107,10 @@ class Video extends Component {
             guestName={this.state.name}
           />
         </div>
-        <Queue videoId={this.state.videoId} roomId={this.state.roomId} />
+        <Queue videoId={this.state.videoId}
+               roomId={this.state.roomId}
+               playlist={this.state.playlist}
+               />
       </div>
     );
   }
