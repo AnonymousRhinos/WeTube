@@ -17,17 +17,17 @@ class Screen extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    if(prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
+    if (prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
     }
   }
 
-  listenToFirebase = () =>{
+  listenToFirebase = () => {
     let { currentIndex } = this.state;
-    let { playlist, update } = this.props
-    this.usersRef = myFirebase.database().ref('users/' + this.props.roomId);
-    this.roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
+    let { playlist, update, roomId, videoId } = this.props
+    this.usersRef = myFirebase.database().ref('users/' + roomId);
+    this.roomRef = myFirebase.database().ref('rooms/' + roomId);
 
     let startListeningUsers = () => {
       this.usersRef.on('child_added', snapshot => {
@@ -36,7 +36,7 @@ class Screen extends Component {
         let playerStatus = this.player.getPlayerState();
         // console.log('running, currentTime:', currentTime)
         this.roomRef.set({
-          roomId: this.props.roomId,
+          roomId: roomId,
           playerStatus,
           currentTime,
         });
@@ -50,7 +50,7 @@ class Screen extends Component {
           let player = this.player;
           let status = value.playerStatus;
           let currentTime = value.currentTime;
-          if(this.isJoining) {
+          if (this.isJoining) {
             // console.log('status', status, 'current time', currentTime)
             player.seekTo(currentTime);
             if (status === 1) player.playVideo();
@@ -62,8 +62,14 @@ class Screen extends Component {
               player.playVideo();
             } else if (status === 2) player.pauseVideo();
             else if (status === 0) {
-              currentIndex++;
-              player.loadVideoById(this.props.playlist[currentIndex], 2);
+              if (currentIndex + 1 < this.props.playlist.length) {
+                currentIndex++;
+                player.loadVideoById(this.props.playlist[currentIndex], 2);
+              }
+              else {
+                currentIndex++;
+                player.stopVideo();
+              }
             }
           }
         }
@@ -71,18 +77,19 @@ class Screen extends Component {
     };
     startListeningRoom();
 
-    myFirebase
-      .database()
-      .ref('videos/' + this.props.roomId + '/' + this.props.videoId)
-      .set({ queuedUrl: this.props.videoId });
-    this.videosRef = myFirebase.database().ref('videos/' + this.props.roomId);
-    let startListeningQueue = () => {
+    this.videosRef = myFirebase.database().ref('videos/' + roomId);
+    let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
-        update(video.queuedUrl)
+        console.log('running', video.videoId)
+        update(video.videoId)
       });
     };
-    startListeningQueue();
+    startListeningVideos();
+    myFirebase
+    .database()
+    .ref('videos/' + roomId + '/' + videoId)
+    .set({ videoId });
   }
 
   stopListening = () => {
@@ -101,6 +108,7 @@ class Screen extends Component {
 
   _onReady = event => {
     this.player = event.target;
+    console.log(this.player)
     event.target.pauseVideo();
   };
 

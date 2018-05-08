@@ -33,32 +33,16 @@ export class Home extends Component {
     } else videoId = videoInfo || videoUrl.slice(begIndex);
     let roomId = Date.now() + '&' + videoId;
 
-    // const roomsRef = myFirebase.database().ref('rooms');
-    // let room = {
-    //   roomId: roomId,
-    //   playerStatus: -1
-    // }
-    // roomsRef.push(room)
-
     myFirebase.database().ref('rooms/' + roomId).set({
       roomId: roomId,
       playerStatus: -1,
       currentTime: 0
     })
 
-    const videosRef = myFirebase.database().ref('videos');
-    let video = {
-      [roomId]: {
-        videoId: videoId
-      }
-    }
-    videosRef.push(video)
-
-    // myFirebase.database().ref('videos/' + roomId).set({
-    //   [roomId]: {
-    //         videoId: videoId
-    //       }
-    // })
+    // myFirebase
+    // .database()
+    // .ref('videos/' + roomId + '/' + videoId)
+    // .set({ videoId });
 
     this.props.history.push(`/room/${roomId}`);
 
