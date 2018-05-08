@@ -59,7 +59,11 @@ body {
   header {
     display: flex;
     flex-direction: row;
-    justify-content: space-around
+    justify-content: center
+  }
+
+  .logo-header {
+    margin-right: 15px;
   }
 
   #trend-head {
