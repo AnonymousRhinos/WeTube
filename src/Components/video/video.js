@@ -47,7 +47,7 @@ class Video extends Component {
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
         let value = snapshot.val();
-        if(value.currentVideo !== this.state.newVideo){
+        if((value.currentVideo !== this.state.newVideo) && (value.currentVideo !== this.state.videoId)){
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
           this.setState({newVideo: value.currentVideo, currentIndex: newIndex})
         }
