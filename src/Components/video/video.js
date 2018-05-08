@@ -124,9 +124,7 @@ class Video extends Component {
   };
 
   _onReady = event => {
-    console.log('before the onReady', this.player)
     this.player = event.target;
-    console.log('after the onReady', this.player)
     event.target.pauseVideo();
   };
 
