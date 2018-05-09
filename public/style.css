@@ -596,3 +596,31 @@ box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
   }
 }
 
+.join-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
+
+  #join-chat {
+    border: solid 2px black;
+    width: 350px;
+    margin: 40px auto 0;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.7)
+  }
+
+  .join-input {
+    margin: 10px auto 30px auto;
+    align-self: center;
+    width: 250px
+  }
+
+  .join-btn {
+    margin: 0 auto 30px
+  }
+
+  #join-header {
+    margin-top: 20px;
+    color: rgb(7, 0, 99)
+  }
