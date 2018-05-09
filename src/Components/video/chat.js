@@ -10,9 +10,15 @@ class Chat extends Component {
       messages: [],
       color: this.props.color,
       users: [],
+      message: ''
     };
   }
 
+  handleChange = evt => {
+    this.setState({
+      message: evt.target.value,
+    });
+  };
 
   handleSubmit = event => {
     event.preventDefault();
@@ -131,8 +137,8 @@ class Chat extends Component {
         <div id="chat-header">
           <h5 id="username" >{this.state.name}:</h5>
           <form id="add-message" onSubmit={this.handleSubmit}>
-            <input id="text" type="text" placeholder="Message" />
-            <button className="btn" type="submit" id="post">
+            <input id="text" type="text" placeholder="Message" onChange={this.handleChange}/>
+            <button className="btn" type="submit" id="post" disabled={this.state.message.length < 1}>
               Post
           </button>
           </form>

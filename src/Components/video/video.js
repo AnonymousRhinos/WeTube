@@ -134,14 +134,15 @@ class Video extends Component {
             let status = value.playerStatus;
             let currentTime = value.currentTime;
 
-            if (this.isJoining && this.player.seekTo) {
-              this.player.seekTo(currentTime);
-              if (status === 1) this.player.playVideo();
-              else if (status === 2) this.player.pauseVideo();
-              this.isJoining = false;
-            }
+            // if (this.isJoining && this.player.seekTo) {
+            //   this.player.seekTo(currentTime);
+            //   if (status === 1) this.player.playVideo();
+            //   else if (status === 2) this.player.pauseVideo();
+            //   this.isJoining = false;
+            // }
 
-            else if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
+            // else
+            if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
                 this.player.seekTo(currentTime);
                 this.player.playVideo();
