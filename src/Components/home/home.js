@@ -82,7 +82,7 @@ export class Home extends Component {
               onChange={this.handleChange}
               required
             />
-            <button className="btn">Launch Theater</button>
+            <button className="btn" disabled={this.state.videoUrl.length < 5}>Launch Theater</button>
           </form>
         </div>
         <TrendingComponent makeRoom={this.handleSubmit} />
