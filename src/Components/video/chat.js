@@ -18,43 +18,39 @@ class Chat extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { name, color } = this.state;
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
+    let messageTime = this.getCurrentTime();
     const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     const message = {
       user: name,
       message: event.target.text.value,
       color: color,
-      time
+      time: messageTime
     };
     messagesRef.push(message);
     event.target.text.value = ""
   };
 
   componentDidMount = () => {
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
+    let enterTime = this.getCurrentTime();
     const name = this.props.guestName;
     const color = this.establishColor(colors);
     const token = this.props.token
     let newName = '';
     if (name) {
       newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
-      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time, token });
+      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, enterTime, token });
       const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
       const message = {
         user: newName,
         message: `${newName} has entered the theatre`,
-        time
+        time: enterTime
       };
       joinRef.push(message);
     }
     this.setState({ name: newName, color: color });
 
     //listen for messages and change state
-    
+
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
@@ -82,6 +78,7 @@ class Chat extends Component {
     const usersRemRef = myFirebase.database().ref('users/' + this.props.roomId);
     let listenUserRemove = () => {
       usersRemRef.on('child_removed', snapshot => {
+        let exitTime = this.getCurrentTime();
         let user = snapshot.key;
         let userIndex = this.state.users.indexOf(user)
         let newUsers = this.state.users.slice(0)
@@ -90,7 +87,7 @@ class Chat extends Component {
         const exitRoom = {
           user: user,
           message: `${user} has left the theatre`,
-          time
+          time: exitTime
         };
         if (user !== this.state.name) {
           this.setState({
@@ -125,6 +122,12 @@ class Chat extends Component {
     userRef.remove();
   }
 
+  getCurrentTime = () => {
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    time[0] = (+time[0] + 7) % 12;
+    time = time.join(':');
+    return time
+  }
 
   establishColor = (colors) => {
     let names = colors.names;
