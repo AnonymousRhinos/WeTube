@@ -31,23 +31,10 @@ class Video extends Component {
     this.player = {};
     this.isJoining = true;
     this.highTime = 0;
+    this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
+    this.usersRef = myFirebase.database().ref('users/' + this.state.roomId);
+    this.videosRef = myFirebase.database().ref('videos/' + this.state.roomId);
   }
-
-  // componentWillMount = () => {
-  //   const guestName = prompt('Enter name:');
-  //   this.setState({ name: guestName })
-  // }
-
-  // componentDidMount = () => {
-  //   this.listenToFirebase();
-  //   const opentok = new OpenTok(apiKey, secret);
-  //   this.roomRef.once('value')
-  //     .then(snapshot => {
-  //       let value = snapshot.val()
-  //       let token = opentok.generateToken(value.sessionId)
-  //       this.setState({sessionId: value.sessionId, token: token})
-  //     })
-  // }
 
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.roomId !== this.props.roomId) {
@@ -78,7 +65,6 @@ class Video extends Component {
   }
 
   joinRoom = (name) => {
-    this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
     const opentok = new OpenTok(apiKey, secret);
     let token;
     this.roomRef.once('value')
@@ -116,9 +102,6 @@ class Video extends Component {
       videoId,
       name
     } = this.state;
-    this.usersRef = myFirebase
-      .database()
-      .ref('users/' + roomId);
 
     let startListeningUsers = () => {
       this
@@ -139,7 +122,6 @@ class Video extends Component {
 
 
     let startListeningRoom = () => {
-      this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
       this.roomRef.on('value', snapshot => {
         let value = snapshot.val();
         if (value.currentVideo !== this.state.videoId) {
@@ -243,9 +225,6 @@ class Video extends Component {
     startPresence();
     listenForSlowPeople()
 
-    this.videosRef = myFirebase
-      .database()
-      .ref('videos/' + roomId);
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
         let video = snapshot.val();
