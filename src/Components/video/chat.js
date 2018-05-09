@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
 import { withRouter } from 'react-router';
-import colors from '../../colors.js';
 
 class Chat extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class Chat extends Component {
     this.state = {
       name: this.props.guestName,
       messages: [],
-      color: '',
+      color: this.props.color,
       users: [],
     };
   }
@@ -31,26 +30,7 @@ class Chat extends Component {
   };
 
   componentDidMount = () => {
-    let enterTime = this.getCurrentTime();
-    const name = this.props.guestName;
-    const color = this.establishColor(colors);
-    const token = this.props.token
-    let newName = '';
-    if (name) {
-      newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
-      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, enterTime, token });
-      const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
-      const message = {
-        user: newName,
-        message: `${newName} has entered the theatre`,
-        time: enterTime
-      };
-      joinRef.push(message);
-    }
-    this.setState({ name: newName, color: color });
-
     //listen for messages and change state
-
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
@@ -134,15 +114,6 @@ class Chat extends Component {
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
     return time
-  }
-
-  establishColor = (colors) => {
-    let names = colors.names;
-    let randomProperty = function (names) {
-      let keys = Object.keys(names)
-      return names[keys[Math.floor(keys.length * Math.random())]];
-    };
-    return randomProperty(names)
   }
 
   render() {
