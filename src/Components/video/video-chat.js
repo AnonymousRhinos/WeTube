@@ -68,6 +68,12 @@ class VideoChat extends Component {
         {
           this.state.joinChat ?
             <div className="row">
+              <div>
+                <button
+                  className="btn"
+                  onClick={this.joinVideo}
+                >Exit Video Chat</button>
+              </div>
               <div className="col s8">
                 <OTSession
                   apiKey={apiKey}

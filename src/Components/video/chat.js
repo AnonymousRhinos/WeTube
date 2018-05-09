@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
 import { withRouter } from 'react-router';
-import colors from '../../colors.js';
 
 class Chat extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class Chat extends Component {
     this.state = {
       name: this.props.guestName,
       messages: [],
-      color: '',
+      color: this.props.color,
       users: [],
     };
   }
@@ -18,43 +17,20 @@ class Chat extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { name, color } = this.state;
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
+    let messageTime = this.getCurrentTime();
     const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     const message = {
       user: name,
       message: event.target.text.value,
       color: color,
-      time
+      time: messageTime
     };
     messagesRef.push(message);
     event.target.text.value = ""
   };
 
   componentDidMount = () => {
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
-    const name = this.props.guestName;
-    const color = this.establishColor(colors);
-    const token = this.props.token
-    let newName = '';
-    if (name) {
-      newName = name.replace(/[\.\#\$\[\]\&]+/g,``)
-      myFirebase.database().ref('users/' + this.props.roomId + '/' + newName).set({ newName, time, token });
-      const joinRef = myFirebase.database().ref('messages/' + this.props.roomId);
-      const message = {
-        user: newName,
-        message: `${newName} has entered the theatre`,
-        time
-      };
-      joinRef.push(message);
-    }
-    this.setState({ name: newName, color: color });
-
     //listen for messages and change state
-    
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
@@ -73,7 +49,6 @@ class Chat extends Component {
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
-        console.log('USER IS: ', user)
         this.setState({ users: [...this.state.users, user] });
       });
     };
@@ -83,37 +58,44 @@ class Chat extends Component {
     const usersRemRef = myFirebase.database().ref('users/' + this.props.roomId);
     let listenUserRemove = () => {
       usersRemRef.on('child_removed', snapshot => {
+        let exitTime = this.getCurrentTime();
         let user = snapshot.key;
         let userIndex = this.state.users.indexOf(user)
         let newUsers = this.state.users.slice(0)
         newUsers.splice(userIndex, 1)
         const exitRef = myFirebase.database().ref('messages/' + this.props.roomId);
+
         const exitRoom = {
           user: user,
           message: `${user} has left the theatre`,
-          time
+          time: exitTime
         };
         if (user !== this.state.name) {
           this.setState({
             users: newUsers
           }, () => {
-            exitRef.push(exitRoom);
+            this.setState({ messages: [...this.state.messages, exitRoom] });
           })
         }
       });
     };
+
     const timedoutUserRemove = () => {
-      usersRemRef.on('value', snapshot => {
-        const time = new Date().getTime()
-        for(let key in snapshot.val()){
 
-          if((time - snapshot.val()[key].handshake) > 5000){
-
-            let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
-            deletedRef.remove();
+      setTimeout (() => {
+        usersRemRef.once('value', snapshot => {
+          const time = new Date().getTime()
+          for(let key in snapshot.val()){
+            if((time - snapshot.val()[key].handshake) > 3000){
+              let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
+              deletedRef.remove();
+            }
           }
+        })
+        if(this.stopTicking !== true){
+          timedoutUserRemove();
         }
-      })
+      }, 1000)
     }
     listenUserRemove();
     timedoutUserRemove();
@@ -123,17 +105,15 @@ class Chat extends Component {
   componentWillUnmount() {
     let { name } = this.state
     const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + name);
-    userRef.remove();
+    // userRef.remove();
+    this.stopTicking = true;
   }
 
-
-  establishColor = (colors) => {
-    let names = colors.names;
-    let randomProperty = function (names) {
-      let keys = Object.keys(names)
-      return names[keys[Math.floor(keys.length * Math.random())]];
-    };
-    return randomProperty(names)
+  getCurrentTime = () => {
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    time[0] = (+time[0] + 7) % 12;
+    time = time.join(':');
+    return time
   }
 
   render() {

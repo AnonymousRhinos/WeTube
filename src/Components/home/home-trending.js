@@ -12,31 +12,27 @@ class TrendingComponent extends Component {
       })
   }
   componentDidMount() {
-
+    console.log('starting', new Date().getTime())
     let trendingVideos = []
     axios
-      .get('https://www.googleapis.com/youtube/v3/videos?part=contentDetails&chart=mostPopul' +
-        'ar&regionCode=US&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE')
+      .get('https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status,snippet&chart=mostPopular&regionCode=US&maxResults=25&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE')
       .then(results => {
         trendingVideos = results.data.items;
-        this.setState({ trendingVideos: trendingVideos })
+        let embeddable =  trendingVideos.filter( video => {
+          if(video.status.embeddable){
+            return true
+          }
+          else {
+            return false;
+          }
+        })
+        let titles = embeddable.map( video => video.snippet.title)
+        this.setState({ 
+          trendingVideos: embeddable,
+          titles: titles
+         })
       })
-      .then( () => {
-
-          return Promise.all(this.state.trendingVideos.map(vidId => {
-            return axios
-            .get(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE&part=snippet&id=${vidId.id}`)
-          })).then( data => {
-            data.forEach(vidInfo => {
-            const title = vidInfo.data.items[0].snippet.title
-              this.setState({
-                titles: [...this.state.titles, title]
-              })
-            })
-          })
-
-
-      })
+      .catch(err => console.error)
 
   }
 
