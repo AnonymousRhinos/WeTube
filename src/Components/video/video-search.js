@@ -44,7 +44,7 @@ class VideoSearch extends Component {
             onChange={this.handleChange}
             value={this.state.videoUrl}
           />
-          <button className="btn">Add to Queue</button>
+          <button className="btn" disabled={this.state.videoUrl.length < 5}>Add to Queue</button>
         </form>
       </div>
     );
