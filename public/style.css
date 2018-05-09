@@ -97,9 +97,10 @@ body {
   .trend-scroll {
     overflow: auto;
     white-space: nowrap;
-    width: 90%;
+    width: 95%;
     align-items: center;
     margin: 10px auto;
+    border: 15px #000;
   }
 
   .trending-component {
