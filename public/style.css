@@ -3,6 +3,8 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans|Ubuntu');
 @import url('https://fonts.googleapis.com/css?family=Audiowide');
 
+
+/* BUTTONS */
 button {
   margin-left: 10px
 }
@@ -13,6 +15,10 @@ button {
   border-color: #222;
   font: bold;
   font-family: 'Ubuntu', sans-serif;
+  background-color: #B7C7D8
+}
+#join-vid-chat-btn {
+  margin-bottom: 10px;
 }
 
 input.break {
@@ -29,6 +35,7 @@ body {
     text-decoration: none;
   }
 
+  /* NAVBAR */
   .navbar {
     background: rgba(255, 255, 255, 0.4);
   }
@@ -90,6 +97,8 @@ body {
     margin-right: 15px;
   }
 
+  /* TRENDING */
+
   #trend-head {
     margin-bottom: 10px
   }
@@ -115,6 +124,17 @@ body {
     font-family: 'Ubuntu', sans-serif;
   }
 
+  .playlist-header {
+    font-family: 'Ubuntu', sans-serif;
+    font: bold;
+    /* color: #2B93FA; */
+    color: #000;
+  }
+
+  #playlist-scroll {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
   .trendingThumbnail {
     padding: 20px 0px 0px 0px;
     height: 200px;
@@ -125,7 +145,6 @@ body {
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    /* align-items: center; */
     padding: 14px;
     text-decoration: none;
     border: solid 2px black;
@@ -149,9 +168,19 @@ body {
     font-family: 'Noto Sans', sans-serif;
   }
 
+  /* SHARE BUTOTNS */
   .share-btns {
+    margin-top: 20px;
     display: flex;
-    margin-bottom: 10px;
+    flex-direction: column;
+    margin-right: 10px;
+  }
+
+  .share-button {
+    margin-bottom: 5px;
+  }
+  .share-button:hover {
+    cursor: pointer;
   }
 
   #video {
@@ -162,8 +191,15 @@ body {
   .vid-view {
     display: flex;
     flex-direction: column;
-    background: url("./images/player-background.jpg");
-    background-size: cover;
+    /* background-color: #a0b6d6; */
+    /* background: url("./images/player-background.jpg"); */
+    /* background-size: cover; */
+    background: #BBD2C5;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #292E49, #536976, #BBD2C5);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
+
+
+
     padding: 20px 20px;
   }
 
@@ -172,12 +208,14 @@ body {
   }
 
   #chat {
-    background-color: rgba(255, 255, 255, 0.3);
+    /* background-color: rgba(117, 121, 127, 0.09); */
+    background-color: rgba(41, 46, 73, .2);
     padding: 20px 10px;
     margin-left: 20px;
     flex-grow: 2;
     overflow: auto;
     max-height: 425px;
+    border-radius: 10px;
   }
 
   .users-list {
@@ -234,7 +272,7 @@ body {
     width: 90%;
     border-radius: 10px;
     word-break:break-all;
-
+    font-family: 'Ubuntu', sans-serif;
   }
 
   #username {

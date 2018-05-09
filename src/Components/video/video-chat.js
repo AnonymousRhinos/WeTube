@@ -113,6 +113,7 @@ class VideoChat extends Component {
             <div>
               <button
                 className="btn"
+                id="join-vid-chat-btn"
                 onClick={this.joinVideo}
               >Join Video Chat</button>
             </div>

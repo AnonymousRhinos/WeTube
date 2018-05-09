@@ -59,8 +59,8 @@ class Video extends Component {
               if (status === 1) this.player.playVideo();
               else if (status === 2) this.player.pauseVideo();
               this.isJoining = false;
-            } 
-            
+            }
+
             else if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
                 this.player.seekTo(currentTime);
@@ -71,7 +71,7 @@ class Video extends Component {
                 if (this.state.currentIndex + 1 < this.state.playlist.length) {
                   console.log(4)
                   this.setState({currentIndex: this.state.currentIndex + 1});
-                  this.roomRef.update({ 
+                  this.roomRef.update({
                     currentVideo: this.state.playlist[this.state.currentIndex],
                     currentTime: 0,
                     playerStatus: 1
@@ -200,8 +200,8 @@ class Video extends Component {
               token={this.state.token}/>
           : <div/>
 }
-        <VideoShare roomId={this.state.roomId}/>
         <div id="video">
+        <VideoShare roomId={this.state.roomId}/>
           <div id="screen">
             <YouTube
               id="vidScreen"
