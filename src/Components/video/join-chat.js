@@ -42,7 +42,7 @@ class JoinChat extends Component {
                             value={this.state.guestName}
                             required
                         />
-                        <button className="btn join-btn">Join Theater</button>
+                        <button className="btn join-btn" disabled={this.state.guestName.length === 0}>Join Theater</button>
                     </form>
                 </div>
             </div>
