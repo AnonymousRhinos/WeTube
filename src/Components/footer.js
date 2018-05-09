@@ -7,8 +7,11 @@ class Footer extends Component {
             <div id="footer">
                 <h6>An Anonymous Rhino's Production</h6>
                 <h6>WeTube 2018</h6>
-                <a /*target="_blank"*/ href="https://github.com/AnonymousRhinos/WeTube">
-                    <img id="git-logo" src="/images/github-logo.png" alt="logo"/>
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://github.com/AnonymousRhinos/WeTube">
+                    <img id="git-logo" src="/images/github-logo.png" alt="logo" />
                 </a>
             </div>
         );
