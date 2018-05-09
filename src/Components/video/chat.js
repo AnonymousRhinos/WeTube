@@ -88,6 +88,7 @@ class Chat extends Component {
         let newUsers = this.state.users.slice(0)
         newUsers.splice(userIndex, 1)
         const exitRef = myFirebase.database().ref('messages/' + this.props.roomId);
+
         const exitRoom = {
           user: user,
           message: `${user} has left the theatre`,
@@ -97,7 +98,7 @@ class Chat extends Component {
           this.setState({
             users: newUsers
           }, () => {
-            exitRef.push(exitRoom);
+            this.setState({ messages: [...this.state.messages, exitRoom] });
           })
         }
       });
@@ -106,14 +107,10 @@ class Chat extends Component {
     const timedoutUserRemove = () => {
 
       setTimeout (() => {
-
         usersRemRef.once('value', snapshot => {
-          console.log('timedout user listen occurred');
           const time = new Date().getTime()
           for(let key in snapshot.val()){
-  
-            if((time - snapshot.val()[key].handshake) > 5000){
-  
+            if((time - snapshot.val()[key].handshake) > 3000){
               let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
               deletedRef.remove();
             }
@@ -132,7 +129,7 @@ class Chat extends Component {
   componentWillUnmount() {
     let { name } = this.state
     const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + name);
-    userRef.remove();
+    // userRef.remove();
     this.stopTicking = true;
   }
 

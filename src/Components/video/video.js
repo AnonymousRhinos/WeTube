@@ -32,10 +32,10 @@ class Video extends Component {
     };
     this.player = {};
     this.isJoining = true;
+    this.highTime = 0;
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log('HELLO WORLD COMPONENT UPDATED')
     if (prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
@@ -73,7 +73,6 @@ class Video extends Component {
           let playerStatus = this
             .player
             .getPlayerState();
-          // console.log('running, currentTime:', currentTime)
           this
             .roomRef
             .set({roomId: roomId, playerStatus, currentTime, sessionId: this.state.sessionId});
@@ -127,22 +126,8 @@ class Video extends Component {
         });
     };
 
-    let startVideoLocation = () => {
-      setTimeout(() => {
-        console.log('inside videoLocation')
-        let clientUserRef = myFirebase
-          .database()
-          .ref(`users/${roomId}/${name}`);
-        clientUserRef.update({
-          playerTime: this.player.getCurrentTime()
-        })
 
-        if(this.stopTicking != true){
-          startVideoLocation();
-        }
-      }, 3000)
-
-    }
+  
 
 
 
@@ -153,28 +138,56 @@ class Video extends Component {
         let clientUserRef = myFirebase
           .database()
           .ref(`users/${roomId}/${name}`);
-        clientUserRef.update({
-          handshake: new Date().getTime()
-        })
+        if(this.player.getCurrentTime){
+          clientUserRef.update({
+            handshake: new Date().getTime(),
+            playerTime: this.player.getCurrentTime()
+            
+          })
+        }
         if (this.stopTicking !== true) {
-          startPresence();
+          startPresence()
         }
       }, 1000)
     }
 
+    let listenForSlowPeople = () => {
+      setTimeout(() => {
+      
+
+
+
+      this.usersRef.once('value', snapshot => {
+      let highTime = 0;
+      for(let key in snapshot.val()){
+        if(snapshot.val()[key].playerTime > highTime){
+          highTime = snapshot.val()[key].playerTime;
+        }
+      }
+      if(this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)){
+        this.player.seekTo(highTime)
+      }
+        
+      })
+      if(this.stopTicking !== true){
+        listenForSlowPeople();
+      }
+      }, 1500)
+
+    }
+  
     startListeningRoom();
     startPresence();
-    startVideoLocation();
+    listenForSlowPeople()
 
     this.videosRef = myFirebase
       .database()
       .ref('videos/' + roomId);
-    let startListeningVideos = () => {
+    let startListeningVideos = () => { 
       this
         .videosRef
         .on('child_added', snapshot => {
           let video = snapshot.val();
-          console.log('running', video.videoId)
           this.updatePlaylist(video.videoId)
         });
     };
