@@ -35,6 +35,7 @@ class Video extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
+    console.log('HELLO WORLD COMPONENT UPDATED')
     if (prevProps.videoId !== this.props.videoId || prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
@@ -78,6 +79,7 @@ class Video extends Component {
             .set({roomId: roomId, playerStatus, currentTime, sessionId: this.state.sessionId});
         })
     }
+
 
     let startListeningRoom = () => {
       this
@@ -125,6 +127,26 @@ class Video extends Component {
         });
     };
 
+    let startVideoLocation = () => {
+      setTimeout(() => {
+        console.log('inside videoLocation')
+        let clientUserRef = myFirebase
+          .database()
+          .ref(`users/${roomId}/${name}`);
+        clientUserRef.update({
+          playerTime: this.player.getCurrentTime()
+        })
+
+        if(this.stopTicking != true){
+          startVideoLocation();
+        }
+      }, 3000)
+
+    }
+
+
+
+
     let startPresence = () => {
 
       setTimeout(() => {
@@ -142,6 +164,7 @@ class Video extends Component {
 
     startListeningRoom();
     startPresence();
+    startVideoLocation();
 
     this.videosRef = myFirebase
       .database()
@@ -204,7 +227,8 @@ class Video extends Component {
     this.setState({name: guestName})
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => 
+  {
     this.listenToFirebase();
     const opentok = new OpenTok(apiKey, secret);
     const roomRef = myFirebase
