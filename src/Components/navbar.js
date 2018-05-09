@@ -8,16 +8,16 @@ class MyNavbar extends Component {
           <section className="navbar-section">
           <Link to={'/home'}>
           <img className="logo-navbar" src="/logo.jpg" alt="logo"/>
-          </Link>Ï
-          <Link to={'/home'} className="btn btn-link">
+          </Link>
+          <Link to={'/home'} className="btn-link">
             WeTube
           </Link>
         </section>
         <section className="navbar-section">
-          <Link to="#" className="btn btn-link">
+          <Link to="#" className="btn-link">
             A Link
           </Link>
-          <Link to="#" className="btn btn-link">
+          <Link to="#" className="btn-link">
             Another Link
           </Link>
         </section>

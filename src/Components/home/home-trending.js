@@ -55,7 +55,7 @@ class TrendingComponent extends Component {
                 return (
                   <div className="mini-vid" key={video.id}>
                     <ThumbnailCard id={video.id} makeRoom={this.props.makeRoom}/>
-                    <p>{this.state.titles[index]}</p>
+                    <p className="trending-text">{this.state.titles[index]}</p>
                   </div>
                 )
               })
