@@ -8,8 +8,8 @@ class Queue extends Component {
           {this.props.playlist.length > 1
           ?
           <div>
-          <h2>Playlist</h2>
-          <div className="trend-scroll">
+          <h2 className="playlist-header">Playlist</h2>
+          <div className="trend-scroll" id="playlist-scroll">
         {
           this.props.playlist.map(queuedVid => {
             return (
@@ -24,7 +24,7 @@ class Queue extends Component {
         </div>
       :
       <div>
-      <h2>No Videos in Playlist</h2>
+      <h2 className="playlist-header">No Videos in Playlist</h2>
       </div>
     }
     </div>

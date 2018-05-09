@@ -150,7 +150,7 @@ class Video extends Component {
               else if (status === 0) {
                 if (this.state.currentIndex + 1 < this.state.playlist.length) {
                   console.log(4)
-                  this.setState({ currentIndex: this.state.currentIndex + 1 });
+                  this.setState({currentIndex: this.state.currentIndex + 1});
                   this.roomRef.update({
                     currentVideo: this.state.playlist[this.state.currentIndex],
                     currentTime: 0,

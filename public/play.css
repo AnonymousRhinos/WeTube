@@ -57,7 +57,7 @@
       transform: translateY(0%);
     }
   }
-  
+
 
 
 
@@ -84,7 +84,7 @@
 }
 
 #open-text {
-  color: #746fff;
+  color: #2B93FA;
   font-family: 'Raleway', sans-serif;
   font-size:58px;
   letter-spacing:10px;
@@ -101,7 +101,7 @@
     opacity:0.1;
     text-shadow: 0px 0px 29px #0d6ab6;
   }
-  
+
   2% {
     opacity:1;
     text-shadow: 0px 0px 29px #0d6ab6;
@@ -130,17 +130,17 @@
     opacity:1;
     text-shadow: 0px 0px 29px #0d6ab6
   }
-  
+
   70% {
     opacity:0.7;
     text-shadow: 0px 0px 29px #0d6ab6
   }
-  
+
   72% {
     opacity:0.2;
     text-shadow:0px 0px 29px #0d6ab6
   }
-  
+
   77% {
     opacity:.9;
     text-shadow: 0px 0px 29px #0d6ab6
@@ -170,7 +170,7 @@ box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
 -moz-box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
 box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
   }
-  
+
   8% {
     opacity:1;
     -webkit-box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
@@ -204,8 +204,8 @@ box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
     opacity:1;
     text-shadow: 0px 0px 29px #0d6ab6;
   }
-  
-  
+
+
   19% {
     opacity:1;
     text-shadow: 0px 0px 29px #0d6ab6;
@@ -218,7 +218,7 @@ box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
     opacity:1;
     text-shadow: 0px 0px 29px #0d6ab6;
   }
-  
+
   80% {
     opacity:1;
     text-shadow: 0px 0px 29px #0d6ab6;

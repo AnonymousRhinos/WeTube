@@ -49,9 +49,9 @@ class TrendingComponent extends Component {
               .trendingVideos
               .map((video, index) => {
                 return (
-                  <div className="mini-vid" key={video.id}>
+                  <div className="mini-vid" key={video.id} onClick={(event) => this.props.makeRoom(event, video.id)}>
                     <ThumbnailCard id={video.id} makeRoom={this.props.makeRoom}/>
-                    <p>{this.state.titles[index]}</p>
+                    <p className="trending-text">{this.state.titles[index]}</p>
                   </div>
                 )
               })
