@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans|Ubuntu');
+@import url('https://fonts.googleapis.com/css?family=Audiowide');
 
 button {
   margin-left: 10px
@@ -10,6 +12,7 @@ button {
   border-radius: 10px;
   border-color: #222;
   font: bold;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 input.break {
@@ -27,16 +30,23 @@ body {
   }
 
   .navbar {
-    background: rgba(204, 204, 204, 0.4);
+    background: rgba(255, 255, 255, 0.4);
   }
 
   .navbar a {
     padding: 0px 10px;
-    font-size: 25px;
+    font-size: 20px;
     color: #2B93FA;
-    font-family: 'Noto Sans', sans-serif;
-    font-weight: 700;
+    font-family: 'Ubuntu', sans-serif;
+    /* font-weight: 700; */
     text-decoration: none;
+  }
+
+  #nav-home {
+    font-family: 'Audiowide', cursive;
+    /* font-weight: bold; */
+    font-size: 30px;
+    color: black;
   }
 
   #footer {
@@ -59,7 +69,6 @@ body {
 
   .Home::after {
     content: "";
-    /* background: url("./images/home2.jpg"); */
     background-color: white;
     opacity: 0.4;
     top: 0;
@@ -99,31 +108,32 @@ body {
   .trending-text {
     text-align: center;
     flex-direction: column;
-    overflow-wrap: break-word;
-    word-break:break-all;
-    flex-wrap: wrap;
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
+    font-family: 'Ubuntu', sans-serif;
   }
 
   .trendingThumbnail {
+    padding: 20px 0px 0px 0px;
     height: 200px;
-  }
-
-  .trendingThumbnail:hover {
-    cursor: pointer;
   }
 
   .mini-vid {
     display: inline-flex;
     flex-direction: column;
     text-align: center;
+    justify-content: center;
+    /* align-items: center; */
     padding: 14px;
     text-decoration: none;
     border: solid 2px black;
     margin: 15px 15px;
     width: 300px;
+  }
+
+  .mini-vid:hover {
+    cursor: pointer;
   }
 
   .theater-form {
@@ -406,6 +416,7 @@ body {
 #open-text {
   color: #2B93FA;
   font-family: 'Raleway', sans-serif;
+  /* font-family: 'Audiowide', cursive; */
   font-size:58px;
   letter-spacing:10px;
   margin: 0;
