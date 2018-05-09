@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { withRouter } from 'react-router';
 
 import {
   FacebookShareButton,
@@ -72,4 +73,4 @@ const VideoShare = (props) => {
   )
 }
 
-export default VideoShare;
+export default withRouter(VideoShare);
