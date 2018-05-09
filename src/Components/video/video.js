@@ -27,6 +27,7 @@ class Video extends Component {
     };
     this.player = {};
     this.isJoining = true;
+    this.highTime = 0;
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -37,9 +38,38 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let { roomId, videoId, name } = this.state;
-    this.usersRef = myFirebase.database().ref('users/' + roomId);
-    this.roomRef = myFirebase.database().ref('rooms/' + roomId);
+    let {
+      currentIndex,
+      playlist,
+      update,
+      roomId,
+      videoId,
+      name
+    } = this.state;
+    this.usersRef = myFirebase
+      .database()
+      .ref('users/' + roomId);
+    this.roomRef = myFirebase
+      .database()
+      .ref('rooms/' + roomId);
+
+    let startListeningUsers = () => {
+      this
+        .usersRef
+        .on('child_added', snapshot => {
+          let user = snapshot.val();
+          let currentTime = this
+            .player
+            .getCurrentTime();
+          let playerStatus = this
+            .player
+            .getPlayerState();
+          this
+            .roomRef
+            .set({roomId: roomId, playerStatus, currentTime, sessionId: this.state.sessionId});
+        })
+    }
+
 
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
@@ -91,23 +121,59 @@ class Video extends Component {
       });
     }
 
+
+  
+
+
+
+
     let startPresence = () => {
 
       setTimeout(() => {
         let clientUserRef = myFirebase
           .database()
           .ref(`users/${roomId}/${name}`);
-        clientUserRef.update({
-          handshake: new Date().getTime()
-        })
+        if(this.player.getCurrentTime){
+          clientUserRef.update({
+            handshake: new Date().getTime(),
+            playerTime: this.player.getCurrentTime()
+            
+          })
+        }
         if (this.stopTicking !== true) {
-          startPresence();
+          startPresence()
         }
       }, 1000)
     }
 
+    let listenForSlowPeople = () => {
+      setTimeout(() => {
+      
+
+
+
+      this.usersRef.once('value', snapshot => {
+      let highTime = 0;
+      for(let key in snapshot.val()){
+        if(snapshot.val()[key].playerTime > highTime){
+          highTime = snapshot.val()[key].playerTime;
+        }
+      }
+      if(this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)){
+        this.player.seekTo(highTime)
+      }
+        
+      })
+      if(this.stopTicking !== true){
+        listenForSlowPeople();
+      }
+      }, 1500)
+
+    }
+  
     startListeningRoom();
     startPresence();
+    listenForSlowPeople()
 
     this.videosRef = myFirebase
       .database()
@@ -153,7 +219,8 @@ class Video extends Component {
     this.setState({name: guestName})
   }
 
-  componentDidMount = () => {
+  componentDidMount = () => 
+  {
     this.listenToFirebase();
     const opentok = new OpenTok(apiKey, secret);
     this.roomRef.once('value')
