@@ -100,7 +100,7 @@ body {
     width: 95%;
     align-items: center;
     margin: 10px auto;
-    border: 15px #000;
+    /* border: 15px #000; */
   }
 
   .trending-component {
@@ -140,12 +140,6 @@ body {
   .theater-form {
     padding: 20px;
     color: #000;
-    /* text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000; */
-    /* font: status-bar; */
   }
 
   #input-header {
@@ -163,7 +157,6 @@ body {
   #video {
     display: flex;
     justify-content: space-around;
-    /* flex-wrap: wrap; */
   }
 
   .vid-view {
@@ -171,7 +164,7 @@ body {
     flex-direction: column;
     background: url("./images/player-background.jpg");
     background-size: cover;
-    padding: 50px 20px;
+    padding: 20px 20px;
   }
 
   #text {
@@ -184,7 +177,7 @@ body {
     margin-left: 20px;
     flex-grow: 2;
     overflow: auto;
-    max-height: 700px;
+    max-height: 425px;
   }
 
   .users-list {
