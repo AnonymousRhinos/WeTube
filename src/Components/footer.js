@@ -8,10 +8,10 @@ class Footer extends Component {
                 <h6>An Anonymous Rhino's Production</h6>
                 <h6>WeTube 2018</h6>
                 <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/AnonymousRhinos/WeTube">
-                    <img id="git-logo" src="/images/github-logo.png" alt="logo"/>
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://github.com/AnonymousRhinos/WeTube">
+                    <img id="git-logo" src="/images/github-logo.png" alt="logo" />
                 </a>
             </div>
         );

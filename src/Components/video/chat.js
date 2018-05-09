@@ -73,7 +73,6 @@ class Chat extends Component {
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
-        console.log('USER IS: ', user)
         this.setState({ users: [...this.state.users, user] });
       });
     };
