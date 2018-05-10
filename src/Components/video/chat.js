@@ -46,7 +46,7 @@ class Chat extends Component {
           if (this.state.users.indexOf(this.state.name)) {
 
             let newMessages = [...this.state.messages, msg];
-            
+
             const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
             let userJoinedTime;
             userRef.once('value', snapshot2 => {
@@ -100,7 +100,7 @@ class Chat extends Component {
           this.setState({
             users: newUsers
           }, () => {
-            this.setState({ 
+            this.setState({
               messages: [...this.state.messages, exitRoom] });
           })
         }
@@ -138,10 +138,10 @@ class Chat extends Component {
 
   getCurrentTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
+    time[0] = (+time[0] - 5) % 12;
     let meridian;
-    if (time[0] >= 12) meridian = 'AM'
+    if (time[0] >= 12) meridian = 'PM'
     else meridian = 'PM'
-    time[0] = (+time[0] + 7) % 12;
     time = time.join(':') + meridian;
     return time
   }
