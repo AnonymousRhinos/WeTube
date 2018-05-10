@@ -14,10 +14,13 @@ const apiKey = tokbox.apiKey
 const secret = tokbox.secret
 
 const getTime = () => {
-  let time = new Date().toUTCString().slice(-12, -4).split(':');
-  time[0] = (+time[0] + 7) % 12;
-  time = time.join(':');
-  return time
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    let meridian;
+    if (time[0] >= 12) meridian = 'AM'
+    else meridian = 'PM'
+    time[0] = (+time[0] + 7) % 12;
+    time = time.join(':') + meridian;
+    return time
 }
 
 const establishColor = (colorsList) => {
@@ -68,7 +71,6 @@ class Video extends Component {
     this.stopTicking = true;
     window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
-
 
   joinRoom = (name) => {
     const opentok = new OpenTok(apiKey, secret);
@@ -231,7 +233,7 @@ class Video extends Component {
     }, () => {
       let width = this.state.theaterMode ? (this.state.windowWidth).toString() : '640';
       let height = this.state.theaterMode ? (this.state.windowWidth / 640 * 390).toString() : '390';
-        this.player.setSize(width, height)
+      this.player.setSize(width, height)
     })
   }
 
@@ -243,7 +245,7 @@ class Video extends Component {
         if (this.state.theaterMode) {
           let width = (this.state.windowWidth).toString();
           let height = (this.state.windowWidth / 640 * 390).toString();
-            this.player.setSize(width, height)
+          this.player.setSize(width, height)
         }
       });
     }
@@ -277,8 +279,8 @@ class Video extends Component {
               }
               <div className="vid-col">
                 <div id="video">
-                <div className="screen-chat-container">
-                  <VideoShare roomId={this.state.roomId} />
+                  <div className="screen-chat-container">
+                    <VideoShare roomId={this.state.roomId} />
                     <div id="screen">
                       <YouTube
                         id="vidScreen"
@@ -289,13 +291,13 @@ class Video extends Component {
                         onPause={this.handler}
                         onEnd={this.handler} />
                       <div className="theater-container">
-                      <button
-                      className="btn theater"
-                      onClick={this.toggleTheater}
-                      >▭
+                        <button
+                          className="btn theater"
+                          onClick={this.toggleTheater}
+                        >▭
                         <span className="tooltiptext">Theater Mode</span>
-                      </button>
-                      <VideoSearch roomId={this.state.roomId} />
+                        </button>
+                        <VideoSearch roomId={this.state.roomId} />
                       </div>
                     </div>
                     <Chat
