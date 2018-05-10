@@ -59,12 +59,8 @@ class VideoChat extends Component {
   }
 
   render() {
-    // console.log("NEW USER JOINS. SESSION ID: ", this.props.sessionId)
-    // console.log("NEW USER JOINS. Token: ", this.props.token)
-    // console.log("NEW USER JOINS. Name: ", this.props.guestName)
-    // console.log("STATE", this.state)
     return (
-      <div>
+      <div className="center-all">
         {
           this.state.joinChat ?
             <div className="row">
