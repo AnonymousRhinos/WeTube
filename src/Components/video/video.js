@@ -50,7 +50,7 @@ class Video extends Component {
       windowWidth: window.innerWidth,
     };
     this.player = {};
-    this.highTime = 0;
+    this.targetTime = 0;
     this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
     this.usersRef = myFirebase.database().ref('users/' + this.state.roomId);
     this.videosRef = myFirebase.database().ref('videos/' + this.state.roomId);
@@ -116,16 +116,13 @@ class Video extends Component {
           if (value.playerStatus > -1) {
             let status = value.playerStatus;
             let currentTime = value.currentTime;
-
             if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
                 this.player.seekTo(currentTime);
                 this.player.playVideo();
               } else if (status === 2) this.player.pauseVideo();
-
               else if (status === 0) {
                 if (this.state.currentIndex + 1 < this.state.playlist.length) {
-                  console.log(4)
                   this.setState({ currentIndex: this.state.currentIndex + 1 });
                   this.roomRef.update({
                     currentVideo: this.state.playlist[this.state.currentIndex],
@@ -163,14 +160,37 @@ class Video extends Component {
     let listenForSlowPeople = () => {
       setTimeout(() => {
         this.usersRef.once('value', snapshot => {
-          let highTime = 0;
+          let targetTime = 0;
           for (let key in snapshot.val()) {
-            if (snapshot.val()[key].playerTime > highTime) {
-              highTime = snapshot.val()[key].playerTime;
+            //need to find time of the user
+            let timeStuff = snapshot.val()[key].enterTime.split(':');
+            timeStuff[2] = timeStuff[2].slice(0,2);
+            let timeStuffDateObj;
+            timeStuffDateObj = new Date();
+            timeStuffDateObj.setHours(timeStuff[0]);
+            timeStuffDateObj.setMinutes(timeStuff[1]);
+            timeStuffDateObj.setSeconds(timeStuff[2]);
+            console.log('TIME ONE')
+            console.log(timeStuffDateObj)
+            console.log(timeStuffDateObj.getTime())
+            console.log('TIME TWO');
+            console.log(new Date());
+            console.log(new Date().getTime())
+            console.log('time diff = ', new Date().getTime() - timeStuffDateObj.getTime())
+            if(Math.abs((new Date().getTime() - timeStuffDateObj.getTime())) < 10000 ){
+              //too new, dont notice
+              console.log('yall dont see me');
+              continue
+            }
+            else if (snapshot.val()[key].playerTime > targetTime) {
+              targetTime = snapshot.val()[key].playerTime;
+              this.roomRef.update({
+                currentTime: targetTime
+              })
             }
           }
-          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)) {
-            this.player.seekTo(highTime)
+          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < targetTime)) {
+            this.player.seekTo(targetTime)
           }
         })
         if (this.stopTicking !== true) {
