@@ -55,6 +55,7 @@ class Chat extends Component {
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
+        console.log("USER BEING ADDED FROM FBASE", user)
         this.setState({ users: [...this.state.users, user] });
       });
     };
@@ -69,8 +70,6 @@ class Chat extends Component {
         let userIndex = this.state.users.indexOf(user)
         let newUsers = this.state.users.slice(0)
         newUsers.splice(userIndex, 1)
-        const exitRef = myFirebase.database().ref('messages/' + this.props.roomId);
-
         const exitRoom = {
           user: user,
           message: `${user} has left the theatre`,
@@ -80,7 +79,8 @@ class Chat extends Component {
           this.setState({
             users: newUsers
           }, () => {
-            this.setState({ messages: [...this.state.messages, exitRoom] });
+            this.setState({ 
+              messages: [...this.state.messages, exitRoom] });
           })
         }
       });
@@ -123,6 +123,7 @@ class Chat extends Component {
   }
 
   render() {
+    console.log("USERS", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">

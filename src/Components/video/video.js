@@ -31,11 +31,11 @@ class Video extends Component {
       windowWidth: window.innerWidth,
     };
     this.player = {};
-    this.isJoining = true;
     this.highTime = 0;
     this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
     this.usersRef = myFirebase.database().ref('users/' + this.state.roomId);
     this.videosRef = myFirebase.database().ref('videos/' + this.state.roomId);
+    this.joinRef = myFirebase.database().ref('messages/' + this.state.roomId);
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -43,7 +43,6 @@ class Video extends Component {
       this.stopListening();
       this.listenToFirebase();
     }
-
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
@@ -54,7 +53,7 @@ class Video extends Component {
     window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
-  getCurrentTime = () => {
+  getTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
     time[0] = (+time[0] + 7) % 12;
     time = time.join(':');
@@ -78,20 +77,18 @@ class Video extends Component {
         let value = snapshot.val()
         token = opentok.generateToken(value.sessionId)
         this.setState({ sessionId: value.sessionId, token: token })
-        let enterTime = this.getCurrentTime();
+        let enterTime = this.getTime();
         const color = this.establishColor(colors);
         let newName = '';
         if (name) {
           newName = name.replace(/[\.\#\$\[\]\&]+/g, ``)
-          console.log("token", token)
           myFirebase.database().ref('users/' + this.state.roomId + '/' + newName).set({ newName, enterTime, token });
-          const joinRef = myFirebase.database().ref('messages/' + this.state.roomId);
           const message = {
             user: newName,
             message: `${newName} has entered the theatre`,
             time: enterTime
           };
-          joinRef.push(message);
+          this.joinRef.push(message);
         }
         this.setState({ name: newName, color: color }, () => {
           this.listenToFirebase();
@@ -100,32 +97,7 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let {
-      currentIndex,
-      playlist,
-      update,
-      roomId,
-      videoId,
-      name
-    } = this.state;
-
-    let startListeningUsers = () => {
-      this
-        .usersRef
-        .on('child_added', snapshot => {
-          let user = snapshot.val();
-          let currentTime = this
-            .player
-            .getCurrentTime();
-          let playerStatus = this
-            .player
-            .getPlayerState();
-          this
-            .roomRef
-            .set({ roomId: roomId, playerStatus, currentTime, sessionId: this.state.sessionId });
-        })
-    }
-
+    let { roomId, videoId, name } = this.state;
 
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
@@ -140,14 +112,6 @@ class Video extends Component {
             let status = value.playerStatus;
             let currentTime = value.currentTime;
 
-            // if (this.isJoining && this.player.seekTo) {
-            //   this.player.seekTo(currentTime);
-            //   if (status === 1) this.player.playVideo();
-            //   else if (status === 2) this.player.pauseVideo();
-            //   this.isJoining = false;
-            // }
-
-            // else
             if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
                 this.player.seekTo(currentTime);
@@ -163,8 +127,6 @@ class Video extends Component {
                     currentTime: 0,
                     playerStatus: 1
                   })
-
-                  // this.player.loadVideoById(this.state.playlist[this.state.currentIndex], 2);
                 }
                 else {
                   this.setState({ currentIndex: this.state.currentIndex + 1 });
@@ -178,18 +140,13 @@ class Video extends Component {
       });
     }
 
-
     let startPresence = () => {
-
       setTimeout(() => {
-        let clientUserRef = myFirebase
-          .database()
-          .ref(`users/${roomId}/${name}`);
+        this.clientUserRef = myFirebase.database().ref(`users/${roomId}/${name}`);
         if (this.player.getCurrentTime) {
-          clientUserRef.update({
+          this.clientUserRef.update({
             handshake: new Date().getTime(),
             playerTime: this.player.getCurrentTime()
-
           })
         }
         if (this.stopTicking !== true) {
@@ -230,15 +187,15 @@ class Video extends Component {
       });
     };
     startListeningVideos();
-    myFirebase
-      .database()
-      .ref('videos/' + roomId + '/' + videoId)
-      .set({ videoId });
+    myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({ videoId });
   }
 
   stopListening = () => {
     this.roomRef.off();
     this.videosRef.off();
+    this.clientUserRef.off();
+    this.videosRef.off();
+    this.joinRef.off();
   }
 
   handler = event => {
@@ -278,7 +235,6 @@ class Video extends Component {
   }
 
   updateDimensions() {
-    console.log("getting here?!??!?!??!?!")
     if ( this.state.windowWidth !==  window.innerWidth - 100 ) {
       this.setState({
         windowWidth: window.innerWidth - 100
@@ -293,18 +249,13 @@ class Video extends Component {
   }
 
   render() {
-    // let vidWidth = this.state.theaterMode ? window.screen.width * .8 : '640'
-    // let vidHeight = this.state.theaterMode ? window.screen.width * .8  * 390 / 640: '390'
-    // console.log("WIDTH!?!??!?!", window.screen.width)
     const opts = {
       height: '390',
       width: '640',
       playerVars: {
-        // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
         enablejsapi: 1,
         modestbranding: 1,
-        //origin: ourdomain.com,
         rel: 0
       }
     };
