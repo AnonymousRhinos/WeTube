@@ -15,10 +15,10 @@ const secret = tokbox.secret
 
 const getTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
+    time[0] = (+time[0] - 5) % 12;
     let meridian;
-    if (time[0] >= 12) meridian = 'AM'
+    if (time[0] >= 12) meridian = 'PM'
     else meridian = 'PM'
-    time[0] = (+time[0] + 7) % 12;
     time = time.join(':') + meridian;
     return time
 }
