@@ -46,7 +46,7 @@ class Chat extends Component {
           if (this.state.users.indexOf(this.state.name)) {
 
             let newMessages = [...this.state.messages, msg];
-            
+
             const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
             let userJoinedTime;
             userRef.once('value', snapshot2 => {
@@ -100,7 +100,7 @@ class Chat extends Component {
           this.setState({
             users: newUsers
           }, () => {
-            this.setState({ 
+            this.setState({
               messages: [...this.state.messages, exitRoom] });
           })
         }
@@ -168,7 +168,7 @@ class Chat extends Component {
           </form>
         </div>
         <div>
-          {this.state.messages.slice(0).reverse().map((message, index) => {
+          {this.state.messages.map((message, index) => {
             const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
             const messageColor = message.user === this.state.name ? { 'backgroundColor': '#000000' } : { 'backgroundColor': message.color };
             let time = message.time.split(':');
