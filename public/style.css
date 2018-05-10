@@ -115,6 +115,11 @@ body {
 
   /* TRENDING */
 
+  @keyframes slideshow {
+    0%    { left: 0; }
+    100%  { left: -200%; }
+  }
+
   #trend-head {
     margin-bottom: 10px
   }
@@ -125,11 +130,11 @@ body {
     width: 95%;
     align-items: center;
     margin: 10px auto;
-    /* border: 15px #000; */
   }
 
   .trending-component {
-    padding: 30px 0
+    padding: 30px 0;
+    animation: slideshow 20s linear infinite;
   }
   .trending-text {
     text-align: center;
@@ -170,6 +175,7 @@ body {
 
   .mini-vid:hover {
     cursor: pointer;
+    opacity: 0.4;
   }
 
   .theater-form {
