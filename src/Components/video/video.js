@@ -161,38 +161,64 @@ class Video extends Component {
       setTimeout(() => {
         this.usersRef.once('value', snapshot => {
           let targetTime = 0;
-          for (let key in snapshot.val()) {
-            //need to find time of the user
-            let timeStuff = snapshot.val()[key].enterTime.split(':');
-            timeStuff[2] = timeStuff[2].slice(0,2);
-            let timeStuffDateObj;
-            timeStuffDateObj = new Date();
-            timeStuffDateObj.setHours(timeStuff[0]);
-            timeStuffDateObj.setMinutes(timeStuff[1]);
-            timeStuffDateObj.setSeconds(timeStuff[2]);
-            console.log('TIME ONE')
-            console.log(timeStuffDateObj)
-            console.log(timeStuffDateObj.getTime())
-            console.log('TIME TWO');
-            console.log(new Date());
-            console.log(new Date().getTime())
-            console.log('time diff = ', new Date().getTime() - timeStuffDateObj.getTime())
-            if(Math.abs((new Date().getTime() - timeStuffDateObj.getTime())) < 10000 ){
-              //too new, dont notice
-              console.log('yall dont see me');
-              continue
+            this.roomRef.once('value', snapshot2 => {
+              console.log('yo sup... the rooms time is from ', snapshot2.val().currentTime);
+              //here we set local target time from the database
+              targetTime = snapshot2.val().currentTime;
+            })
+          .then( () => {
+            
+            //now we loops through each user
+            for (let key in snapshot.val()) {
+              let timeStuff = snapshot.val()[key].enterTime.split(':');
+              let timeStuffDateObj;
+              timeStuffDateObj = new Date();
+              let pmCheck = () => {
+                if(timeStuff[2].slice(-2) === "PM"){
+                  timeStuff[0] = (Number(timeStuff[0]) + (12)).toString();
+                }
+                else{
+                  timeStuff[0] = timeStuff[0];
+                }
+              }
+              pmCheck();
+              timeStuff[2] = timeStuff[2].slice(0,2);
+              timeStuffDateObj.setHours(timeStuff[0], timeStuff[1], timeStuff[2]);
+              
+              //check to see if the user is "new" (e.g. joined the room less than 10 seconds ago)
+              if(this.player.getCurrentTime && (Math.abs((new Date().getTime() - timeStuffDateObj.getTime())) < 10000) ){
+                //too new, dont notice
+                console.log('my player: ', this.player.getCurrentTime());
+                console.log('the room is: ', targetTime);
+                if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < targetTime)) {
+                  this.player.seekTo(targetTime)
+                  }
+                console.log('yall dont see me');
+                continue
+              }
+              //if the user is old, proceed to see if the user is 3 seconds off the room's time
+              else if (Math.abs(snapshot.val()[key].playerTime - targetTime) > 3) {
+                console.log('IM AN OLD LOOSE CANNON-----------------------------');
+                console.log('1: ', snapshot.val()[key].playerTime)
+                console.log('2: ', targetTime)
+                //if the user is 3 seconds off, it will update the room's time to this new time
+                targetTime = snapshot.val()[key].playerTime;
+                this.roomRef.update({
+                  currentTime: targetTime
+                })
+              }
             }
-            else if (snapshot.val()[key].playerTime > targetTime) {
-              targetTime = snapshot.val()[key].playerTime;
-              this.roomRef.update({
-                currentTime: targetTime
-              })
-            }
-          }
-          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < targetTime)) {
-            this.player.seekTo(targetTime)
-          }
-        })
+            // if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < targetTime)) {
+            //   this.player.seekTo(targetTime)
+            // }
+          })
+
+
+
+
+
+
+          })
         if (this.stopTicking !== true) {
           listenForSlowPeople();
         }
