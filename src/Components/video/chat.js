@@ -69,8 +69,6 @@ class Chat extends Component {
         let userIndex = this.state.users.indexOf(user)
         let newUsers = this.state.users.slice(0)
         newUsers.splice(userIndex, 1)
-        const exitRef = myFirebase.database().ref('messages/' + this.props.roomId);
-
         const exitRoom = {
           user: user,
           message: `${user} has left the theatre`,
@@ -80,7 +78,8 @@ class Chat extends Component {
           this.setState({
             users: newUsers
           }, () => {
-            this.setState({ messages: [...this.state.messages, exitRoom] });
+            this.setState({ 
+              messages: [...this.state.messages, exitRoom] });
           })
         }
       });

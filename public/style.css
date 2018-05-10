@@ -81,6 +81,7 @@ body {
 
   .Home {
     position: relative;
+    padding-bottom: 80px;
   }
 
   .Home::after {
