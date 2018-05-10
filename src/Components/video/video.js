@@ -204,7 +204,7 @@ class Video extends Component {
     this.roomRef.update({
       roomId: this.state.roomId,
       playerStatus: event.data,
-      currentTime: event.target.getCurrentTime(),
+      // currentTime: event.target.getCurrentTime(),
     });
   };
 
