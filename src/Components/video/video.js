@@ -104,7 +104,9 @@ class Video extends Component {
         let value = snapshot.val();
         if (value.currentVideo !== this.state.videoId) {
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
-          this.setState({ videoId: value.currentVideo, currentIndex: newIndex })
+          this.setState({ videoId: value.currentVideo, currentIndex: newIndex }, () => {
+            if (this.player.seekTo) this.player.seekTo(0)
+          })
         }
 
         else {
@@ -219,7 +221,7 @@ class Video extends Component {
     this.roomRef.update({
       currentVideo: newVideo,
       currentTime: 0,
-      playerStatus: 2,
+      playerStatus: 1,
     })
   }
 

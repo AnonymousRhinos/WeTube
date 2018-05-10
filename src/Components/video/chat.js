@@ -55,7 +55,6 @@ class Chat extends Component {
     let startListeningUsers = () => {
       usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
-        console.log("USER BEING ADDED FROM FBASE", user)
         this.setState({ users: [...this.state.users, user] });
       });
     };
@@ -123,7 +122,6 @@ class Chat extends Component {
   }
 
   render() {
-    console.log("USERS", this.state.users)
     return (
       <div id="chat">
         <div className="users-list">
