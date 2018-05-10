@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import { Queue } from '../index.js';
-import { VideoChat } from '../index.js';
-import { Chat } from '../index.js';
-import { VideoShare } from '../index.js';
-import { VideoSearch } from '../index.js';
-import { JoinChat } from '../index.js';
+import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat  } from '../index.js';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 import colors from '../../colors.js';
-import OpenTok from "opentok";
+import OpenTok from 'opentok';
 import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
@@ -151,7 +146,8 @@ class Video extends Component {
         if (this.player.getCurrentTime) {
           this.clientUserRef.update({
             handshake: new Date().getTime(),
-            playerTime: this.player.getCurrentTime()
+            playerTime: this.player.getCurrentTime() || 0,
+            videoId: this.state.videoId
           })
         }
         if (this.stopTicking !== true) {
@@ -169,7 +165,7 @@ class Video extends Component {
               highTime = snapshot.val()[key].playerTime;
             }
           }
-          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)) {
+          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime) && (this.state.videoId === snapshot.val()[this.state.name].videoId )) {
             this.player.seekTo(highTime)
           }
         })
