@@ -21,6 +21,15 @@ button {
   margin-bottom: 10px;
 }
 
+.btn-theater {
+  color: black;
+  border-radius: 10px;
+  border-color: #222;
+  font: bold;
+  font-family: 'Ubuntu', sans-serif;
+  background-color: #B7C7D8
+}
+
 input.break {
   word-wrap: break-word;
   word-break: break-all;
@@ -257,6 +266,10 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     max-height: 450px;
     flex-basis: 350px;
     border-radius: 10px;
+  }
+
+  .message-time {
+    font-size: 12px;
   }
 
   .users-list {

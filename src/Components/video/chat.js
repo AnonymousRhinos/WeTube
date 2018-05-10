@@ -43,9 +43,9 @@ class Chat extends Component {
     let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
         let msg = snapshot.val();
-          if (this.state.users.indexOf(this.state.name)) {
-            this.setState({ messages: [...this.state.messages, msg] });
-          }
+        if (this.state.users.indexOf(this.state.name)) {
+          this.setState({ messages: [...this.state.messages, msg] });
+        }
       });
     };
     startListeningMessages();
@@ -88,17 +88,17 @@ class Chat extends Component {
 
     const timedoutUserRemove = () => {
 
-      setTimeout (() => {
+      setTimeout(() => {
         usersRemRef.once('value', snapshot => {
           const time = new Date().getTime()
-          for(let key in snapshot.val()){
-            if((time - snapshot.val()[key].handshake) > 3000){
+          for (let key in snapshot.val()) {
+            if ((time - snapshot.val()[key].handshake) > 3000) {
               let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
               deletedRef.remove();
             }
           }
         })
-        if(this.stopTicking !== true){
+        if (this.stopTicking !== true) {
           timedoutUserRemove();
         }
       }, 1000)
@@ -117,8 +117,11 @@ class Chat extends Component {
 
   getCurrentTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
+    let meridian;
+    if (time[0] >= 12) meridian = 'AM'
+    else meridian = 'PM'
     time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
+    time = time.join(':') + meridian;
     return time
   }
 
@@ -137,7 +140,7 @@ class Chat extends Component {
         <div id="chat-header">
           <h5 id="username" >{this.state.name}:</h5>
           <form id="add-message" onSubmit={this.handleSubmit}>
-            <input id="text" type="text" placeholder="Message" onChange={this.handleChange}/>
+            <input id="text" type="text" placeholder="Message" onChange={this.handleChange} />
             <button className="btn" type="submit" id="post" disabled={this.state.message.length < 1}>
               Post
           </button>
@@ -147,14 +150,23 @@ class Chat extends Component {
           {this.state.messages.slice(0).reverse().map((message, index) => {
             const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
             const messageColor = message.user === this.state.name ? { 'backgroundColor': '#000000' } : { 'backgroundColor': message.color };
+            let time = message.time.split(':');
+            let mer = time[2].slice(-2);
+            let newTime = time.slice(0, 2).join(':') + ' ' + mer;
             return (
-              <p
+              <div
                 key={index}
                 className={`message ${messClass}`}
                 style={messageColor}
               >
-                {message.user} ({message.time}): {message.message}
-              </p>
+                <span className="message-time">
+                  ~{newTime}
+                </span>
+                <p>
+                  {message.user} : {message.message}
+                </p>
+
+              </div>
             )
           })
           }
