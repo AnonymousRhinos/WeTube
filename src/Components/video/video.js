@@ -13,6 +13,25 @@ import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
 
+const getTime = () => {
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    let meridian;
+    if (time[0] >= 12) meridian = 'AM'
+    else meridian = 'PM'
+    time[0] = (+time[0] + 7) % 12;
+    time = time.join(':') + meridian;
+    return time
+}
+
+const establishColor = (colorsList) => {
+  let names = colorsList.names;
+  let randomProperty = function (colorNames) {
+    let keys = Object.keys(colorNames)
+    return colorNames[keys[Math.floor(keys.length * Math.random())]];
+  };
+  return randomProperty(names)
+}
+
 class Video extends Component {
   constructor(props) {
     super(props);
@@ -31,11 +50,11 @@ class Video extends Component {
       windowWidth: window.innerWidth,
     };
     this.player = {};
-    this.isJoining = true;
     this.highTime = 0;
     this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
     this.usersRef = myFirebase.database().ref('users/' + this.state.roomId);
     this.videosRef = myFirebase.database().ref('videos/' + this.state.roomId);
+    this.joinRef = myFirebase.database().ref('messages/' + this.state.roomId);
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -43,7 +62,6 @@ class Video extends Component {
       this.stopListening();
       this.listenToFirebase();
     }
-
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
@@ -54,22 +72,6 @@ class Video extends Component {
     window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
-  getCurrentTime = () => {
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
-    return time
-  }
-
-  establishColor = (colorsList) => {
-    let names = colorsList.names;
-    let randomProperty = function (colorNames) {
-      let keys = Object.keys(colorNames)
-      return colorNames[keys[Math.floor(keys.length * Math.random())]];
-    };
-    return randomProperty(names)
-  }
-
   joinRoom = (name) => {
     const opentok = new OpenTok(apiKey, secret);
     let token;
@@ -78,21 +80,18 @@ class Video extends Component {
         let value = snapshot.val()
         token = opentok.generateToken(value.sessionId)
         this.setState({ sessionId: value.sessionId, token: token })
-        let enterTime = this.getCurrentTime();
-        const color = this.establishColor(colors);
+        let enterTime = getTime();
+        const color = establishColor(colors);
         let newName = '';
         if (name) {
           newName = name.replace(/[\.\#\$\[\]\&]+/g, ``)
-          console.log("token", token)
           myFirebase.database().ref('users/' + this.state.roomId + '/' + newName).set({ newName, enterTime, token });
-          const joinRef = myFirebase.database().ref('messages/' + this.state.roomId);
           const message = {
             user: 'Admin',
             message: `${newName} has entered the theatre`,
             time: enterTime
           };
-          //I still want to push no matter what.... maybe hold off on set state tho?
-          joinRef.push(message);
+          this.joinRef.push(message);
         }
         this.setState({ name: newName, color: color }, () => {
           this.listenToFirebase();
@@ -101,39 +100,16 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let {
-      currentIndex,
-      playlist,
-      update,
-      roomId,
-      videoId,
-      name
-    } = this.state;
-
-    let startListeningUsers = () => {
-      this
-        .usersRef
-        .on('child_added', snapshot => {
-          let user = snapshot.val();
-          let currentTime = this
-            .player
-            .getCurrentTime();
-          let playerStatus = this
-            .player
-            .getPlayerState();
-          this
-            .roomRef
-            .set({ roomId: roomId, playerStatus, currentTime, sessionId: this.state.sessionId });
-        })
-    }
-
+    let { roomId, videoId, name } = this.state;
 
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
         let value = snapshot.val();
         if (value.currentVideo !== this.state.videoId) {
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
-          this.setState({ videoId: value.currentVideo, currentIndex: newIndex })
+          this.setState({ videoId: value.currentVideo, currentIndex: newIndex }, () => {
+            if (this.player.seekTo) this.player.seekTo(0)
+          })
         }
 
         else {
@@ -141,14 +117,6 @@ class Video extends Component {
             let status = value.playerStatus;
             let currentTime = value.currentTime;
 
-            // if (this.isJoining && this.player.seekTo) {
-            //   this.player.seekTo(currentTime);
-            //   if (status === 1) this.player.playVideo();
-            //   else if (status === 2) this.player.pauseVideo();
-            //   this.isJoining = false;
-            // }
-
-            // else
             if (this.player.getPlayerState && (status !== this.player.getPlayerState() || status === 0)) {
               if (status === 1) {
                 this.player.seekTo(currentTime);
@@ -164,8 +132,6 @@ class Video extends Component {
                     currentTime: 0,
                     playerStatus: 1
                   })
-
-                  // this.player.loadVideoById(this.state.playlist[this.state.currentIndex], 2);
                 }
                 else {
                   this.setState({ currentIndex: this.state.currentIndex + 1 });
@@ -179,18 +145,13 @@ class Video extends Component {
       });
     }
 
-
     let startPresence = () => {
-
       setTimeout(() => {
-        let clientUserRef = myFirebase
-          .database()
-          .ref(`users/${roomId}/${name}`);
+        this.clientUserRef = myFirebase.database().ref(`users/${roomId}/${name}`);
         if (this.player.getCurrentTime) {
-          clientUserRef.update({
+          this.clientUserRef.update({
             handshake: new Date().getTime(),
             playerTime: this.player.getCurrentTime()
-
           })
         }
         if (this.stopTicking !== true) {
@@ -211,18 +172,12 @@ class Video extends Component {
           if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)) {
             this.player.seekTo(highTime)
           }
-
         })
         if (this.stopTicking !== true) {
           listenForSlowPeople();
         }
       }, 1500)
-
     }
-
-    startListeningRoom();
-    startPresence();
-    listenForSlowPeople()
 
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
@@ -231,15 +186,18 @@ class Video extends Component {
       });
     };
     startListeningVideos();
-    myFirebase
-      .database()
-      .ref('videos/' + roomId + '/' + videoId)
-      .set({ videoId });
+    startListeningRoom();
+    startPresence();
+    listenForSlowPeople()
+
+    myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({ videoId });
   }
 
   stopListening = () => {
     this.roomRef.off();
     this.videosRef.off();
+    this.videosRef.off();
+    this.joinRef.off();
   }
 
   handler = event => {
@@ -263,7 +221,7 @@ class Video extends Component {
     this.roomRef.update({
       currentVideo: newVideo,
       currentTime: 0,
-      playerStatus: 2,
+      playerStatus: 1,
     })
   }
 
@@ -274,12 +232,11 @@ class Video extends Component {
     }, () => {
       let width = this.state.theaterMode ? (this.state.windowWidth).toString() : '640';
       let height = this.state.theaterMode ? (this.state.windowWidth / 640 * 390).toString() : '390';
-        this.player.setSize(width, height)
+      this.player.setSize(width, height)
     })
   }
 
   updateDimensions() {
-    console.log("getting here?!??!?!??!?!")
     if ( this.state.windowWidth !==  window.innerWidth - 100 ) {
       this.setState({
         windowWidth: window.innerWidth - 100
@@ -287,25 +244,20 @@ class Video extends Component {
         if (this.state.theaterMode) {
           let width = (this.state.windowWidth).toString();
           let height = (this.state.windowWidth / 640 * 390).toString();
-            this.player.setSize(width, height)
+          this.player.setSize(width, height)
         }
       });
     }
   }
 
   render() {
-    // let vidWidth = this.state.theaterMode ? window.screen.width * .8 : '640'
-    // let vidHeight = this.state.theaterMode ? window.screen.width * .8  * 390 / 640: '390'
-    // console.log("WIDTH!?!??!?!", window.screen.width)
     const opts = {
       height: '390',
       width: '640',
       playerVars: {
-        // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
         enablejsapi: 1,
         modestbranding: 1,
-        //origin: ourdomain.com,
         rel: 0
       }
     };
@@ -326,8 +278,8 @@ class Video extends Component {
               }
               <div className="vid-col">
                 <div id="video">
-                <div className="screen-chat-container">
-                  <VideoShare roomId={this.state.roomId} />
+                  <div className="screen-chat-container">
+                    <VideoShare roomId={this.state.roomId} />
                     <div id="screen">
                       <YouTube
                         id="vidScreen"
@@ -338,13 +290,13 @@ class Video extends Component {
                         onPause={this.handler}
                         onEnd={this.handler} />
                       <div className="theater-container">
-                      <button
-                      className="btn theater"
-                      onClick={this.toggleTheater}
-                      >▭
+                        <button
+                          className="btn theater"
+                          onClick={this.toggleTheater}
+                        >▭
                         <span className="tooltiptext">Theater Mode</span>
-                      </button>
-                      <VideoSearch roomId={this.state.roomId} />
+                        </button>
+                        <VideoSearch roomId={this.state.roomId} />
                       </div>
                     </div>
                     <Chat
