@@ -115,11 +115,6 @@ body {
 
   /* TRENDING */
 
-  @keyframes slideshow {
-    0%    { left: 0; }
-    100%  { left: -200%; }
-  }
-
   #trend-head {
     margin-bottom: 10px
   }
@@ -134,8 +129,8 @@ body {
 
   .trending-component {
     padding: 30px 0;
-    animation: slideshow 20s linear infinite;
   }
+
   .trending-text {
     text-align: center;
     flex-direction: column;
