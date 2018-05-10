@@ -87,7 +87,7 @@ class Video extends Component {
           newName = name.replace(/[\.\#\$\[\]\&]+/g, ``)
           myFirebase.database().ref('users/' + this.state.roomId + '/' + newName).set({ newName, enterTime, token });
           const message = {
-            user: newName,
+            user: 'Admin',
             message: `${newName} has entered the theatre`,
             time: enterTime
           };

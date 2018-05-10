@@ -43,9 +43,31 @@ class Chat extends Component {
     let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
         let msg = snapshot.val();
-        if (this.state.users.indexOf(this.state.name)) {
-          this.setState({ messages: [...this.state.messages, msg] });
-        }
+          if (this.state.users.indexOf(this.state.name)) {
+
+            let newMessages = [...this.state.messages, msg];
+            
+            const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
+            let userJoinedTime;
+            userRef.once('value', snapshot2 => {
+              userJoinedTime = snapshot2.child("enterTime").node_.val()
+            }).then( ()=> {
+              let newerMessages = newMessages.filter( message => {
+
+                if(userJoinedTime >= message.time ) {
+                  if(message.user === 'Admin'){
+                    return false;
+                  }
+                  else return true;
+                }
+                else {
+                  return true
+                }
+
+              })
+              this.setState({ messages: newerMessages });
+            })
+          }
       });
     };
     startListeningMessages();
@@ -70,7 +92,7 @@ class Chat extends Component {
         let newUsers = this.state.users.slice(0)
         newUsers.splice(userIndex, 1)
         const exitRoom = {
-          user: user,
+          user: 'Admin',
           message: `${user} has left the theatre`,
           time: exitTime
         };
