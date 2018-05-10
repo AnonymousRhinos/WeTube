@@ -13,6 +13,22 @@ import tokbox from '../../tokboxConfig'
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
 
+const getTime = () => {
+  let time = new Date().toUTCString().slice(-12, -4).split(':');
+  time[0] = (+time[0] + 7) % 12;
+  time = time.join(':');
+  return time
+}
+
+const establishColor = (colorsList) => {
+  let names = colorsList.names;
+  let randomProperty = function (colorNames) {
+    let keys = Object.keys(colorNames)
+    return colorNames[keys[Math.floor(keys.length * Math.random())]];
+  };
+  return randomProperty(names)
+}
+
 class Video extends Component {
   constructor(props) {
     super(props);
@@ -53,21 +69,6 @@ class Video extends Component {
     window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
-  getTime = () => {
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] + 7) % 12;
-    time = time.join(':');
-    return time
-  }
-
-  establishColor = (colorsList) => {
-    let names = colorsList.names;
-    let randomProperty = function (colorNames) {
-      let keys = Object.keys(colorNames)
-      return colorNames[keys[Math.floor(keys.length * Math.random())]];
-    };
-    return randomProperty(names)
-  }
 
   joinRoom = (name) => {
     const opentok = new OpenTok(apiKey, secret);
@@ -77,8 +78,8 @@ class Video extends Component {
         let value = snapshot.val()
         token = opentok.generateToken(value.sessionId)
         this.setState({ sessionId: value.sessionId, token: token })
-        let enterTime = this.getTime();
-        const color = this.establishColor(colors);
+        let enterTime = getTime();
+        const color = establishColor(colors);
         let newName = '';
         if (name) {
           newName = name.replace(/[\.\#\$\[\]\&]+/g, ``)
@@ -169,18 +170,12 @@ class Video extends Component {
           if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)) {
             this.player.seekTo(highTime)
           }
-
         })
         if (this.stopTicking !== true) {
           listenForSlowPeople();
         }
       }, 1500)
-
     }
-
-    startListeningRoom();
-    startPresence();
-    listenForSlowPeople()
 
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
@@ -189,6 +184,10 @@ class Video extends Component {
       });
     };
     startListeningVideos();
+    startListeningRoom();
+    startPresence();
+    listenForSlowPeople()
+
     myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({ videoId });
   }
 
