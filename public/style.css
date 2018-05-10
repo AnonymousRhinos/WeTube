@@ -209,12 +209,9 @@ body {
   .vid-view {
     display: flex;
     flex-direction: column;
-    /* background-color: #a0b6d6; */
-    /* background: url("./images/player-background.jpg"); */
-    /* background-size: cover; */
     background: #BBD2C5;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #292E49, #536976, #BBD2C5);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
+    background: -webkit-linear-gradient(to right, #292E49, #536976, #BBD2C5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     padding: 20px 20px;
   }
 
@@ -255,7 +252,6 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    align-content: center;
     justify-content: center;
   }
 
@@ -263,6 +259,8 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     display: flex;
     flex-direction: column;
   }
+
+  /* CHAT STYLING*/
 
   #chat {
     display: inline-block;
@@ -272,12 +270,33 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     flex-grow: 2;
     overflow: auto;
     max-height: 450px;
-    flex-basis: 350px;
+    /* flex-basis: 350px; */
+    min-width: 400px;
+    max-width: 500px;
     border-radius: 10px;
   }
 
   .message-time {
     font-size: 12px;
+  }
+
+  #add-message {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    flex-grow: 3
+  }
+
+  .message {
+    flex-wrap: wrap;
+    overflow-wrap: break-word;
+    padding: 0 10px;
+    color: white;
+    width: 85%;
+    border-radius: 10px;
+    word-break:break-all;
+    font-family: 'Ubuntu', sans-serif;
+    margin-bottom: 5px
   }
 
   .users-list {
@@ -308,12 +327,6 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     align-content: center
   }
 
-  #add-message {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-    flex-grow: 3
-  }
 
   .color1 {
     float: left;
@@ -325,17 +338,6 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     text-align: right
   }
 
-  .message {
-    flex-wrap: wrap;
-    overflow-wrap: break-word;
-    padding: 0 10px;
-    color: white;
-    width: 90%;
-    border-radius: 10px;
-    word-break:break-all;
-    font-family: 'Ubuntu', sans-serif;
-    margin-bottom: 5px
-  }
 
   .message p {
     margin-bottom: 0;
@@ -429,7 +431,7 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
   .App {
     text-align: center;
     background: url("./images/home2.jpg");
-    /* opacity: 0.4; */
+    font-family: 'Ubuntu', sans-serif;
     top: 0;
     left: 0;
     bottom: 0;
@@ -691,5 +693,5 @@ box-shadow: 0px 0px 78px 4px rgba(16,134,232,0.73);
 
   #join-header {
     margin-top: 20px;
-    color: rgb(7, 0, 99)
+    color: black;
   }
