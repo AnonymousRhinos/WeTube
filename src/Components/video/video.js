@@ -87,10 +87,11 @@ class Video extends Component {
           myFirebase.database().ref('users/' + this.state.roomId + '/' + newName).set({ newName, enterTime, token });
           const joinRef = myFirebase.database().ref('messages/' + this.state.roomId);
           const message = {
-            user: newName,
+            user: 'Admin',
             message: `${newName} has entered the theatre`,
             time: enterTime
           };
+          //I still want to push no matter what.... maybe hold off on set state tho?
           joinRef.push(message);
         }
         this.setState({ name: newName, color: color }, () => {

@@ -42,9 +42,32 @@ class Chat extends Component {
       .ref('messages/' + this.props.roomId);
     let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
+        console.log('ionsdie first romise?');
         let msg = snapshot.val();
           if (this.state.users.indexOf(this.state.name)) {
-            this.setState({ messages: [...this.state.messages, msg] });
+
+            let newMessages = [...this.state.messages, msg];
+            
+            const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
+            let userJoinedTime;
+            userRef.once('value', snapshot2 => {
+              userJoinedTime = snapshot2.child("enterTime").node_.val()
+            }).then( ()=> {
+              let newerMessages = newMessages.filter( message => {
+
+                if(userJoinedTime >= message.time ) {
+                  if(message.user === 'Admin'){
+                    return false;
+                  }
+                  else return true;
+                }
+                else {
+                  return true
+                }
+
+              })
+              this.setState({ messages: newerMessages });
+            })
           }
       });
     };
@@ -72,7 +95,7 @@ class Chat extends Component {
         const exitRef = myFirebase.database().ref('messages/' + this.props.roomId);
 
         const exitRoom = {
-          user: user,
+          user: 'Admin',
           message: `${user} has left the theatre`,
           time: exitTime
         };
