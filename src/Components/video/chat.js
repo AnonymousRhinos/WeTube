@@ -42,7 +42,6 @@ class Chat extends Component {
       .ref('messages/' + this.props.roomId);
     let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
-        console.log('ionsdie first romise?');
         let msg = snapshot.val();
           if (this.state.users.indexOf(this.state.name)) {
 
