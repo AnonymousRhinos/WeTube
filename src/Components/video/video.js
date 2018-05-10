@@ -26,7 +26,9 @@ class Video extends Component {
       playlist: [],
       newVideo: '',
       currentIndex: 0,
-      initialVid: true
+      initialVid: true,
+      theaterMode: false,
+      windowWidth: window.innerWidth,
     };
     this.player = {};
     this.isJoining = true;
@@ -41,11 +43,15 @@ class Video extends Component {
       this.stopListening();
       this.listenToFirebase();
     }
+
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions.bind(this));
   }
 
   componentWillUnmount = () => {
     this.stopListening();
     this.stopTicking = true;
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
   getCurrentTime = () => {
@@ -173,11 +179,6 @@ class Video extends Component {
     }
 
 
-
-
-
-
-
     let startPresence = () => {
 
       setTimeout(() => {
@@ -199,10 +200,6 @@ class Video extends Component {
 
     let listenForSlowPeople = () => {
       setTimeout(() => {
-
-
-
-
         this.usersRef.once('value', snapshot => {
           let highTime = 0;
           for (let key in snapshot.val()) {
@@ -269,7 +266,36 @@ class Video extends Component {
     })
   }
 
+  toggleTheater = (evt) => {
+    evt.preventDefault();
+    this.setState({
+      theaterMode: !this.state.theaterMode,
+    }, () => {
+      let width = this.state.theaterMode ? (this.state.windowWidth).toString() : '640';
+      let height = this.state.theaterMode ? (this.state.windowWidth / 640 * 390).toString() : '390';
+        this.player.setSize(width, height)
+    })
+  }
+
+  updateDimensions() {
+    console.log("getting here?!??!?!??!?!")
+    if ( this.state.windowWidth !==  window.innerWidth - 100 ) {
+      this.setState({
+        windowWidth: window.innerWidth - 100
+      }, () => {
+        if (this.state.theaterMode) {
+          let width = (this.state.windowWidth).toString();
+          let height = (this.state.windowWidth / 640 * 390).toString();
+            this.player.setSize(width, height)
+        }
+      });
+    }
+  }
+
   render() {
+    // let vidWidth = this.state.theaterMode ? window.screen.width * .8 : '640'
+    // let vidHeight = this.state.theaterMode ? window.screen.width * .8  * 390 / 640: '390'
+    // console.log("WIDTH!?!??!?!", window.screen.width)
     const opts = {
       height: '390',
       width: '640',
@@ -297,34 +323,45 @@ class Video extends Component {
                 />
                 : <div />
               }
-              <div id="video">
-                <VideoShare roomId={this.state.roomId} />
-                <div id="screen">
-                  <YouTube
-                    id="vidScreen"
-                    videoId={this.state.videoId}
-                    opts={opts}
-                    onReady={this._onReady}
-                    onPlay={this.handler}
-                    onPause={this.handler}
-                    onEnd={this.handler} />
-                  <VideoSearch roomId={this.state.roomId} />
+              <div className="vid-col">
+                <div id="video">
+                <div className="screen-chat-container">
+                  <VideoShare roomId={this.state.roomId} />
+                    <div id="screen">
+                      <YouTube
+                        id="vidScreen"
+                        videoId={this.state.videoId}
+                        opts={opts}
+                        onReady={this._onReady}
+                        onPlay={this.handler}
+                        onPause={this.handler}
+                        onEnd={this.handler} />
+                      <div className="theater-container">
+                      <button
+                      className="btn theater"
+                      onClick={this.toggleTheater}
+                      >▭
+                        <span className="tooltiptext">Theater Mode</span>
+                      </button>
+                      <VideoSearch roomId={this.state.roomId} />
+                      </div>
+                    </div>
+                    <Chat
+                      videoId={this.state.videoId}
+                      roomId={this.state.roomId}
+                      token={this.state.token}
+                      guestName={this.state.name}
+                      color={this.state.color}
+                    />
+                  </div>
                 </div>
-
-                <Chat
+                <Queue
                   videoId={this.state.videoId}
                   roomId={this.state.roomId}
-                  token={this.state.token}
-                  guestName={this.state.name}
-                  color={this.state.color}
+                  playlist={this.state.playlist}
+                  changeVideo={this.changeVideo}
                 />
               </div>
-              <Queue
-                videoId={this.state.videoId}
-                roomId={this.state.roomId}
-                playlist={this.state.playlist}
-                changeVideo={this.changeVideo}
-              />
             </div>
             :
             <div>

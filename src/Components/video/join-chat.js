@@ -24,14 +24,12 @@ class JoinChat extends Component {
         return (
             <div className="Home">
                 <header className="App-header">
-                    <img className="logo-header" src="/logo.jpg" />
                     <div id="text open-sign">
                         <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
                     </div>
-                    <img className="logo-header" src="/logo.jpg" alt="alt-logo" />
                 </header>
                 <div id="join-chat">
-                <h4 id="join-header">Enter Your Name</h4>
+                    <h4 id="join-header">Enter Your Name</h4>
                     <form className="join-container" onSubmit={this.handleSubmit}>
                         <input
                             size="80"

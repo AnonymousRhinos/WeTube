@@ -186,6 +186,8 @@ body {
   #video {
     display: flex;
     justify-content: space-around;
+    align-content: center
+    /* flex-basis: 640px */
   }
 
   .vid-view {
@@ -197,24 +199,63 @@ body {
     background: #BBD2C5;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #292E49, #536976, #BBD2C5);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
-
-
-
     padding: 20px 20px;
   }
+
+  .theater-container {
+    display: flex;
+  }
+
+  .theater {
+    margin-right: 10px;
+    font-size: 25px;
+    font-weight: 900
+  }
+
+  .theater .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    font-size: 14px;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.theater:hover .tooltiptext {
+  visibility: visible;
+}
 
   #text {
     width: 100%
   }
 
+  .screen-chat-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .vid-col {
+    display: flex;
+    flex-direction: column;
+  }
+
   #chat {
-    /* background-color: rgba(117, 121, 127, 0.09); */
+    display: inline-block;
     background-color: rgba(41, 46, 73, .2);
     padding: 20px 10px;
     margin-left: 20px;
     flex-grow: 2;
     overflow: auto;
-    max-height: 425px;
+    max-height: 450px;
+    flex-basis: 350px;
     border-radius: 10px;
   }
 
@@ -254,7 +295,6 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
   }
 
   .color1 {
-
     float: left;
     text-align: left
   }
