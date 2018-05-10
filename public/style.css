@@ -6,7 +6,8 @@
 
 /* BUTTONS */
 button {
-  margin-left: 10px
+  margin-left: 10px;
+  transition: all .5s;
 }
 
 .btn {
@@ -15,8 +16,13 @@ button {
   border-color: #222;
   font: bold;
   font-family: 'Ubuntu', sans-serif;
-  background-color: #B7C7D8
+  background-color: #B7C7D8;
 }
+
+button:active {
+  transform: translateY(2px) translateX(1px);
+}
+
 #join-vid-chat-btn {
   margin-bottom: 10px;
 }
@@ -214,6 +220,7 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
 
   .theater-container {
     display: flex;
+    margin-bottom: 10px
   }
 
   .theater {
@@ -341,10 +348,13 @@ background: linear-gradient(to right, #292E49, #536976, #BBD2C5);
     margin-right: 15px;
   }
 
-
   .vidChat {
     display: flex;
     flex-direction: column;
+  }
+
+  .OTPublisherContainer {
+    margin-bottom: 5px;
   }
 
   .OT_widget-container {
