@@ -196,7 +196,6 @@ class Video extends Component {
   stopListening = () => {
     this.roomRef.off();
     this.videosRef.off();
-    this.clientUserRef.off();
     this.videosRef.off();
     this.joinRef.off();
   }
