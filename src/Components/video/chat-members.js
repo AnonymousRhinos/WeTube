@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import myFirebase from '../../Firebase/firebaseInit';
+import React from 'react';
 
 const ChatMembers = (props) => {
 
