@@ -17,6 +17,7 @@ class Chat extends Component {
     this.userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
     this.usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     this.messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
+    this.stopTicking = false;
   }
 
   getCurrentTime = () => {
@@ -32,43 +33,56 @@ class Chat extends Component {
   listenToFirebase = () => {
     console.log('outside at least')
     let startListeningMessages = () => {
-      console.log('listening to stuff');
+      console.log('STARTSNAP');
+
       this.messagesRef.on('child_added', snapshot => {
+        let newerMessages;
+        console.log('snapshot ', snapshot)
         let msg = snapshot.val();
-        if (this.state.users.indexOf(this.state.name)) {
-          
+        console.log('msg: ', msg)
+        // if (this.state.users.indexOf(this.state.name)) {
+          // console.log('state is: ', this.state.messages);
+          // console.log('message is: ', msg)
           let newMessages = [...this.state.messages, msg];
           
           let userJoinedTime;
           this.userRef.once('value', snapshot2 => {
             userJoinedTime = snapshot2.child("enterTime").node_.val()
           }).then(() => {
-            let newerMessages = newMessages.filter(message => {
+            // console.log('length of newMessages: ', newMessages.length)
+            newerMessages = newMessages.filter(message => {
               
               if (userJoinedTime >= message.time) {
-                if (message.user === 'Admin') {
-                  return false;
-                }
-                else return true;
+                // if (message.user === 'Admin') {
+                //   return false;
+                // }
+                // else return true;
+                return false
               }
               else {
                 return true
               }
               
             })
+            // console.log('length of newer messages: ', newerMessages.length)
             this.setState({ messages: newerMessages });
           })
-        }
+        // }
       });
     };
     
   let timedoutUserRemove = () => {
       
       setTimeout(() => {
+        console.log('once per second');
         this.usersRef.once('value', snapshot => {
           const time = new Date().getTime()
           for (let key in snapshot.val()) {
+            console.log('inside ', snapshot.val());
+            console.log('time1: ', time)
+            console.log('time2: ', snapshot.val()[key].handshake)
             if ((time - snapshot.val()[key].handshake) > 3000) {
+              console.log('about to delete i swear ', key)
               let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
               deletedRef.remove();
             }
@@ -128,7 +142,9 @@ class Chat extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('shit updating')
+    console.log('updated')
+    // console.log('prevprops ', prevProps)
+    // console.log('prevstate ', prevState)
     if (prevProps.roomId !== this.props.roomId){
       this.stopListening();
       this.listenToFirebase();
@@ -143,11 +159,18 @@ class Chat extends Component {
     this.stopTicking = true;
   }
   render() {
+
+    // console.log('state is ', this.state)
+    // console.log('state is MSG ', this.state.messages)
+    // console.log('state is 0', this.state.messages[0])
+    
+
     return (
       <div id="chat">
         <ChatMembers users={this.state.users} />
         <div id="message-list" ref={ref => this.container = ref}>
           {this.state.messages.map((message, index) => {
+            // console.log('---------------message--------------- ', message)
             const messClass = (message.user !== this.state.name)
             ? 'color1'
             : 'color2';
