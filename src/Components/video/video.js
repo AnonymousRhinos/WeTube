@@ -38,9 +38,7 @@ class Video extends Component {
       sessionId: '',
       token: '',
       playlist: [],
-      newVideo: '',
       currentIndex: 0,
-      initialVid: true,
       theaterMode: false,
       windowWidth: window.innerWidth,
     };
@@ -120,7 +118,6 @@ class Video extends Component {
 
               else if (status === 0) {
                 if (this.state.currentIndex + 1 < this.state.playlist.length) {
-                  console.log(4)
                   this.setState({ currentIndex: this.state.currentIndex + 1 });
                   this.roomRef.update({
                     currentVideo: this.state.playlist[this.state.currentIndex],
@@ -177,9 +174,13 @@ class Video extends Component {
 
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
-        let video = snapshot.val();
-        this.updatePlaylist(video.videoId)
+        let addedVideo = snapshot.val();
+        this.updatePlaylist(addedVideo.videoId)
       });
+      this.videosRef.on('child_removed', snapshot => {
+        let videoRemoved = snapshot.val().videoId;
+        this.setState({playlist: this.state.playlist.filter(id=>id !== videoRemoved)})
+      })
     };
     startListeningVideos();
     startListeningRoom();
@@ -192,8 +193,6 @@ class Video extends Component {
   stopListening = () => {
     this.roomRef.off();
     this.videosRef.off();
-    this.videosRef.off();
-    this.joinRef.off();
   }
 
   handler = event => {
@@ -219,6 +218,26 @@ class Video extends Component {
       currentTime: 0,
       playerStatus: 1,
     })
+  }
+
+  removeFromQueue = videoId => {
+    let {currentIndex} = this.state
+    console.log('before remove: playlist', this.state.playlist)
+    this.setState({playlist: this.state.playlist.filter(id=>id !== videoId)}, () => {
+      if(videoId === this.state.videoId){
+        console.log('removing current video, currentindex', currentIndex, 'playlist', this.state.playlist)
+        if (currentIndex < this.state.playlist.length)
+          this.roomRef.update({
+            currentVideo: this.state.playlist[currentIndex],
+            currentTime: 0,
+            playerStatus: 1
+          })
+        else this.player.stopVideo();
+      }
+
+    })
+    myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).remove();
+
   }
 
   toggleTheater = (evt) => {
@@ -309,6 +328,7 @@ class Video extends Component {
                   roomId={this.state.roomId}
                   playlist={this.state.playlist}
                   changeVideo={this.changeVideo}
+                  removeFromQueue={this.removeFromQueue}
                 />
               </div>
             </div>
