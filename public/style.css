@@ -249,6 +249,10 @@ body {
     width: 100%
   }
 
+  .trend-in-theater {
+    background-color: rgba(255, 255, 255, 0.3)
+  }
+
   .screen-chat-container {
     display: flex;
     flex-wrap: wrap;
@@ -269,12 +273,22 @@ body {
     padding: 20px 10px;
     margin-left: 20px;
     flex-grow: 2;
-    overflow: auto;
     max-height: 450px;
     /* flex-basis: 350px; */
     min-width: 400px;
     max-width: 500px;
     border-radius: 10px;
+    position: relative;
+    /* overflow-y: auto; */
+  }
+
+  #message-list {
+    overflow: auto;
+    height: 70%;
+  }
+
+  #post {
+    text-align: center;
   }
 
   .message-time {
@@ -283,19 +297,20 @@ body {
 
   #add-message {
     display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-    flex-grow: 3
+    margin-top: 10px;
+  }
+
+  .message-input {
+    bottom: 10px;
   }
 
   .message {
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     overflow-wrap: break-word;
     padding: 0 10px;
     color: white;
     width: 85%;
     border-radius: 10px;
-    word-break:break-all;
     font-family: 'Ubuntu', sans-serif;
     margin-bottom: 5px
   }
@@ -303,8 +318,10 @@ body {
   .users-list {
     display: flex;
     color: white;
-    flex-wrap: wrap;
-    overflow-wrap: break-word
+    /* position: absolute; */
+    /* height: 10%; */
+    /* flex-wrap: wrap; */
+    /* overflow-wrap: break-word */
   }
 
   #user-list {
@@ -321,11 +338,13 @@ body {
   }
 
   #chat-header {
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex; */
+    /* flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    align-content: center
+    align-content: center */
+    text-align: left;
+    height: 20px;
   }
 
 
@@ -349,6 +368,7 @@ body {
     font-size: 20px;
     font-weight: 700;
     margin-right: 15px;
+    width: 50%;
   }
 
   .vidChat {

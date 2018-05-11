@@ -33,6 +33,7 @@ class VideoSearch extends Component {
       });
     this.setState({videoUrl: ''})
   };
+  
   render() {
     return (
       <div>
