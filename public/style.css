@@ -36,6 +36,21 @@ button:active {
   background-color: #B7C7D8
 }
 
+.url-btn {
+  color: #2B93FA;
+  border: none;
+  background-color: none;
+  font-size: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  text-decoration: none;
+}
+
+.url-btn:hover {
+  cursor: pointer;
+  outline-width: 0;
+
+}
+
 input.break {
   word-wrap: break-word;
   word-break: break-all;

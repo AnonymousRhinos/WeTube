@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class MyNavbar extends Component {
+
+  addToClipboard = (e) => {
+    e.preventDefault()
+    const url = window.location.href
+    navigator.clipboard.writeText(url);
+  }
+
   render() {
     return (
       <header className="navbar">
@@ -17,9 +24,7 @@ class MyNavbar extends Component {
           <Link to="#" className="btn-link">
             A Link
           </Link>
-          <Link to="#" className="btn-link">
-            Another Link
-          </Link>
+          <button onClick={this.addToClipboard} className="url-btn">Copy URL</button>
         </section>
       </header>
     );
