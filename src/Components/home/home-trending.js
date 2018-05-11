@@ -11,14 +11,14 @@ class TrendingComponent extends Component {
       trendingVideos: [],
       titles: [],
       category: 'all',
-      categoryList: Object.keys(categories)
+      categoryList: Object.keys(categories),
+      noResults: false
     })
   }
   componentDidMount() {
-    console.log('starting', new Date().getTime())
+    let requestUrl = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status,snippet&chart=mostPopular&regionCode=US&maxResults=20&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE'
     let trendingVideos = []
-    axios
-      .get('https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status,snippet&chart=mostPopular&regionCode=US&maxResults=50&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE')
+    axios.get(requestUrl)
       .then(results => {
         trendingVideos = results.data.items;
         let embeddable = trendingVideos.filter(video => {
@@ -40,39 +40,71 @@ class TrendingComponent extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({category: event.target.value});
+    let requestUrl = 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status,snippet&chart=mostPopular&regionCode=US&maxResults=20&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE'
+    let trendingVideos = []
+    let category = event.target.value
+    if (category !== this.state.category) {
+      if (category !== 'all') {
+        let categoryId = +categories[category]
+        console.log("state: ", this.state.category, "event: ", category, categoryId)
+        requestUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status,snippet&chart=mostPopular&videoCategoryId=${categoryId}&maxResults=20&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE`
+      }
+      axios.get(requestUrl)
+        .then(results => {
+          trendingVideos = results.data.items;
+          let embeddable = trendingVideos.filter(video => {
+            if (video.status.embeddable) {
+              return true
+            }
+            else {
+              return false;
+            }
+          })
+          let titles = embeddable.map(video => video.snippet.title)
+          if (titles.length) {
+            this.setState({
+              trendingVideos: embeddable,
+              titles: titles,
+              noResults: false,
+              category: category
+            })
+          } else {
+            this.setState({
+              noResults: true,
+              category: category
+            })
+          }
+        })
+    }
   }
 
   render() {
     const { trendingVideos, category } = this.state
-    let filteredVideos = trendingVideos;
-    if ( category !== 'all' ) {
-      filteredVideos = trendingVideos.filter(video => {
-        return +categories[category] === +video.snippet.categoryId
-      })
-    }
     return (
       <div className="trending-component">
         <img id="trend-head" src="/images/TrendingNow.png" alt="alt-thing" />
         {this.state.trendingVideos.length
           ?
           <div>
-          <label>
-          Select a Category: 
+            <label id="category-label">
+              Select a Category:
           <select value={this.state.category} onChange={this.handleChange}>
-            <option value="all">ALL</option>
-          {
-            this.state.categoryList.map(cat => {
-              return <option key={categories[cat]} value={cat}>{cat}</option>
-            })
-          }
-          </select>
-        </label>
-            <div className="trend-scroll">
+                <option value="all">ALL</option>
+                {
+                  this.state.categoryList.map(cat => {
+                    return <option key={categories[cat]} value={cat}>{cat}</option>
+                  })
+                }
+              </select>
+            </label>
             {
-              filteredVideos.length ?
-              <div>
-              {filteredVideos.map((video, index) => {
+              this.state.noResults ?
+                <h5 id="no-videos">Sorry, No Current Trending Videos in the {this.state.category} Category</h5>
+                :
+                <div />
+            }
+            <div className="trend-scroll">
+              {trendingVideos.map((video, index) => {
                 return (
                   <div className="mini-vid" key={video.id} onClick={(event) => this.props.handleClick(event, video.id)}>
                     <ThumbnailCard id={video.id} />
@@ -81,12 +113,6 @@ class TrendingComponent extends Component {
                 )
               })
               }
-              </div>
-              :
-              <div>
-              <p> No Trending Videos in {this.state.category} Category </p>
-              </div>
-            }
             </div>
           </div>
           : <p> No Videos Loaded
