@@ -83,7 +83,7 @@ export class Home extends Component {
             <button className="btn" disabled={this.state.videoUrl.length < 5}>Launch Theater</button>
           </form>
         </div>
-        <TrendingComponent makeRoom={this.handleSubmit} />
+        <TrendingComponent handleClick={this.handleSubmit} />
       </div>
     );
   }

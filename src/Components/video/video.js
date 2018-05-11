@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat  } from '../index.js';
+import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat, TrendingComponent  } from '../index.js';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 import colors from '../../colors.js';
@@ -246,6 +246,11 @@ class Video extends Component {
     }
   }
 
+  addToQueue = (evt, videoId) => {
+    evt.preventDefault();
+    myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).set({ videoId });
+  }
+
   render() {
     const opts = {
       height: '390',
@@ -310,6 +315,9 @@ class Video extends Component {
                   playlist={this.state.playlist}
                   changeVideo={this.changeVideo}
                 />
+                <div className="trend-in-theater">
+                <TrendingComponent handleClick={this.addToQueue} />
+                </div>
               </div>
             </div>
             :
