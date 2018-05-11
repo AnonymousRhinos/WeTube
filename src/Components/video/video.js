@@ -14,13 +14,13 @@ const apiKey = tokbox.apiKey
 const secret = tokbox.secret
 
 const getTime = () => {
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] - 5) % 12;
-    let meridian;
-    if (time[0] >= 12) meridian = 'PM'
-    else meridian = 'PM'
-    time = time.join(':') + meridian;
-    return time
+  let time = new Date().toUTCString().slice(-12, -4).split(':');
+  time[0] = (+time[0] - 5) % 12;
+  let meridian;
+  if (time[0] >= 12) meridian = 'PM'
+  else meridian = 'PM'
+  time = time.join(':') + meridian;
+  return time
 }
 
 const establishColor = (colorsList) => {
@@ -237,7 +237,7 @@ class Video extends Component {
   }
 
   updateDimensions() {
-    if ( this.state.windowWidth !==  window.innerWidth - 100 ) {
+    if (this.state.windowWidth !== window.innerWidth - 100) {
       this.setState({
         windowWidth: window.innerWidth - 100
       }, () => {
