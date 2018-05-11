@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import myFirebase from '../../Firebase/firebaseInit';
 import { withRouter } from 'react-router';
+import ChatHeader from './chat-header';
+import ChatMembers from './chat-members';
 
 class Chat extends Component {
   constructor(props) {
@@ -10,30 +12,18 @@ class Chat extends Component {
       messages: [],
       color: this.props.color,
       users: [],
-      message: ''
     };
   }
 
-  handleChange = evt => {
-    this.setState({
-      message: evt.target.value,
-    });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const { name, color } = this.state;
-    let messageTime = this.getCurrentTime();
-    const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
-    const message = {
-      user: name,
-      message: event.target.text.value,
-      color: color,
-      time: messageTime
-    };
-    messagesRef.push(message);
-    event.target.text.value = ""
-  };
+  getCurrentTime = () => {
+    let time = new Date().toUTCString().slice(-12, -4).split(':');
+    let meridian;
+    if (time[0] - 5 >= 12) meridian = 'PM'
+    else meridian = 'AM'
+    time[0] = (+time[0] - 5 - 1) % 12 + 1;
+    time = time.join(':') + meridian;
+    return time
+  }
 
   componentDidMount = () => {
     //listen for messages and change state
@@ -43,31 +33,31 @@ class Chat extends Component {
     let startListeningMessages = () => {
       messagesRef.on('child_added', snapshot => {
         let msg = snapshot.val();
-          if (this.state.users.indexOf(this.state.name)) {
+        if (this.state.users.indexOf(this.state.name)) {
 
-            let newMessages = [...this.state.messages, msg];
+          let newMessages = [...this.state.messages, msg];
 
-            const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
-            let userJoinedTime;
-            userRef.once('value', snapshot2 => {
-              userJoinedTime = snapshot2.child("enterTime").node_.val()
-            }).then( ()=> {
-              let newerMessages = newMessages.filter( message => {
+          const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
+          let userJoinedTime;
+          userRef.once('value', snapshot2 => {
+            userJoinedTime = snapshot2.child("enterTime").node_.val()
+          }).then(() => {
+            let newerMessages = newMessages.filter(message => {
 
-                if(userJoinedTime >= message.time ) {
-                  if(message.user === 'Admin'){
-                    return false;
-                  }
-                  else return true;
+              if (userJoinedTime >= message.time) {
+                if (message.user === 'Admin') {
+                  return false;
                 }
-                else {
-                  return true
-                }
+                else return true;
+              }
+              else {
+                return true
+              }
 
-              })
-              this.setState({ messages: newerMessages });
             })
-          }
+            this.setState({ messages: newerMessages });
+          })
+        }
       });
     };
     startListeningMessages();
@@ -101,7 +91,8 @@ class Chat extends Component {
             users: newUsers
           }, () => {
             this.setState({
-              messages: [...this.state.messages, exitRoom] });
+              messages: [...this.state.messages, exitRoom]
+            });
           })
         }
       });
@@ -136,39 +127,12 @@ class Chat extends Component {
     this.stopTicking = true;
   }
 
-  getCurrentTime = () => {
-    let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] - 5) % 12;
-    let meridian;
-    if (time[0] >= 12) meridian = 'PM'
-    else meridian = 'PM'
-    time = time.join(':') + meridian;
-    return time
-  }
-
   render() {
     return (
       <div id="chat">
-        <div className="users-list">
-          <h4 id="users-header">Participants: </h4>
-          <p id="user-list">
-            {
-              this.state.users.map((user, index) => user.newName)
-                .join(", ")
-            }
-          </p>
-        </div>
-        <div id="chat-header">
-          <h5 id="username" >{this.state.name}:</h5>
-          <form id="add-message" onSubmit={this.handleSubmit}>
-            <input id="text" type="text" autoFocus="autofocus" placeholder="Message" onChange={this.handleChange} />
-            <button className="btn" type="submit" id="post" disabled={this.state.message.length < 1}>
-              Post
-          </button>
-          </form>
-        </div>
-        <div>
-          {this.state.messages.slice(0).reverse().map((message, index) => {
+        <ChatMembers users={this.state.users} />
+        <div id="message-list">
+          {this.state.messages.map((message, index) => {
             const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
             const messageColor = message.user === this.state.name ? { 'backgroundColor': '#000000' } : { 'backgroundColor': message.color };
             let time = message.time.split(':');
@@ -192,6 +156,7 @@ class Chat extends Component {
           })
           }
         </div>
+        <ChatHeader roomId={this.props.roomId} name={this.state.name} color={this.state.color} />
       </div>
     );
   }
