@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat, TrendingComponent  } from '../index.js';
+import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat, TrendingComponent } from '../index.js';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 import colors from '../../colors.js';
@@ -162,7 +162,7 @@ class Video extends Component {
               highTime = snapshot.val()[key].playerTime;
             }
           }
-          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime) && (this.state.videoId === snapshot.val()[this.state.name].videoId )) {
+          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime) && (this.state.videoId === snapshot.val()[this.state.name].videoId)) {
             this.player.seekTo(highTime)
           }
         })
@@ -179,7 +179,7 @@ class Video extends Component {
       });
       this.videosRef.on('child_removed', snapshot => {
         let removedVideo = snapshot.val().videoId;
-        this.setState({playlist: this.state.playlist.filter(id=>id !== removedVideo)})
+        this.setState({ playlist: this.state.playlist.filter(id => id !== removedVideo) })
       })
     };
     startListeningVideos();
@@ -211,7 +211,7 @@ class Video extends Component {
   };
 
   updatePlaylist = newVideo => {
-    this.setState(prevState => ({ playlist: [...prevState.playlist, newVideo] }), ()=> {
+    this.setState(prevState => ({ playlist: [...prevState.playlist, newVideo] }), () => {
       console.log('adding to playlist', this.state.playlist)
     })
   }
@@ -225,12 +225,12 @@ class Video extends Component {
   }
 
   removeFromQueue = videoId => {
-    let {currentIndex} = this.state
+    let { currentIndex } = this.state
     myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).remove();
     console.log('before remove: playlist', this.state.playlist)
-    this.setState({playlist: this.state.playlist.filter(id=>id !== videoId)}, () => {
+    this.setState({ playlist: this.state.playlist.filter(id => id !== videoId) }, () => {
       console.log('removing current video, currentindex', currentIndex, 'playlist', this.state.playlist)
-      if(videoId === this.state.videoId){
+      if (videoId === this.state.videoId) {
         if (currentIndex < this.state.playlist.length)
           this.roomRef.update({
             currentVideo: this.state.playlist[currentIndex],
@@ -321,7 +321,7 @@ class Video extends Component {
                           className="btn theater"
                           onClick={this.toggleTheater}
                         >▭
-                        <span className="tooltiptext">Theater Mode</span>
+                        <span className="tooltiptext">{this.state.theaterMode ? 'Minimize Video' : 'Theater Mode'}</span>
                         </button>
                         <VideoSearch roomId={this.state.roomId} />
                       </div>
@@ -343,7 +343,7 @@ class Video extends Component {
                   removeFromQueue={this.removeFromQueue}
                 />
                 <div className="trend-in-theater">
-                <TrendingComponent handleClick={this.addToQueue} />
+                  <TrendingComponent handleClick={this.addToQueue} />
                 </div>
               </div>
             </div>

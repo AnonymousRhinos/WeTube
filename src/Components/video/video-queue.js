@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 
 class Queue extends Component {
 
+
   render(props) {
+
+    let currentVideo = this.props.videoId
+
     return (
       <div className="trending-component">
         {this.props.playlist.length >= 1
@@ -14,11 +18,12 @@ class Queue extends Component {
                 this.props.playlist.map(videoId => {
                   return (
                     <div key={videoId} className="queue-vid">
-                      <div className="mini-vid"
-                        onClick={(event) => { this.props.changeVideo(videoId) }}>
-                        <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} className='trendingThumbnail' alt='thumbnail' />
-                      </div>
+                      <div className="mini-vid" id={ currentVideo === videoId ? 'selectedVid' : 'unselected' }>
                       <button onClick={event => { this.props.removeFromQueue(videoId) }}>Delete</button>
+                        <img
+                        onClick={(event) => { this.props.changeVideo(videoId) }}
+                        src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} className='trendingThumbnail' alt='thumbnail' />
+                      </div>
                     </div>
                   )
                 })
