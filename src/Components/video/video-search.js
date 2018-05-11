@@ -7,6 +7,7 @@ class VideoSearch extends Component {
     this.state = {
       videoUrl: '',
     };
+    this.counter = 0;
   }
 
   handleChange = evt => {

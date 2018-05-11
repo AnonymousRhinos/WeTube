@@ -75,6 +75,7 @@ export class Home extends Component {
             <input
               size="80"
               name="videoUrl"
+              autoFocus="autofocus"
               className="form-control"
               placeholder="Video Url"
               onChange={this.handleChange}
