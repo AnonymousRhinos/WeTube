@@ -127,14 +127,22 @@ class Chat extends Component {
     this.stopTicking = true;
   }
 
+  componentDidUpdate() {
+    return this.container.scrollTop = this.container.scrollHeight
+  }
+
   render() {
     return (
       <div id="chat">
         <ChatMembers users={this.state.users} />
-        <div id="message-list">
+        <div id="message-list" ref={ref => this.container = ref}>
           {this.state.messages.map((message, index) => {
-            const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
-            const messageColor = message.user === this.state.name ? { 'backgroundColor': '#000000' } : { 'backgroundColor': message.color };
+            const messClass = (message.user !== this.state.name)
+            ? 'color1'
+            : 'color2';
+            const messageColor = message.user === this.state.name
+            ? { 'backgroundColor': '#000000' }
+            : { 'backgroundColor': message.color };
             let time = message.time.split(':');
             let mer = time[2].slice(-2);
             let newTime = time.slice(0, 2).join(':') + ' ' + mer;
@@ -143,6 +151,7 @@ class Chat extends Component {
                 key={index}
                 className={`message ${messClass}`}
                 style={messageColor}
+
               >
                 <span className="message-time">
                   ~{newTime}
@@ -150,7 +159,6 @@ class Chat extends Component {
                 <p>
                   {message.user} : {message.message}
                 </p>
-
               </div>
             )
           })

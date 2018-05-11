@@ -20,9 +20,7 @@ class ChatHeader extends Component {
     const messagesRef = myFirebase
       .database()
       .ref('messages/' + this.props.roomId);
-    const { name, color } = this.state;
     let messageTime = this.getCurrentTime();
-    // const messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
     const message = {
       user: this.props.name,
       message: event.target.text.value,
