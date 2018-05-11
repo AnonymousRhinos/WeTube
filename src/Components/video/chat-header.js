@@ -42,7 +42,6 @@ class ChatHeader extends Component {
     let meridian;
     if (time[0] - 5 >= 12) meridian = 'PM'
     else meridian = 'AM'
-    console.log(time, meridian)
     time[0] = (+time[0] - 5 - 1) % 12 + 1;
     time = time.join(':') + meridian;
     return time
