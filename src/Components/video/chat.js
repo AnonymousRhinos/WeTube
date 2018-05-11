@@ -17,6 +17,7 @@ class Chat extends Component {
     this.userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
     this.usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     this.messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
+    this.stopTicking = false;
   }
 
   getCurrentTime = () => {
@@ -30,35 +31,28 @@ class Chat extends Component {
   }
 
   listenToFirebase = () => {
-    console.log('outside at least')
     let startListeningMessages = () => {
-      console.log('listening to stuff');
       this.messagesRef.on('child_added', snapshot => {
+        let newerMessages;
         let msg = snapshot.val();
-        if (this.state.users.indexOf(this.state.name)) {
-          
+
           let newMessages = [...this.state.messages, msg];
           
           let userJoinedTime;
           this.userRef.once('value', snapshot2 => {
             userJoinedTime = snapshot2.child("enterTime").node_.val()
           }).then(() => {
-            let newerMessages = newMessages.filter(message => {
-              
+            newerMessages = newMessages.filter(message => {
               if (userJoinedTime >= message.time) {
-                if (message.user === 'Admin') {
-                  return false;
-                }
-                else return true;
+                return false
               }
               else {
                 return true
               }
-              
             })
             this.setState({ messages: newerMessages });
           })
-        }
+        // }
       });
     };
     
@@ -128,7 +122,6 @@ class Chat extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('shit updating')
     if (prevProps.roomId !== this.props.roomId){
       this.stopListening();
       this.listenToFirebase();
@@ -137,12 +130,13 @@ class Chat extends Component {
   }
   
   componentWillUnmount() {
-    // let { name } = this.state
-    // const userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + name);
+
     this.stopListening();
     this.stopTicking = true;
   }
   render() {
+
+
     return (
       <div id="chat">
         <ChatMembers users={this.state.users} />
