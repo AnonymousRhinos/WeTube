@@ -253,6 +253,15 @@ body {
     background-color: rgba(255, 255, 255, 0.3)
   }
 
+  #no-videos {
+    font-weight: 800;
+    margin: 10px;
+  }
+
+  #category-label {
+    margin-right: 5px;
+  }
+
   .screen-chat-container {
     display: flex;
     flex-wrap: wrap;
