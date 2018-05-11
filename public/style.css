@@ -274,11 +274,13 @@ body {
     min-width: 400px;
     max-width: 500px;
     border-radius: 10px;
-    overflow: auto;
+    position: relative;
+    /* overflow-y: auto; */
   }
 
   #message-list {
-
+    overflow: auto;
+    height: 70%;
   }
 
   #post {
@@ -290,16 +292,11 @@ body {
   }
 
   #add-message {
-    /* display: flex; */
-    /* justify-content: center; */
+    display: flex;
     margin-top: 10px;
-    margin-bottom: 50px;
-    width: 100%;
-    /* flex-grow: 3 */
   }
 
   .message-input {
-     /* position: relative; */
     bottom: 10px;
   }
 
@@ -317,8 +314,10 @@ body {
   .users-list {
     display: flex;
     color: white;
-    flex-wrap: wrap;
-    overflow-wrap: break-word
+    /* position: absolute; */
+    /* height: 10%; */
+    /* flex-wrap: wrap; */
+    /* overflow-wrap: break-word */
   }
 
   #user-list {

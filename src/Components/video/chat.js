@@ -17,10 +17,10 @@ class Chat extends Component {
 
   getCurrentTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] - 5) % 12;
     let meridian;
-    if (time[0] >= 12) meridian = 'PM'
-    else meridian = 'PM'
+    if (time[0] - 5 >= 12) meridian = 'PM'
+    else meridian = 'AM'
+    time[0] = (+time[0] - 5 - 1) % 12 + 1;
     time = time.join(':') + meridian;
     return time
   }
@@ -131,12 +131,6 @@ class Chat extends Component {
     return (
       <div id="chat">
         <ChatMembers users={this.state.users} />
-        <ChatHeader roomId={this.props.roomId} name={this.state.name} color={this.state.color} />
-        <br />
-        <br />
-        <br />
-        <br />
-        <p>here is a new paragraph</p>
         <div id="message-list">
           {this.state.messages.map((message, index) => {
             const messClass = (message.user !== this.state.name) ? 'color1' : 'color2';
@@ -162,6 +156,7 @@ class Chat extends Component {
           })
           }
         </div>
+        <ChatHeader roomId={this.props.roomId} name={this.state.name} color={this.state.color} />
       </div>
     );
   }

@@ -39,10 +39,11 @@ class ChatHeader extends Component {
 
   getCurrentTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
-    time[0] = (+time[0] - 5) % 12;
     let meridian;
-    if (time[0] >= 12) meridian = 'PM'
-    else meridian = 'PM'
+    if (time[0] - 5 >= 12) meridian = 'PM'
+    else meridian = 'AM'
+    console.log(time, meridian)
+    time[0] = (+time[0] - 5 - 1) % 12 + 1;
     time = time.join(':') + meridian;
     return time
   }
@@ -56,7 +57,7 @@ class ChatHeader extends Component {
             <input id="text" type="text" placeholder="Message" onChange={this.handleChange} />
             <button className="btn" type="submit" id="post" disabled={this.state.message.length < 1}>
               Post
-                </button>
+            </button>
           </form>
         </div>
       </div>
