@@ -178,8 +178,8 @@ class Video extends Component {
         this.updatePlaylist(addedVideo.videoId)
       });
       this.videosRef.on('child_removed', snapshot => {
-        let videoRemoved = snapshot.val().videoId;
-        this.setState({playlist: this.state.playlist.filter(id=>id !== videoRemoved)})
+        let removedVideo = snapshot.val().videoId;
+        this.setState({playlist: this.state.playlist.filter(id=>id !== removedVideo)})
       })
     };
     startListeningVideos();
@@ -209,7 +209,9 @@ class Video extends Component {
   };
 
   updatePlaylist = newVideo => {
-    this.setState(prevState => ({ playlist: [...prevState.playlist, newVideo] }))
+    this.setState(prevState => ({ playlist: [...prevState.playlist, newVideo] }), ()=> {
+      console.log('adding to playlist', this.state.playlist)
+    })
   }
 
   changeVideo = (newVideo) => {
@@ -222,21 +224,24 @@ class Video extends Component {
 
   removeFromQueue = videoId => {
     let {currentIndex} = this.state
+    myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).remove();
     console.log('before remove: playlist', this.state.playlist)
     this.setState({playlist: this.state.playlist.filter(id=>id !== videoId)}, () => {
+      console.log('removing current video, currentindex', currentIndex, 'playlist', this.state.playlist)
       if(videoId === this.state.videoId){
-        console.log('removing current video, currentindex', currentIndex, 'playlist', this.state.playlist)
         if (currentIndex < this.state.playlist.length)
           this.roomRef.update({
             currentVideo: this.state.playlist[currentIndex],
             currentTime: 0,
             playerStatus: 1
           })
-        else this.player.stopVideo();
+        else {
+          console.log('hitting the end, so stop')
+          this.player.stopVideo();
+        }
       }
 
     })
-    myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).remove();
 
   }
 
