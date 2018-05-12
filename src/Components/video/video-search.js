@@ -33,6 +33,7 @@ class VideoSearch extends Component {
       .ref('videos/' + this.props.roomId + '/' + videoId)
       .set({
         videoId,
+        timeAdded: new Date().getTime()
       });
     this.setState({videoUrl: ''})
   };
