@@ -11,12 +11,12 @@ button {
 }
 
 .btn {
-  color: black;
+  color: white;
   border-radius: 10px;
   border-color: #222;
   font: bold;
   font-family: 'Ubuntu', sans-serif;
-  background-color: #B7C7D8;
+  background-color: rgb(231, 151, 46);
 }
 
 button:active {
@@ -131,6 +131,8 @@ body {
   /* TRENDING */
 
   #trend-head {
+    width: 150px;
+    height: auto;
     margin-bottom: 10px
   }
 
@@ -144,10 +146,11 @@ body {
 
   .trending-component {
     margin-top: 20px;
-    padding: 30px 0;
+    padding: 10px 0;
   }
 
   .trending-text {
+    color: black;
     text-align: center;
     flex-direction: column;
     display: block;
@@ -164,25 +167,27 @@ body {
   }
 
   #playlist-scroll {
-    background-color: rgba(255, 255, 255, 0.05);
+    /* background-color: rgba(255, 255, 255, 0.05); */
     display: flex;
   }
 
   .trendingThumbnail {
     padding: 20px 0px 0px 0px;
-    height: 200px;
+    height: 175px;
+    width: 210px;
   }
 
   .mini-vid {
     display: inline-flex;
     flex-direction: column;
     text-align: center;
+    /* align-items: center; */
     justify-content: center;
-    padding: 14px;
+    padding: 10px;
     text-decoration: none;
     border: solid 2px black;
-    margin: 15px 15px;
-    width: 300px;
+    margin: 5px;
+    width: 230px;
     border-radius: 10px;
   }
 
@@ -273,7 +278,8 @@ body {
   }
 
   .trend-in-theater {
-    background-color: rgba(255, 255, 255, 0.3)
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2)
   }
 
   #no-videos {
@@ -282,6 +288,7 @@ body {
   }
 
   #category-label {
+    color: black;
     margin-right: 5px;
   }
 
