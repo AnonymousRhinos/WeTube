@@ -321,7 +321,7 @@ class Video extends Component {
                           className="btn theater"
                           onClick={this.toggleTheater}
                         >▭
-                        <span className="tooltiptext">{this.state.theaterMode ? 'Minimize Video' : 'Theater Mode'}</span>
+                        <span className="tooltiptext">{this.state.theaterMode ? 'Default View' : 'Theater Mode'}</span>
                         </button>
                         <VideoSearch roomId={this.state.roomId} />
                       </div>
