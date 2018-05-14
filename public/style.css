@@ -83,6 +83,11 @@ button:active {
   margin-right: 0px;
 }
 
+#youtube-img {
+  height: 25px;
+  margin-right: 0px;
+}
+
 input.break {
   word-wrap: break-word;
   word-break: break-all;
@@ -95,6 +100,7 @@ body {
 
   a {
     text-decoration: none;
+    margin: 0px 0px 0px 0px;
   }
 
   /* NAVBAR */

@@ -21,9 +21,12 @@ class MyNavbar extends Component {
           </Link>
         </section>
         <section className="navbar-section">
-          <Link to="https://www.youtube.com/" target="_blank" className="btn-link">
+          <a href="https://www.youtube.com/" target="_blank">
+            <img src="/images/YouTube.jpg" alt="YouTube" id="youtube-img" />
+          </a>
+          {/* <Link to="https://www.youtube.com/" target="_blank" className="btn-link">
             YouTube
-          </Link>
+          </Link> */}
           <div>
             <a href="#" onClick={this.addToClipboard}>
               <img src="/images/copy-url.png" alt="copy-url" id="copy-url-img" />
