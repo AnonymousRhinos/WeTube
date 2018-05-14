@@ -34,6 +34,7 @@ class JoinChat extends Component {
                         <input
                             size="80"
                             name="guestName"
+                            autoFocus="autofocus"
                             className="join-input"
                             placeholder="Name"
                             onChange={this.handleChange}

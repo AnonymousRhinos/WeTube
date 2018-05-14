@@ -12,11 +12,22 @@ const secret = tokbox.secret
 export class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      videoUrl: '',
-    };
+    console.log('props are: ', this.props)
+    console.log('props are: ', props)
+    if(props.match.params.videoId){
+      //grab the video ID
+      console.log('doing something right');
+      this.state = {
+        videoUrl: "https://www.youtube.com/watch?v=" + props.match.params.videoId,
+      }
+    }
+    else{
+      console.log('wrong')
+      this.state = {
+        videoUrl: '',
+      };
+    }
   }
-
 
   handleChange = evt => {
     this.setState({
@@ -27,13 +38,21 @@ export class Home extends Component {
   handleSubmit = (evt, videoInfo) => {
     evt.preventDefault();
     let { videoUrl } = this.state;
-    let begIndex = videoUrl.indexOf('v=') + 2;
-    let endIndex = videoUrl.indexOf('&');
     let videoId;
-    if (endIndex > -1) {
-      videoId = videoInfo || videoUrl.slice(begIndex, endIndex);
-    } else videoId = videoInfo || videoUrl.slice(begIndex);
+    if(videoUrl.indexOf('youtu.be/') > -1){
+      videoId = videoUrl.split('.be/')[1]
+    } else {
+      let begIndex = videoUrl.indexOf('v=') + 2;
+      let endIndex = videoUrl.indexOf('&');
+      if (endIndex > -1) {
+        videoId = videoInfo || videoUrl.slice(begIndex, endIndex);
+      } else videoId = videoInfo || videoUrl.slice(begIndex);
+    }
     let roomId = Date.now() + '&' + videoId;
+    myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({
+      videoId,
+      timeAdded: new Date().getTime()
+    });
 
     let sessionId
     let self = this;
@@ -62,6 +81,7 @@ export class Home extends Component {
   };
 
   render() {
+    const isInvalidUrl = this.state.videoUrl.toLowerCase().indexOf('youtube.com') === -1 && this.state.videoUrl.toLowerCase().indexOf('youtu.be') === -1
     return (
       <div className="Home">
         <header className="App-header">
@@ -73,17 +93,19 @@ export class Home extends Component {
           <h2 id="input-header">Create a Theater:</h2>
           <form onSubmit={this.handleSubmit}>
             <input
+              defaultValue={this.state.videoUrl}
               size="80"
               name="videoUrl"
+              autoFocus="autofocus"
               className="form-control"
               placeholder="Video Url"
               onChange={this.handleChange}
               required
             />
-            <button className="btn" disabled={this.state.videoUrl.length < 5}>Launch Theater</button>
+            <button className="btn" disabled={isInvalidUrl}>Launch Theater</button>
           </form>
         </div>
-        <TrendingComponent makeRoom={this.handleSubmit} />
+        <TrendingComponent handleClick={this.handleSubmit} />
       </div>
     );
   }

@@ -10,13 +10,26 @@ button {
   transition: all .5s;
 }
 
+button:hover {
+  border-color: #222;
+  cursor: pointer;
+}
+
 .btn {
-  color: black;
+  color: white;
   border-radius: 10px;
   border-color: #222;
   font: bold;
   font-family: 'Ubuntu', sans-serif;
-  background-color: #B7C7D8;
+  background-color: rgb(32, 112, 82);
+}
+
+.btn:hover {
+  border-color: #222;
+  cursor: pointer;
+  background-color: rgb(32, 112, 82);
+  opacity: .8;
+  color: black
 }
 
 button:active {
@@ -36,6 +49,45 @@ button:active {
   background-color: #B7C7D8
 }
 
+.remove-from-queue {
+  background-color: red;
+  border: white;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.remove-from-queue:hover {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
+.url-btn {
+  color: #2B93FA;
+  border: none;
+  background-color: none;
+  font-size: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  text-decoration: none;
+  margin-left: 2px;
+}
+
+.url-btn:hover {
+  cursor: pointer;
+  outline-width: 0;
+}
+
+#copy-url-img {
+  height: 20px;
+  margin-left: 10px;
+  margin-right: 0px;
+}
+
+#youtube-img {
+  height: 25px;
+  margin-right: 0px;
+}
+
 input.break {
   word-wrap: break-word;
   word-break: break-all;
@@ -48,6 +100,7 @@ body {
 
   a {
     text-decoration: none;
+    margin: 0px 0px 0px 0px;
   }
 
   /* NAVBAR */
@@ -116,6 +169,8 @@ body {
   /* TRENDING */
 
   #trend-head {
+    width: 150px;
+    height: auto;
     margin-bottom: 10px
   }
 
@@ -128,10 +183,12 @@ body {
   }
 
   .trending-component {
-    padding: 30px 0;
+    margin-top: 20px;
+    padding: 10px 0;
   }
 
   .trending-text {
+    color: black;
     text-align: center;
     flex-direction: column;
     display: block;
@@ -143,34 +200,74 @@ body {
   .playlist-header {
     font-family: 'Ubuntu', sans-serif;
     font: bold;
-    /* color: #2B93FA; */
+    margin-top: 10px;
     color: #000;
   }
 
   #playlist-scroll {
-    background-color: rgba(255, 255, 255, 0.05);
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    display: flex;
+  }
+
+  .queue-vid {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
 
   .trendingThumbnail {
     padding: 20px 0px 0px 0px;
-    height: 200px;
+    height: 175px;
+    width: 210px;
+  }
+
+  .trendingThumbnail-playlist {
+    padding: 5px 0px 0px 0px;
+    height: 175px;
+    width: 210px;
+  }
+
+  .trendingThumbnail-playlist:hover {
+    cursor: pointer;
+    opacity: .4;
   }
 
   .mini-vid {
     display: inline-flex;
     flex-direction: column;
     text-align: center;
+    /* align-items: center; */
     justify-content: center;
-    padding: 14px;
+    padding: 10px;
     text-decoration: none;
     border: solid 2px black;
-    margin: 15px 15px;
-    width: 300px;
+    margin: 5px;
+    width: 230px;
+    border-radius: 10px;
+  }
+
+  #selectedVid {
+    box-shadow: 0px 0px 10px 5px rgba(253, 255, 109, 0.7),
+                inset 0px 0px 10px 5px rgba(253, 255, 109, 0.7);
   }
 
   .mini-vid:hover {
     cursor: pointer;
     opacity: 0.4;
+  }
+
+  .mini-vid-playlist {
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-decoration: none;
+    border: solid 2px black;
+    margin: 5px;
+    width: 230px;
+    border-radius: 10px;
   }
 
   .theater-form {
@@ -249,6 +346,21 @@ body {
     width: 100%
   }
 
+  .trend-in-theater {
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2)
+  }
+
+  #no-videos {
+    font-weight: 800;
+    margin: 10px;
+  }
+
+  #category-label {
+    color: black;
+    margin-right: 5px;
+  }
+
   .screen-chat-container {
     display: flex;
     flex-wrap: wrap;
@@ -269,12 +381,22 @@ body {
     padding: 20px 10px;
     margin-left: 20px;
     flex-grow: 2;
-    overflow: auto;
     max-height: 450px;
     /* flex-basis: 350px; */
     min-width: 400px;
     max-width: 500px;
     border-radius: 10px;
+    position: relative;
+    /* overflow-y: auto; */
+  }
+
+  #message-list {
+    overflow: auto;
+    height: 70%;
+  }
+
+  #post {
+    text-align: center;
   }
 
   .message-time {
@@ -283,19 +405,21 @@ body {
 
   #add-message {
     display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-    flex-grow: 3
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .message-input {
+    bottom: 10px;
   }
 
   .message {
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     overflow-wrap: break-word;
     padding: 0 10px;
     color: white;
     width: 85%;
     border-radius: 10px;
-    word-break:break-all;
     font-family: 'Ubuntu', sans-serif;
     margin-bottom: 5px
   }
@@ -303,8 +427,10 @@ body {
   .users-list {
     display: flex;
     color: white;
-    flex-wrap: wrap;
-    overflow-wrap: break-word
+    /* position: absolute; */
+    /* height: 10%; */
+    /* flex-wrap: wrap; */
+    /* overflow-wrap: break-word */
   }
 
   #user-list {
@@ -321,11 +447,14 @@ body {
   }
 
   #chat-header {
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex; */
+    /* flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    align-content: center
+    align-content: center */
+    text-align: left;
+    /* height: 20px; */
+    color: white;
   }
 
 
@@ -349,6 +478,7 @@ body {
     font-size: 20px;
     font-weight: 700;
     margin-right: 15px;
+    width: 50%;
   }
 
   .vidChat {
@@ -391,6 +521,11 @@ body {
 
   .mute-btn {
     background-color: red
+  }
+
+  .chat-icon {
+    width: 20px;
+    height: auto
   }
 
   body {

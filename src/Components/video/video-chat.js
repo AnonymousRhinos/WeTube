@@ -30,7 +30,6 @@ class VideoChat extends Component {
       myAudioOn: false,
       myVideoOn: true,
       allAudioOn: true
-
     };
   }
 
@@ -81,12 +80,20 @@ class VideoChat extends Component {
                     <button
                       className={this.state.myVideoOn ? "unMute-btn" : "mute-btn"}
                       onClick={this.toggleMyVideo}
-                    >{this.state.myVideoOn ? 'Hide Self' : 'Show Self'}
+                    >
+                      <img className="chat-icon" src={this.state.myVideoOn ? "/images/video-on.png" : "/images/video-off.png"} />
+                    </button>
+                    <button
+                      className={this.state.myAudioOn ? "unMute-btn" : "mute-btn"}
+                      onClick={this.toggleMyAudio}
+                    >
+                      <img className="chat-icon" src={this.state.myAudioOn ? "/images/mic-on.png" : "/images/mic-off.png"} />
                     </button>
                     <button
                       className="unMute-btn"
                       onClick={this.toggleAllAudio}
-                    >{this.state.allAudioOn ? 'Mute All' : 'Unmute All'}
+                    >
+                      <img className="chat-icon" src={this.state.allAudioOn ? "/images/audio-on.png" : "/images/no-audio.png"} />
                     </button>
                   </div>
                   <OTPublisher
@@ -95,7 +102,8 @@ class VideoChat extends Component {
                       height: 200,
                       publishAudio: this.state.myAudioOn,
                       publishVideo: this.state.myVideoOn,
-                      name: this.props.guestName
+                      name: this.props.guestName,
+                      showControls: false
                     }}
                   />
                   <OTStreams>
@@ -104,7 +112,7 @@ class VideoChat extends Component {
                         width: 200,
                         height: 200,
                         subscribeToAudio: this.state.allAudioOn,
-                        subscribeToVideo: true
+                        subscribeToVideo: true,
                       }}
                     />
                   </OTStreams>
