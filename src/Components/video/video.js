@@ -376,7 +376,8 @@ class Video extends Component {
                       </div>
                     </div>
                     <Chat
-                      videoId={this.state.videoId}
+                      // videoId={this.state.videoId}
+                      playlist={this.state.playlist}
                       roomId={this.state.roomId}
                       token={this.state.token}
                       guestName={this.state.name}
