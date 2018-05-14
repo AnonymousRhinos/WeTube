@@ -82,7 +82,7 @@ class Video extends Component {
           myFirebase.database().ref('users/' + this.state.roomId + '/' + newName).set({ newName, enterTime, token });
           const message = {
             user: 'Admin',
-            message: `${newName} has entered the theatre`,
+            message: `${newName} has entered the theater`,
             time: enterTime
           };
           this.joinRef.push(message);
@@ -107,7 +107,7 @@ class Video extends Component {
             if (this.player.seekTo) this.player.seekTo(0)
           })
           //can't get the player to stop at beginning of first video when deleting last video
-          if(status === 2 && this.player.stopVideo) {
+          if (status === 2 && this.player.stopVideo) {
             //getting here but ignoring the stopvideo command
             console.log('getting here')
             this.player.stopVideo();
@@ -268,7 +268,7 @@ class Video extends Component {
       playlist: filteredPlaylist,
       playlistAddedTime: filteredPlaylistAddedTime
     }, () => {
-      if(this.state.playlist.length === 0){
+      if (this.state.playlist.length === 0) {
         //do something when the last video has been removed
       }
       if (removedVideo === this.state.videoId) {

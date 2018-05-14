@@ -5,6 +5,7 @@ import { TrendingComponent } from '../index.js';
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
 import tokbox from '../../tokboxConfig'
+import OnlineUserList from '../online-userlist';
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
 
@@ -89,6 +90,7 @@ export class Home extends Component {
             <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
           </div>
         </header>
+        <OnlineUserList />
         <div className="theater-form">
           <h2 id="input-header">Create a Theater:</h2>
           <form onSubmit={this.handleSubmit}>

@@ -21,18 +21,24 @@ class MyNavbar extends Component {
           </Link>
         </section>
         <section className="navbar-section">
+          <div className="dropdown">
+            <button className="dropbtn">Dropdown
+      <i className="fa fa-caret-down"></i>
+            </button>
+            <div className="dropdown-content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div>
+          </div>
           <a href="https://www.youtube.com/" target="_blank">
             <img src="/images/YouTube.jpg" alt="YouTube" id="youtube-img" />
           </a>
-          {/* <Link to="https://www.youtube.com/" target="_blank" className="btn-link">
-            YouTube
-          </Link> */}
           <div>
             <a href="#" onClick={this.addToClipboard}>
               <img src="/images/copy-url.png" alt="copy-url" id="copy-url-img" />
+              <span className="url-btn">Copy URL</span>
             </a>
-            <button
-              onClick={this.addToClipboard} className="url-btn">Copy URL</button>
           </div>
         </section>
       </header>

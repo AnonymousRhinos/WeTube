@@ -36,28 +36,28 @@ class Chat extends Component {
         let newerMessages;
         let msg = snapshot.val();
 
-          let newMessages = [...this.state.messages, msg];
-          
-          let userJoinedTime;
-          this.userRef.once('value', snapshot2 => {
-            userJoinedTime = snapshot2.child("enterTime").node_.val()
-          }).then(() => {
-            newerMessages = newMessages.filter(message => {
-              if (userJoinedTime >= message.time) {
-                return false
-              }
-              else {
-                return true
-              }
-            })
-            this.setState({ messages: newerMessages });
+        let newMessages = [...this.state.messages, msg];
+
+        let userJoinedTime;
+        this.userRef.once('value', snapshot2 => {
+          userJoinedTime = snapshot2.child("enterTime").node_.val()
+        }).then(() => {
+          newerMessages = newMessages.filter(message => {
+            if (userJoinedTime >= message.time) {
+              return false
+            }
+            else {
+              return true
+            }
           })
+          this.setState({ messages: newerMessages });
+        })
         // }
       });
     };
-    
-  let timedoutUserRemove = () => {
-      
+
+    let timedoutUserRemove = () => {
+
       setTimeout(() => {
         this.usersRef.once('value', snapshot => {
           const time = new Date().getTime()
@@ -73,7 +73,7 @@ class Chat extends Component {
         }
       }, 1000)
     }
-    
+
     let listenUserRemove = () => {
       this.usersRef.on('child_removed', snapshot => {
         let exitTime = this.getCurrentTime();
@@ -83,7 +83,7 @@ class Chat extends Component {
         newUsers.splice(userIndex, 1)
         const exitRoom = {
           user: 'Admin',
-          message: `${user} has left the theatre`,
+          message: `${user} has left the theater`,
           time: exitTime
         };
         if (user !== this.state.name) {
@@ -97,7 +97,7 @@ class Chat extends Component {
         }
       });
     };
-    
+
     let startListeningUsers = () => {
       this.usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
@@ -122,13 +122,13 @@ class Chat extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.roomId !== this.props.roomId){
+    if (prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
     }
     return this.container.scrollTop = this.container.scrollHeight
   }
-  
+
   componentWillUnmount() {
 
     this.stopListening();
@@ -143,11 +143,11 @@ class Chat extends Component {
         <div id="message-list" ref={ref => this.container = ref}>
           {this.state.messages.map((message, index) => {
             const messClass = (message.user !== this.state.name)
-            ? 'color1'
-            : 'color2';
+              ? 'color1'
+              : 'color2';
             const messageColor = message.user === this.state.name
-            ? { 'backgroundColor': '#000000' }
-            : { 'backgroundColor': message.color };
+              ? { 'backgroundColor': '#000000' }
+              : { 'backgroundColor': message.color };
             let time = message.time.split(':');
             let mer = time[2].slice(-2);
             let newTime = time.slice(0, 2).join(':') + ' ' + mer;
