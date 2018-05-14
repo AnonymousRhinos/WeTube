@@ -18,11 +18,12 @@ class Queue extends Component {
                 this.props.playlist.map(videoId => {
                   return (
                     <div key={videoId} className="queue-vid">
-                      <div className="mini-vid" id={ currentVideo === videoId ? 'selectedVid' : 'unselected' }>
-                      <button onClick={event => { this.props.removeFromQueue(videoId) }}>Delete</button>
+                      <div className="mini-vid-playlist" id={ currentVideo === videoId ? 'selectedVid' : 'unselected' }>
+                      <button className="remove-from-queue"
+                        onClick={event => { this.props.removeFromQueue(videoId) }}>Delete</button>
                         <img
                         onClick={(event) => { this.props.changeVideo(videoId) }}
-                        src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} className='trendingThumbnail' alt='thumbnail' />
+                        src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} className='trendingThumbnail-playlist' alt='thumbnail' />
                       </div>
                     </div>
                   )
