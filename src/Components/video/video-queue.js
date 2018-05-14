@@ -4,7 +4,18 @@ class Queue extends Component {
 
 
   render(props) {
-
+    let playlistInfo = [];
+    if (this.props.playlist.length > 0){
+      for(let i=0; i<this.props.playlist.length; i++){
+        playlistInfo.push({
+          videoId: this.props.playlist[i],
+          timeAdded: this.props.playlistAddedTime[i]
+        })
+      }
+      console.log('unsorted playlistinfo', playlistInfo)
+      playlistInfo.sort((a,b) => a.timeAdded - b.timeAdded)
+      console.log('sorted playlistinfo', playlistInfo)
+    }
     let currentVideo = this.props.videoId
 
     return (
@@ -15,14 +26,14 @@ class Queue extends Component {
             <h2 className="playlist-header">Playlist</h2>
             <div className="trend-scroll" id="playlist-scroll">
               {
-                this.props.playlist.map(videoId => {
+                playlistInfo.map(item => {
                   return (
-                    <div key={videoId} className="queue-vid">
-                      <div className="mini-vid-playlist" id={ currentVideo === videoId ? 'selectedVid' : 'unselected' }>
+                    <div key={item.videoId} className="queue-vid">
+                      <div className="mini-vid-playlist" id={ currentVideo === item.videoId ? 'selectedVid' : 'unselected' }>
                       <button className="remove-from-queue"
-                        onClick={event => { this.props.removeFromQueue(videoId) }}>Delete</button>
+                        onClick={event => { this.props.removeFromQueue(item.videoId) }}>Delete</button>
                         <img
-                        onClick={(event) => { this.props.changeVideo(videoId) }}
+                        onClick={(event) => { this.props.changeVideo(item.videoId) }}
                         src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} className='trendingThumbnail-playlist' alt='thumbnail' />
                       </div>
                     </div>
