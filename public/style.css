@@ -21,13 +21,13 @@ button:hover {
   border-color: #222;
   font: bold;
   font-family: 'Ubuntu', sans-serif;
-  background-color: rgb(231, 151, 46);
+  background-color: rgb(32, 112, 82);
 }
 
 .btn:hover {
   border-color: #222;
   cursor: pointer;
-  background-color: rgb(231, 151, 46);
+  background-color: rgb(32, 112, 82);
   opacity: .8;
   color: black
 }
