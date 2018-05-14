@@ -45,7 +45,6 @@ class Login extends Component {
     }
 
     render() {
-        console.log(firebase.auth().currentUser)
         if (!this.state.isSignedIn) {
             return (
                 <div>
