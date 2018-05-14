@@ -10,6 +10,11 @@ button {
   transition: all .5s;
 }
 
+button:hover {
+  border-color: #222;
+  cursor: pointer;
+}
+
 .btn {
   color: white;
   border-radius: 10px;
@@ -17,6 +22,14 @@ button {
   font: bold;
   font-family: 'Ubuntu', sans-serif;
   background-color: rgb(231, 151, 46);
+}
+
+.btn:hover {
+  border-color: #222;
+  cursor: pointer;
+  background-color: rgb(231, 151, 46);
+  opacity: .8;
+  color: black
 }
 
 button:active {
@@ -181,7 +194,7 @@ body {
   .playlist-header {
     font-family: 'Ubuntu', sans-serif;
     font: bold;
-    /* color: #2B93FA; */
+    margin-top: 10px;
     color: #000;
   }
 
@@ -387,6 +400,7 @@ body {
   #add-message {
     display: flex;
     margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   .message-input {
