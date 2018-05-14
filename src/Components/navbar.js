@@ -20,12 +20,6 @@ class MyNavbar extends Component {
             WeTube
           </Link>
         </section>
-        <section className="navbar-section">
-          <Link to="#" className="btn-link">
-            A Link
-          </Link>
-          <button onClick={this.addToClipboard} className="url-btn">Copy URL</button>
-        </section>
       </header>
     );
   }

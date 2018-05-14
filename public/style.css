@@ -453,6 +453,11 @@ body {
     background-color: red
   }
 
+  .chat-icon {
+    width: 20px;
+    height: auto
+  }
+
   body {
     margin: 0;
     padding: 0;
