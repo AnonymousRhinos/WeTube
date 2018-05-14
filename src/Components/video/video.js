@@ -120,7 +120,6 @@ class Video extends Component {
           //can't get the player to stop at beginning of first video when deleting last video
           if(status === 2 && this.player.stopVideo) {
             //getting here but ignoring the stopvideo command
-            console.log('getting here')
             this.player.stopVideo();
           }
         }
@@ -200,13 +199,14 @@ class Video extends Component {
                   }
               }
               //after it's all said and done, if the client is leader,
-              console.log('my time is: ', myTime);
-              console.log('leder timeL ', leaderTime)
-              if(leaderTime === myTime){
-                console.log('hiya im leading')
-              }
+              // console.log('my time is: ', myTime);
+              // console.log('leder timeL ', leaderTime)
+                //this if statement is currently useless!!!
+              // if(leaderTime === myTime){
+              //   console.log('hiya im leading')
+              // }
 
-              console.log('the second promise is done: ')
+              // console.log('the second promise is done: ')
               // console.log('TS Date: ', timeStuffDateObj.getTime()); 
 
             })
@@ -216,9 +216,6 @@ class Video extends Component {
               //person in front
               //perosn greater than 5 seconds from the previous pack leaders - (front man) if not new room time.
                 //need mechanism to prevent bounce back to front.
-
-
-            console.log('better update the room to time: ', this.player.getCurrentTime());
               this.roomRef.update({
                 currentTime: this.player.getCurrentTime()
               })
