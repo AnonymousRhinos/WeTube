@@ -36,6 +36,19 @@ button:active {
   background-color: #B7C7D8
 }
 
+.remove-from-queue {
+  background-color: red;
+  border: white;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.remove-from-queue:hover {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
 .url-btn {
   color: #2B93FA;
   border: none;
@@ -43,12 +56,18 @@ button:active {
   font-size: 20px;
   font-family: 'Ubuntu', sans-serif;
   text-decoration: none;
+  margin-left: 2px;
 }
 
 .url-btn:hover {
   cursor: pointer;
   outline-width: 0;
+}
 
+#copy-url-img {
+  height: 20px;
+  margin-left: 10px;
+  margin-right: 0px;
 }
 
 input.break {
@@ -171,10 +190,27 @@ body {
     display: flex;
   }
 
+  .queue-vid {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
   .trendingThumbnail {
     padding: 20px 0px 0px 0px;
     height: 175px;
     width: 210px;
+  }
+
+  .trendingThumbnail-playlist {
+    padding: 5px 0px 0px 0px;
+    height: 175px;
+    width: 210px;
+  }
+
+  .trendingThumbnail-playlist:hover {
+    cursor: pointer;
+    opacity: .4;
   }
 
   .mini-vid {
@@ -199,6 +235,20 @@ body {
   .mini-vid:hover {
     cursor: pointer;
     opacity: 0.4;
+  }
+
+  .mini-vid-playlist {
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-decoration: none;
+    border: solid 2px black;
+    margin: 5px;
+    width: 230px;
+    border-radius: 10px;
   }
 
   .theater-form {
