@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat, TrendingComponent } from '../index.js';
+import { withRouter } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';
 import colors from '../../colors.js';
@@ -33,7 +34,7 @@ class Video extends Component {
     this.state = {
       videoId: this.props.match.params.id.split('&')[1],
       roomId: this.props.match.params.id,
-      name: '',
+      name: this.props.userName,
       color: '',
       sessionId: '',
       token: '',
@@ -52,7 +53,16 @@ class Video extends Component {
     this.joinRef = myFirebase.database().ref('messages/' + this.state.roomId);
   }
 
+  componentDidMount = () => {
+    if (this.state.name) {
+      this.joinRoom(this.state.name)
+    }
+  }
+  
   componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.userName !== this.props.userName) {
+      this.joinRoom(this.props.userName)
+    }
     if (prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
@@ -453,7 +463,6 @@ class Video extends Component {
         rel: 0
       }
     };
-
     return (
       <div>
         {
@@ -492,7 +501,8 @@ class Video extends Component {
                       </div>
                     </div>
                     <Chat
-                      videoId={this.state.videoId}
+                      // videoId={this.state.videoId}
+                      playlist={this.state.playlist}
                       roomId={this.state.roomId}
                       token={this.state.token}
                       guestName={this.state.name}
@@ -525,4 +535,4 @@ class Video extends Component {
   }
 }
 
-export default Video;
+export default withRouter(Video);
