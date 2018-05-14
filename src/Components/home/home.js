@@ -81,7 +81,6 @@ export class Home extends Component {
   };
 
   render() {
-    console.log('state is: ', this.state)
     const isInvalidUrl = this.state.videoUrl.toLowerCase().indexOf('youtube.com') === -1 && this.state.videoUrl.toLowerCase().indexOf('youtu.be') === -1
     return (
       <div className="Home">
