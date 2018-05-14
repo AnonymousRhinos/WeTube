@@ -49,6 +49,10 @@ export class Home extends Component {
       } else videoId = videoInfo || videoUrl.slice(begIndex);
     }
     let roomId = Date.now() + '&' + videoId;
+    myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({
+      videoId,
+      timeAdded: new Date().getTime()
+    });
 
     let sessionId
     let self = this;
