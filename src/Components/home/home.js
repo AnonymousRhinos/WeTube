@@ -12,8 +12,6 @@ const secret = tokbox.secret
 export class Home extends Component {
   constructor(props) {
     super(props);
-    console.log('props are: ', this.props)
-    console.log('props are: ', props)
     if(props.match.params.videoId){
       //grab the video ID
       console.log('doing something right');
@@ -23,7 +21,6 @@ export class Home extends Component {
       }
     }
     else{
-      console.log('wrong')
       this.state = {
         videoUrl: '',
         userName: this.props.userName

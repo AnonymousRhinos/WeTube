@@ -5,23 +5,55 @@ import Navbar from './Components/navbar';
 import Video from './Components/video/video';
 import Home from './Components/home/home';
 import Footer from './Components/footer'
+import myFirebase from './Firebase/firebaseInit';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-        name: ''
+        name: '',
+        invitations: []
     };
+  }
+
+  componentWillUnmount () {
+    this.stopListeningFirebase();
   }
 
   setUser = (name) => {
     this.setState({
       name: name
+    }, () => {
+      this.listenToFirebase();
     })
   }
 
+  listenToFirebase = () => {
+    let startListeningInvites = () => {
+      if (myFirebase.auth().currentUser) {
+        let { uid, displayName } = myFirebase.auth().currentUser
+        myFirebase.database().ref('active/' + uid + '/invitations').on('child_added', snapshot => {
+          let invitations = snapshot.val();
+          this.setState({
+            invitations: invitations
+          })
+        })
+      }
+    }
+    startListeningInvites()
+  }
+
+  stopListeningFirebase = () => {
+    if (myFirebase.auth().currentUser) {
+      let { uid, displayName } = myFirebase.auth().currentUser
+      myFirebase.database().ref('active/' + uid + '/invitations').off()
+    }
+  }
+
   render() {
+    console.log("FIREBASE USER HERE???", myFirebase.auth().currentUser)
+    console.log("and the state is: ", this.state)
     return (
       <div className="App">
         <Navbar setUser={this.setUser} />

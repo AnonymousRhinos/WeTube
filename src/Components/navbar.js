@@ -32,10 +32,10 @@ class MyNavbar extends Component {
             <a href="#" onClick={this.addToClipboard}>
               <img src="/images/copy-url.png" alt="copy-url" id="copy-url-img" />
             </a>
-            <Login setUser={this.props.setUser} />
             <button
-              onClick={this.addToClipboard} className="url-btn">Copy URL</button>
-          </div>
+            onClick={this.addToClipboard} className="url-btn">Copy URL</button>
+            </div>
+            <Login setUser={this.props.setUser} />
         </section>
       </header>
     );
