@@ -13,6 +13,7 @@ class App extends Component {
         <Navbar />
         <Switch>
           <Route path="/room/:id" component={Video} />
+          <Route path="/home/:videoId" component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/" component={Home} />
         </Switch>
