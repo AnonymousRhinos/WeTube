@@ -14,6 +14,7 @@ class Chat extends Component {
       users: [],
     };
 
+    this.roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     this.userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
     this.usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     this.messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
@@ -36,45 +37,29 @@ class Chat extends Component {
         let newerMessages;
         let msg = snapshot.val();
 
-          let newMessages = [...this.state.messages, msg];
-          
-          let userJoinedTime;
-          this.userRef.once('value', snapshot2 => {
-            userJoinedTime = snapshot2.child("enterTime").node_.val()
-          }).then(() => {
-            newerMessages = newMessages.filter(message => {
-              if (userJoinedTime >= message.time) {
-                return false
-              }
-              else {
-                return true
-              }
-            })
-            this.setState({ messages: newerMessages });
+        let newMessages = [...this.state.messages, msg];
+
+        let userJoinedTime;
+        this.userRef.once('value', snapshot2 => {
+          userJoinedTime = snapshot2.child("enterTime").node_.val()
+        }).then(() => {
+          newerMessages = newMessages.filter(message => {
+            if (userJoinedTime >= message.time) {
+              return false
+            }
+            else {
+              return true
+            }
           })
+          this.setState({ messages: newerMessages });
+        })
         // }
       });
     };
-    
-  let timedoutUserRemove = () => {
-      
-      setTimeout(() => {
-        this.usersRef.once('value', snapshot => {
-          const time = new Date().getTime()
-          for (let key in snapshot.val()) {
-            if ((time - snapshot.val()[key].handshake) > 3000) {
-              let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
-              deletedRef.remove();
-            }
-          }
-        })
-        if (this.stopTicking !== true) {
-          timedoutUserRemove();
-        }
-      }, 1000)
-    }
-    
+
     let listenUserRemove = () => {
+      this.userRef.onDisconnect().remove();
+
       this.usersRef.on('child_removed', snapshot => {
         let exitTime = this.getCurrentTime();
         let user = snapshot.key;
@@ -95,9 +80,10 @@ class Chat extends Component {
             });
           })
         }
+
       });
     };
-    
+
     let startListeningUsers = () => {
       this.usersRef.on('child_added', snapshot => {
         let user = snapshot.val();
@@ -107,7 +93,6 @@ class Chat extends Component {
 
     startListeningUsers();
     listenUserRemove();
-    timedoutUserRemove();
     startListeningMessages();
   }
 
@@ -122,13 +107,13 @@ class Chat extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.roomId !== this.props.roomId){
+    if (prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
     }
     return this.container.scrollTop = this.container.scrollHeight
   }
-  
+
   componentWillUnmount() {
 
     this.stopListening();
@@ -143,11 +128,11 @@ class Chat extends Component {
         <div id="message-list" ref={ref => this.container = ref}>
           {this.state.messages.map((message, index) => {
             const messClass = (message.user !== this.state.name)
-            ? 'color1'
-            : 'color2';
+              ? 'color1'
+              : 'color2';
             const messageColor = message.user === this.state.name
-            ? { 'backgroundColor': '#000000' }
-            : { 'backgroundColor': message.color };
+              ? { 'backgroundColor': '#000000' }
+              : { 'backgroundColor': message.color };
             let time = message.time.split(':');
             let mer = time[2].slice(-2);
             let newTime = time.slice(0, 2).join(':') + ' ' + mer;
