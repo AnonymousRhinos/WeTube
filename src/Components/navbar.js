@@ -21,8 +21,8 @@ class MyNavbar extends Component {
           </Link>
         </section>
         <section className="navbar-section">
-          <Link to="#" className="btn-link">
-            A Link
+          <Link to="https://www.youtube.com/" target="_blank" className="btn-link">
+            YouTube
           </Link>
           <div>
             <a href="#" onClick={this.addToClipboard}>
