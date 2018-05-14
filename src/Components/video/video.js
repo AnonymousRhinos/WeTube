@@ -31,7 +31,8 @@ class Video extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoId: this.props.match.params.id.split('&')[1],
+      videoId: '',
+      // videoId: this.props.match.params.id.split('&')[1],
       roomId: this.props.match.params.id,
       name: '',
       color: '',
@@ -52,7 +53,7 @@ class Video extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.roomId !== this.props.roomId) {
+    if (prevProps.roomId !== this.props.roomId && prevProps.videoId !== this.props.videoId) {
       this.stopListening();
       this.listenToFirebase();
     }
@@ -95,15 +96,13 @@ class Video extends Component {
 
   listenToFirebase = () => {
     let { roomId, videoId, name } = this.state;
-
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
         let value = snapshot.val();
+        console.log('value', value, 'currentindex', this.state.currentIndex)
         if (value.currentVideo !== this.state.videoId) {
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
-          this.setState({ videoId: value.currentVideo, currentIndex: newIndex }, () => {
-            if (this.player.seekTo) this.player.seekTo(0)
-          })
+          this.setState({ videoId: value.currentVideo, currentIndex: newIndex })
         }
 
         else {
@@ -163,7 +162,9 @@ class Video extends Component {
               highTime = snapshot.val()[key].playerTime;
             }
           }
-          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime) && (this.state.videoId === snapshot.val()[this.state.name].videoId)) {
+          if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < highTime)
+          && (this.state.videoId === snapshot.val()[this.state.name].videoId)
+        ) {
             this.player.seekTo(highTime)
           }
         })
@@ -188,12 +189,7 @@ class Video extends Component {
     startListeningVideos();
     startListeningRoom();
     startPresence();
-    listenForSlowPeople()
-
-    myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({
-      videoId,
-      timeAdded: new Date().getTime()
-    });
+    listenForSlowPeople();
   }
 
   stopListening = () => {
@@ -202,8 +198,8 @@ class Video extends Component {
   }
 
   handler = event => {
+    console.log('hitting here,', event.target.getCurrentTime())
     this.roomRef.update({
-      roomId: this.state.roomId,
       playerStatus: event.data,
       currentTime: event.target.getCurrentTime(),
     });
@@ -226,8 +222,8 @@ class Video extends Component {
 
   removeFromPlaylist = removedVideo => {
     let removedIndex;
-    let { playlist, playlistAddedTime, currentIndex, videoId } = this.state;
-    const filteredPlaylist = playlist.filter((id, index) => {
+    let { playlistAddedTime, currentIndex, videoId } = this.state;
+    const filteredPlaylist = this.state.playlist.filter((id, index) => {
       if (id === removedVideo) removedIndex = index;
       return id !== removedVideo;
     })
@@ -236,18 +232,17 @@ class Video extends Component {
       playlist: filteredPlaylist,
       playlistAddedTime: playlistAddedTime.filter((item, index) => index !== removedIndex)
     }, () => {
-      console.log(1)
       if (removedVideo === videoId) {
-        console.log(2)
-        if (currentIndex < playlist.length)
+        if (currentIndex < this.state.playlist.length)
           this.roomRef.update({
-            currentVideo: playlist[currentIndex],
+            currentVideo: this.state.playlist[currentIndex],
             currentTime: 0,
             playerStatus: 1
           })
         else {
           console.log('hitting the end, so stop')
-          this.player.stopVideo();
+          this.setState({currentIndex: 0, videoId: this.state.playlist[0]})
+          // this.player.cueVideoById(this.state.playlist[0]);
         }
       }
 
@@ -316,7 +311,7 @@ class Video extends Component {
     }
   }
 
-  addToQueue = (evt, videoId) => {
+  addVideoToDatabase = (evt, videoId) => {
     evt.preventDefault();
     myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).set({ videoId, timeAdded: new Date().getTime() });
   }
@@ -388,7 +383,7 @@ class Video extends Component {
                   removeFromQueue={this.removeFromQueue}
                 />
                 <div className="trend-in-theater">
-                  <TrendingComponent handleClick={this.addToQueue} />
+                  <TrendingComponent handleClick={this.addVideoToDatabase} />
                 </div>
               </div>
             </div>
