@@ -7,14 +7,28 @@ import Home from './Components/home/home';
 import Footer from './Components/footer'
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        name: ''
+    };
+  }
+
+  setUser = (name) => {
+    this.setState({
+      name: name
+    })
+  }
+
   render() {
     return (
       <div className="App">
-        <Navbar />
+        <Navbar setUser={this.setUser} />
         <Switch>
           <Route path="/room/:id" component={Video} />
-          <Route path="/home" component={Home} />
-          <Route path="/" component={Home} />
+          <Route path="/home" render={() => <Home userName={this.state.name} />} />
+          <Route path="/" render={() => <Home userName={this.state.name} />} />
         </Switch>
         <Footer />
       </div>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './login'
 import { Link } from 'react-router-dom';
 
 class MyNavbar extends Component {
@@ -20,11 +21,9 @@ class MyNavbar extends Component {
             WeTube
           </Link>
         </section>
-      <section className="navbar-section">	
-          <Link to="#" className="btn-link">	
-            A Link	
-          </Link>	
-          <button onClick={this.addToClipboard} className="url-btn">Copy URL</button>	
+      <section className="navbar-section">
+          <Login setUser={this.props.setUser} />
+          <button onClick={this.addToClipboard} className="url-btn">Copy URL</button>
         </section>
       </header>
     );

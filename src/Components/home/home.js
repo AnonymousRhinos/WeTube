@@ -14,6 +14,7 @@ export class Home extends Component {
     super(props);
     this.state = {
       videoUrl: '',
+      name: ''
     };
   }
 
@@ -66,6 +67,7 @@ export class Home extends Component {
   };
 
   render() {
+    console.log(this.props)
     const isInvalidUrl = this.state.videoUrl.toLowerCase().indexOf('youtube.com') === -1 && this.state.videoUrl.toLowerCase().indexOf('youtu.be') === -1
     return (
       <div className="Home">
@@ -74,6 +76,7 @@ export class Home extends Component {
             <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
           </div>
         </header>
+        <div>
         <div className="theater-form">
           <h2 id="input-header">Create a Theater:</h2>
           <form onSubmit={this.handleSubmit}>
@@ -90,6 +93,7 @@ export class Home extends Component {
           </form>
         </div>
         <TrendingComponent handleClick={this.handleSubmit} />
+        </div>
       </div>
     );
   }

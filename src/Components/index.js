@@ -9,8 +9,6 @@ export {default as Video} from './video/video'
 export {default as JoinChat} from './video/join-chat'
 export {default as Queue} from './video/video-queue'
 export {default as VideoShare} from './video/video-share'
-
+export {default as Login} from './login'
 export {default as Footer} from './footer'
 export {default as MyNavbar} from './navbar'
-
-
