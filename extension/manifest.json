@@ -1,0 +1,41 @@
+{
+    "name": "WeTube Share",
+    "version": "1.0",
+    "description": "Watch videos with your friends!",
+    "permissions": ["activeTab", "declarativeContent", "tabs", "*://*/*", "webNavigation"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+      },
+    "manifest_version": 2,
+    "content_security_policy": "script-src 'self' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
+    "icons": {
+      "16": "icons/logo.jpg",
+      "48": "icons/logo.jpg",
+      "128": "icons/logo.jpg"
+    },
+    "browser_action": {
+        "default_icon": "icons/logo.jpg",
+        "default_title": "browser action demo",
+        "default_popup": "browser_action.html"
+    
+      },
+    "content_scripts": [
+      {
+        "matches": [
+          "https://*/*"
+        ],
+        "css": [
+          "inject.css"
+        ]
+      },
+      {
+        "matches": [
+          "https://*/*"
+        ],
+        "js": [
+          "shareAdd.js"
+        ]
+      }
+    ]
+  }

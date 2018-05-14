@@ -27,6 +27,7 @@ class App extends Component {
         <Navbar setUser={this.setUser} />
         <Switch>
           <Route path="/room/:id" render={() => <Video userName={this.state.name} />} />
+          <Route path="/home/:videoId" render={() => <Home userName={this.state.name} />} />
           <Route path="/home" render={() => <Home userName={this.state.name} />} />
           <Route path="/" render={() => <Home userName={this.state.name} />} />
         </Switch>

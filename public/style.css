@@ -10,13 +10,26 @@ button {
   transition: all .5s;
 }
 
+button:hover {
+  border-color: #222;
+  cursor: pointer;
+}
+
 .btn {
   color: white;
   border-radius: 10px;
   border-color: #222;
   font: bold;
   font-family: 'Ubuntu', sans-serif;
-  background-color: rgb(231, 151, 46);
+  background-color: rgb(32, 112, 82);
+}
+
+.btn:hover {
+  border-color: #222;
+  cursor: pointer;
+  background-color: rgb(32, 112, 82);
+  opacity: .8;
+  color: black
 }
 
 button:active {
@@ -36,6 +49,19 @@ button:active {
   background-color: #B7C7D8
 }
 
+.remove-from-queue {
+  background-color: red;
+  border: white;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.remove-from-queue:hover {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
 .url-btn {
   color: #2B93FA;
   border: none;
@@ -43,12 +69,23 @@ button:active {
   font-size: 20px;
   font-family: 'Ubuntu', sans-serif;
   text-decoration: none;
+  margin-left: 2px;
 }
 
 .url-btn:hover {
   cursor: pointer;
   outline-width: 0;
+}
 
+#copy-url-img {
+  height: 20px;
+  margin-left: 10px;
+  margin-right: 0px;
+}
+
+#youtube-img {
+  height: 25px;
+  margin-right: 0px;
 }
 
 input.break {
@@ -63,6 +100,7 @@ body {
 
   a {
     text-decoration: none;
+    margin: 0px 0px 0px 0px;
   }
 
   /* NAVBAR */
@@ -162,7 +200,7 @@ body {
   .playlist-header {
     font-family: 'Ubuntu', sans-serif;
     font: bold;
-    /* color: #2B93FA; */
+    margin-top: 10px;
     color: #000;
   }
 
@@ -171,10 +209,27 @@ body {
     display: flex;
   }
 
+  .queue-vid {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
   .trendingThumbnail {
     padding: 20px 0px 0px 0px;
     height: 175px;
     width: 210px;
+  }
+
+  .trendingThumbnail-playlist {
+    padding: 5px 0px 0px 0px;
+    height: 175px;
+    width: 210px;
+  }
+
+  .trendingThumbnail-playlist:hover {
+    cursor: pointer;
+    opacity: .4;
   }
 
   .mini-vid {
@@ -199,6 +254,20 @@ body {
   .mini-vid:hover {
     cursor: pointer;
     opacity: 0.4;
+  }
+
+  .mini-vid-playlist {
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-decoration: none;
+    border: solid 2px black;
+    margin: 5px;
+    width: 230px;
+    border-radius: 10px;
   }
 
   .theater-form {
@@ -337,6 +406,7 @@ body {
   #add-message {
     display: flex;
     margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   .message-input {

@@ -12,12 +12,24 @@ const secret = tokbox.secret
 export class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      videoUrl: '',
-      userName: this.props.userName
-    };
+    console.log('props are: ', this.props)
+    console.log('props are: ', props)
+    if(props.match.params.videoId){
+      //grab the video ID
+      console.log('doing something right');
+      this.state = {
+        videoUrl: "https://www.youtube.com/watch?v=" + props.match.params.videoId,
+        userName: this.props.userName
+      }
+    }
+    else{
+      console.log('wrong')
+      this.state = {
+        videoUrl: '',
+        userName: this.props.userName
+      };
+    }
   }
-
 
   handleChange = evt => {
     this.setState({
@@ -39,6 +51,10 @@ export class Home extends Component {
       } else videoId = videoInfo || videoUrl.slice(begIndex);
     }
     let roomId = Date.now() + '&' + videoId;
+    myFirebase.database().ref('videos/' + roomId + '/' + videoId).set({
+      videoId,
+      timeAdded: new Date().getTime()
+    });
 
     let sessionId
     let self = this;
@@ -82,6 +98,7 @@ export class Home extends Component {
           <h2 id="input-header">Create a Theater:</h2>
           <form onSubmit={this.handleSubmit}>
             <input
+              defaultValue={this.state.videoUrl}
               size="80"
               name="videoUrl"
               autoFocus="autofocus"
