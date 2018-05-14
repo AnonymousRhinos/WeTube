@@ -45,7 +45,7 @@ class Login extends Component {
     }
 
     render() {
-        console.log(this.state)
+        console.log(firebase.auth().currentUser)
         if (!this.state.isSignedIn) {
             return (
                 <div>
@@ -55,7 +55,6 @@ class Login extends Component {
         }
         return (
             <div>
-                <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
                 <Link to="/home" onClick={() => firebase.auth().signOut()}>Sign-out</Link>
             </div>
         );

@@ -14,7 +14,7 @@ export class Home extends Component {
     super(props);
     this.state = {
       videoUrl: '',
-      name: ''
+      userName: this.props.userName
     };
   }
 
@@ -60,14 +60,15 @@ export class Home extends Component {
 
       self.props.history.push({
        pathname:  `/room/${roomId}`,
-       state: {sessionId: sessionId}
+       state: {
+         sessionId: sessionId
+        }
       });
 
     })
   };
 
   render() {
-    console.log(this.props)
     const isInvalidUrl = this.state.videoUrl.toLowerCase().indexOf('youtube.com') === -1 && this.state.videoUrl.toLowerCase().indexOf('youtu.be') === -1
     return (
       <div className="Home">
