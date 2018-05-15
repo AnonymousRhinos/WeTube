@@ -15,6 +15,15 @@ button:hover {
   cursor: pointer;
 }
 
+#logout {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+  background-color: rgb(226, 226, 226);
+  font-size: 16px;
+}
+
 .btn {
   color: white;
   border-radius: 10px;
@@ -80,7 +89,7 @@ button:active {
 #copy-url-img {
   height: 20px;
   margin-left: 10px;
-  margin-right: 0px;
+  margin-right: 2px;
 }
 
 #youtube-img {
@@ -101,28 +110,99 @@ body {
   a {
     text-decoration: none;
     margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
   }
 
   /* NAVBAR */
   .navbar {
     background: rgba(255, 255, 255, 0.4);
+    overflow: hidden;
   }
 
   .navbar a {
     padding: 0px 10px;
-    font-size: 20px;
+    font-size: 10px;
     color: #2B93FA;
     font-family: 'Ubuntu', sans-serif;
-    /* font-weight: 700; */
     text-decoration: none;
   }
 
   #nav-home {
     font-family: 'Audiowide', cursive;
-    /* font-weight: bold; */
     font-size: 30px;
     color: black;
   }
+
+  /* Dropdown */
+  .dropdown {
+  overflow: hidden;
+  }
+  .dropdown:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+  }
+
+  .dropdown-content {
+    display: none;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+    cursor: pointer;
+  }
+
+    /* Online User List */
+  #online-btn {
+    border: none;
+    color: #2B93FA;
+    background-color: none;
+    font-size: 20px;
+    font-family: 'Ubuntu', sans-serif;
+    text-decoration: none;
+    margin-left: 2px;
+  }
+
+
+  #online-user:hover {
+    background-color: rgb(255, 255, 255)
+  }
+
+  #online-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(215, 222, 232);
+    border: dotted black .5px;
+    width: 70%;
+  }
+
+
+  .user-pic {
+    height: 30px;
+    width: 30px;
+  }
+
+  .online-name {
+    margin-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+  .invite-user {
+    color: gray;
+    padding-left: 10px;
+  }
+
+  .invite-user:hover{
+    cursor: pointer;
+    color: black;
+    border-top: dotted black .5px;
+    background-color: rgba(215, 222, 232, .4);
+  }
+
+  /* Footer */
 
   #footer {
     background-color: black;
@@ -447,13 +527,7 @@ body {
   }
 
   #chat-header {
-    /* display: flex; */
-    /* flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    align-content: center */
     text-align: left;
-    /* height: 20px; */
     color: white;
   }
 
@@ -547,6 +621,7 @@ body {
 
   .logo-navbar {
     height: 40px;
+    margin-bottom: 0px;
   }
 
   .App-header {
@@ -577,8 +652,40 @@ body {
     background-size: cover;
   }
 
+  .inviteText {
+    font-size: 14px;
+    padding: 2px 5px;
+    margin: 0 2px;
+  }
 
+.inviteButton {
+  font-size: 12px;
+}
 
+#notification {
+  display: inline-block;
+  background-color: rgb(60, 206, 152);
+  color: black;
+  border: solid 2px rgb(14, 51, 38);
+  margin: 3px auto;
+  border-radius: 20px;
+  padding-bottom: 3px;
+  transition: all 1s ease-out;
+}
+
+#notification:hover {
+  transform: translateX(-380px)
+}
+
+.invite-list {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  position: absolute;
+  z-index: 2;
+  transform: translateY(60px);
+  right: -375px;
+}
 
 
 /* playing with CSS text  */

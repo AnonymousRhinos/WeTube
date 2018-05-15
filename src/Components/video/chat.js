@@ -68,7 +68,7 @@ class Chat extends Component {
         newUsers.splice(userIndex, 1)
         const exitRoom = {
           user: 'Admin',
-          message: `${user} has left the theatre`,
+          message: `${user} has left the theater`,
           time: exitTime
         };
         if (user !== this.state.name) {

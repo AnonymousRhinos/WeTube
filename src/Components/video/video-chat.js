@@ -81,19 +81,25 @@ class VideoChat extends Component {
                       className={this.state.myVideoOn ? "unMute-btn" : "mute-btn"}
                       onClick={this.toggleMyVideo}
                     >
-                      <img className="chat-icon" src={this.state.myVideoOn ? "/images/video-on.png" : "/images/video-off.png"} />
+                      <img className="chat-icon" src={this.state.myVideoOn ? "/images/video-on.png" : "/images/video-off.png"}
+                        alt="video" />
                     </button>
                     <button
                       className={this.state.myAudioOn ? "unMute-btn" : "mute-btn"}
                       onClick={this.toggleMyAudio}
+                      alt="mute"
                     >
-                      <img className="chat-icon" src={this.state.myAudioOn ? "/images/mic-on.png" : "/images/mic-off.png"} />
+                      <img className="chat-icon" src={this.state.myAudioOn ? "/images/mic-on.png" : "/images/mic-off.png"}
+                        alt="mic"
+                      />
                     </button>
                     <button
                       className="unMute-btn"
                       onClick={this.toggleAllAudio}
                     >
-                      <img className="chat-icon" src={this.state.allAudioOn ? "/images/audio-on.png" : "/images/no-audio.png"} />
+                      <img className="chat-icon" src={this.state.allAudioOn ? "/images/audio-on.png" : "/images/no-audio.png"}
+                        alt="audio"
+                      />
                     </button>
                   </div>
                   <OTPublisher

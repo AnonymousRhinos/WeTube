@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Login from './login'
 import { Link } from 'react-router-dom';
+import OnlineUserList from './online-userlist';
 
 class MyNavbar extends Component {
 
@@ -22,20 +23,26 @@ class MyNavbar extends Component {
           </Link>
         </section>
         <section className="navbar-section">
-          <a href="https://www.youtube.com/" target="_blank">
+          <div className="dropdown">
+            <button className="dropbtn" id="online-btn">Online
+              <i className="fa fa-caret-down"></i>
+            </button>
+            <div className="dropdown-content">
+              <OnlineUserList />
+            </div>
+          </div>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
             <img src="/images/YouTube.jpg" alt="YouTube" id="youtube-img" />
           </a>
-          {/* <Link to="https://www.youtube.com/" target="_blank" className="btn-link">
-            YouTube
-          </Link> */}
           <div>
             <a href="#" onClick={this.addToClipboard}>
               <img src="/images/copy-url.png" alt="copy-url" id="copy-url-img" />
+              <span className="url-btn">Copy URL</span>
             </a>
-            <Login setUser={this.props.setUser} />
             <button
-              onClick={this.addToClipboard} className="url-btn">Copy URL</button>
-          </div>
+            onClick={this.addToClipboard} className="url-btn">Copy URL</button>
+            </div>
+            <Login setUser={this.props.setUser} />
         </section>
       </header>
     );
