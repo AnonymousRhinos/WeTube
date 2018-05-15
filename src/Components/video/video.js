@@ -45,6 +45,7 @@ class Video extends Component {
       theaterMode: false,
       windowWidth: window.innerWidth,
     };
+    this.readyDone = false;
     this.player = {};
     this.targetTime = 0;
     this.roomRef = myFirebase.database().ref('rooms/' + this.state.roomId);
@@ -58,7 +59,7 @@ class Video extends Component {
       this.joinRoom(this.state.name)
     }
   }
-  
+
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.userName !== this.props.userName) {
       this.joinRoom(this.props.userName)
@@ -83,6 +84,7 @@ class Video extends Component {
     this.roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
+
         token = opentok.generateToken(value.sessionId)
         this.setState({ sessionId: value.sessionId, token: token })
         let enterTime = getTime();
@@ -115,7 +117,9 @@ class Video extends Component {
         if (value.currentVideo !== this.state.videoId) {
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
           this.setState({ videoId: value.currentVideo, currentIndex: newIndex }, () => {
-            if (this.player.seekTo) this.player.seekTo(0)
+            if (this.player.seekTo) {
+              this.player.seekTo(0)
+            }
           })
           //can't get the player to stop at beginning of first video when deleting last video
           if (status === 2 && this.player.stopVideo) {
@@ -169,11 +173,34 @@ class Video extends Component {
         }
       }, 1000)
     }
-    
+
     let listenForNewTimes = () => {
       setTimeout( () => {
+
+        //
+        if(this.readyDone === true){
+
+          this.roomRef.once('value', snapshot => {
+            console.log('snapshot is: ', snapshot.val())
+            if (snapshot.val().currentTime > 1) {
+              console.log('time already established, lets jump to it')
+              if(this.player.seekTo){
+                console.log('palyer defined')
+                
+                this.player.seekTo(snapshot.val().currentTime);
+                this.setState({
+                  playerTime: snapshot.val().currentTime
+                })
+              }
+            } 
+            
+          })
+          this.readyDone = false;
+        }
+
+
         let targetTime = 0;
-        let packLeader = false; 
+        let packLeader = false;
         let myTime = 0;
         if(this.player.getCurrentTime){
           myTime = this.player.getCurrentTime()
@@ -185,7 +212,7 @@ class Video extends Component {
 
         })
         .then( () => {
-          
+
           if(this.player.getCurrentTime && (Math.abs(this.player.getCurrentTime() - targetTime) > 0.75)){
 
             //inside this promise we need to determine who the front runner is and assign packleader
@@ -198,108 +225,18 @@ class Video extends Component {
                     leaderTime = snapshot2.val()[key].playerTime;
                   }
               }
-              //after it's all said and done, if the client is leader,
-              // console.log('my time is: ', myTime);
-              // console.log('leder timeL ', leaderTime)
-                //this if statement is currently useless!!!
-              // if(leaderTime === myTime){
-              //   console.log('hiya im leading')
-              // }
-
-              // console.log('the second promise is done: ')
-              // console.log('TS Date: ', timeStuffDateObj.getTime()); 
-
             })
-
-            //check for difference in between local and room time
-            //want to update room time if the trend setter.... but what's the best mechanic?
-              //person in front
-              //perosn greater than 5 seconds from the previous pack leaders - (front man) if not new room time.
-                //need mechanism to prevent bounce back to front.
               this.roomRef.update({
                 currentTime: this.player.getCurrentTime()
               })
           }
-
-
-
         })
-
-
         if (this.stopTicking !== true) {
           listenForNewTimes();
         }
       }, 1000)
-
     }
 
-    // let listenForSlowPeople = () => {
-    //   console.log('hiay')
-    //   setTimeout(() => {
-    //     this.usersRef.once('value', snapshot => {
-    //       let targetTime = 0;
-    //         this.roomRef.once('value', snapshot2 => {
-    //           console.log('Room time from db is ', snapshot2.val().currentTime);
-    //           //here we set local target time from the room time of the database
-    //           targetTime = snapshot2.val().currentTime;
-    //         })
-    //       .then( () => {
-            
-    //         // //now we loops through each user
-    //         // for (let key in snapshot.val()) {
-    //         //   let timeStuff = snapshot.val()[key].enterTime.split(':');
-    //         //   let timeStuffDateObj;
-    //         //   timeStuffDateObj = new Date();
-    //         //   let pmCheck = () => {
-    //         //     if(timeStuff[2].slice(-2) === "PM"){
-    //         //       timeStuff[0] = (Number(timeStuff[0]) + (12)).toString();
-    //         //     }
-    //         //     else{
-    //         //       timeStuff[0] = timeStuff[0];
-    //         //     }
-    //         //   }
-    //         //   pmCheck();
-    //         //   timeStuff[2] = timeStuff[2].slice(0,2);
-    //         //   timeStuffDateObj.setHours(timeStuff[0], timeStuff[1], timeStuff[2]);
-              
-    //           //check to see if the user is "new" (e.g. joined the room less than 10 seconds ago)
-    //           console.log(timeStuffDateObj.getTime(), 'Join Time ')
-    //           console.log(new Date().getTime(), 'Now Time ')
-
-    //           if(this.player.getCurrentTime && (Math.abs((new Date().getTime() - timeStuffDateObj.getTime())) < 10000) ){
-    //             if (this.player.getCurrentTime && (Math.abs(this.player.getCurrentTime() - targetTime) > 3)) {
-    //               //user is young. seek to the room time
-    //               this.player.seekTo(targetTime)
-    //               }
-    //             console.log('yall dont see me');
-    //             continue
-    //           }
-    //           //if the user is old, proceed to see if the user is 3 seconds off the room's time
-    //           else if (Math.abs(snapshot.val()[key].playerTime - targetTime) > 3) {
-    //             console.log('I AM CHANGING ROOM TIME HERE------------- will now be: ', snapshot.val()[key].playerTime);
-    //             //if the user is 3 seconds off, it will update the room's time to this new time
-    //             targetTime = snapshot.val()[key].playerTime;
-    //             this.roomRef.update({
-    //               currentTime: targetTime
-    //             })
-    //           }
-    //         }
-    //         // if (this.player.getCurrentTime && (this.player.getCurrentTime() + 5 < targetTime)) {
-    //         //   this.player.seekTo(targetTime)
-    //         // }
-    //       })
-
-
-
-
-
-
-    //       })
-    //     if (this.stopTicking !== true) {
-    //       listenForSlowPeople();
-    //     }
-    //   }, 500)
-    // }
 
     let startListeningVideos = () => {
       this.videosRef.on('child_added', snapshot => {
@@ -336,6 +273,9 @@ class Video extends Component {
   _onReady = event => {
     this.player = event.target;
     event.target.stopVideo();
+    this.readyDone = true;
+
+
   };
 
   updatePlaylist = (newVideo, timeAdded) => {
@@ -356,24 +296,6 @@ class Video extends Component {
 
   removeFromDatabase = videoId => {
     myFirebase.database().ref('videos/' + this.state.roomId + '/' + videoId).remove();
-    // let { currentIndex } = this.state
-    // console.log('before remove: playlist', this.state.playlist)
-    // this.setState({ playlist: this.state.playlist.filter(id => id !== videoId) }, () => {
-    //   console.log('removing current video, currentindex', currentIndex, 'playlist', this.state.playlist)
-    //   if (videoId === this.state.videoId) {
-    //     if (currentIndex < this.state.playlist.length)
-    //       this.roomRef.update({
-    //         currentVideo: this.state.playlist[currentIndex],
-    //         currentTime: 0,
-    //         playerStatus: 1
-    //       })
-    //     else {
-    //       console.log('hitting the end, so stop')
-    //       this.player.stopVideo();
-    //     }
-    //   }
-
-    // })
 
   }
 
@@ -390,10 +312,11 @@ class Video extends Component {
       playlist: filteredPlaylist,
       playlistAddedTime: filteredPlaylistAddedTime
     }, () => {
-      if (this.state.playlist.length === 0) {
-        //do something when the last video has been removed
-      }
-      if (removedVideo === this.state.videoId) {
+      if(this.state.playlist.length === 0){
+        this.roomRef.update({
+          playerStatus: 0
+        })
+      } else if (removedVideo === this.state.videoId) {
         console.log('currentindex', currentIndex, 'playlist', this.state.playlist[0])
         if (this.state.currentIndex < this.state.playlist.length)
           this.roomRef.update({
@@ -407,8 +330,6 @@ class Video extends Component {
             currentTime: 0,
             playerStatus: 2
           })
-          // console.log('hitting the end, so stop')
-          // this.player.cueVideoById(this.state.playlist[0]);
         }
       }
 
@@ -497,8 +418,6 @@ class Video extends Component {
                       </div>
                     </div>
                     <Chat
-                      // videoId={this.state.videoId}
-                      playlist={this.state.playlist}
                       roomId={this.state.roomId}
                       token={this.state.token}
                       guestName={this.state.name}
