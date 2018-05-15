@@ -79,7 +79,7 @@ class TrendingComponent extends Component {
   }
 
   render() {
-    const { trendingVideos, category } = this.state
+    const { trendingVideos } = this.state
     return (
       <div className="trending-component">
         <img id="trend-head" src="/images/TrendingNow.png" alt="alt-thing" />

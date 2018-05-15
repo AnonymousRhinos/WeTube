@@ -94,7 +94,7 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let { roomId, videoId, name } = this.state;
+    let { roomId, name } = this.state;
 
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
@@ -257,7 +257,7 @@ class Video extends Component {
 
   removeFromPlaylist = removedVideo => {
     let removedIndex;
-    let { currentIndex, videoId } = this.state;
+    let { currentIndex } = this.state;
     const filteredPlaylist = this.state.playlist.filter((id, index) => {
       if (id === removedVideo) removedIndex = index;
       return id !== removedVideo;
