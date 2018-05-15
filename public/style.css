@@ -312,6 +312,21 @@ body {
     opacity: .4;
   }
 
+  .duration-text {
+    color: white;
+    background-color: black;
+    height: 18px;
+    width: 32px;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 2px;
+    opacity: .8;
+    margin: 4px;
+    position: relative;
+    bottom: 50px;
+    left: 170px;
+  }
+
   .mini-vid {
     display: inline-flex;
     flex-direction: column;
