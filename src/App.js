@@ -14,7 +14,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        name: '',
+        name: myFirebase.auth().currentUser,
         invitations: []
     };
   }
@@ -40,7 +40,6 @@ class App extends Component {
           let parent = snapshot.key
           let invitation = snapshot.val();
           invitation.id = parent;
-          console.log('invite added', invitation)
           this.setState({
             invitations: [...this.state.invitations, invitation]
           })
@@ -48,9 +47,7 @@ class App extends Component {
 
         this.invitationsRef.on('child_removed', snapshot => {
           let removed = snapshot.key
-          console.log(removed)
           let invitations = this.state.invitations.filter(invite => {
-            console.log("ID: ", invite.id, "removed: ", removed)
             return invite.id !== removed
           })
             this.setState({
@@ -69,7 +66,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("and the state is: ", this.state)
     return (
       <div className="App">
       <div className="invite-list">
@@ -79,7 +75,7 @@ class App extends Component {
         })
       }
       </div>
-        <Navbar setUser={this.setUser} />
+        <Navbar setUser={this.setUser} userName={this.state.name} />
         <Switch>
           <Route path="/room/:id" render={() => <Video userName={this.state.name} />} />
           <Route path="/home/:videoId" render={() => <Home userName={this.state.name} />} />
