@@ -42,7 +42,7 @@ class Login extends Component {
                             displayName,
                             email,
                             photoURL,
-                            invitations: ["No current invitations"]
+                            invitations: [{from: "test friend", room: "1526389097257&j4KvrAUjn6c"}]
                           });
                     firebase.database().ref('active/' + uid).onDisconnect().remove()
                     }

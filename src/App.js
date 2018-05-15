@@ -33,7 +33,15 @@ class App extends Component {
     let startListeningInvites = () => {
       if (myFirebase.auth().currentUser) {
         let { uid, displayName } = myFirebase.auth().currentUser
-        myFirebase.database().ref('active/' + uid + '/invitations').on('child_added', snapshot => {
+        this.invitationsRef = myFirebase.database().ref('active/' + uid + '/invitations')
+        this.invitationsRef.on('child_added', snapshot => {
+          let invitations = snapshot.val();
+          this.setState({
+            invitations: invitations
+          })
+        })
+
+        this.invitationsRef.on('child_removed', snapshot => {
           let invitations = snapshot.val();
           this.setState({
             invitations: invitations
@@ -45,14 +53,12 @@ class App extends Component {
   }
 
   stopListeningFirebase = () => {
-    if (myFirebase.auth().currentUser) {
-      let { uid, displayName } = myFirebase.auth().currentUser
-      myFirebase.database().ref('active/' + uid + '/invitations').off()
+    if (myFirebase.auth().currentUser && this.invitationsRef) {
+      this.invitationsRef.off()
     }
   }
 
   render() {
-    console.log("FIREBASE USER HERE???", myFirebase.auth().currentUser)
     console.log("and the state is: ", this.state)
     return (
       <div className="App">

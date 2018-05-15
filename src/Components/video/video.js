@@ -230,7 +230,6 @@ class Video extends Component {
       playlist: [...prevState.playlist, newVideo],
       playlistAddedTime: [...prevState.playlistAddedTime, timeAdded]
     }), () => {
-      console.log('adding to playlist', this.state.playlist)
     })
   }
 
