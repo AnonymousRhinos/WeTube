@@ -34,7 +34,23 @@ class Login extends Component {
                 isSignedIn: !!user,
                 name: firebase.auth().currentUser ? firebase.auth().currentUser.displayName : ''
             }, () => {
-                this.props.setUser(this.state.name)
+                if (this.state.isSignedIn) {
+                    let { uid, displayName, email, photoURL } = firebase.auth().currentUser
+                    this.props.setUser(this.state.name)
+                    firebase.database().ref('active/' + uid).set({
+                            uid,
+                            displayName,
+                            email,
+                            photoURL,
+                            invitations: []
+                          })
+                          //seed for testing
+                          .then(() => {
+                              firebase.database().ref('active/' + uid + '/invitations').push({from: "Other test friend", room: "1526395229832&j4KvrAUjn6c"})
+                              firebase.database().ref('active/' + uid + '/invitations').push({from: "test friend", room: "1526395229832&j4KvrAUjn6c"})
+                          })
+                    firebase.database().ref('active/' + uid).onDisconnect().remove()
+                    }
             })
         );
     }
@@ -54,7 +70,7 @@ class Login extends Component {
         }
         return (
             <div>
-                <Link to="/home" onClick={() => firebase.auth().signOut()}>Sign-out</Link>
+                <Link id="logout" to="/home" onClick={() => firebase.auth().signOut()}>Sign-out</Link>
             </div>
         );
     }
