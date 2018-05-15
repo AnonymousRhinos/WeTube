@@ -28,7 +28,7 @@ class MyNavbar extends Component {
               <i className="fa fa-caret-down"></i>
             </button>
             <div className="dropdown-content">
-              <OnlineUserList />
+              <OnlineUserList roomId={window.location.pathname.slice(6)} userName={this.props.userName} />
             </div>
           </div>
           <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
