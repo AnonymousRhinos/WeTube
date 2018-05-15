@@ -10,6 +10,7 @@ class TrendingComponent extends Component {
     this.state = ({
       trendingVideos: [],
       titles: [],
+      durations: [],
       category: 'all',
       categoryList: Object.keys(categories),
       noResults: false
@@ -30,9 +31,11 @@ class TrendingComponent extends Component {
           }
         })
         let titles = embeddable.map(video => video.snippet.title)
+        let durations = this.getDurations(embeddable);
         this.setState({
           trendingVideos: embeddable,
-          titles: titles
+          titles,
+          durations
         })
       })
       .catch(err => console.error)
@@ -60,22 +63,44 @@ class TrendingComponent extends Component {
               return false;
             }
           })
+          let durations = this.getDurations(embeddable)
           let titles = embeddable.map(video => video.snippet.title)
           if (titles.length) {
             this.setState({
               trendingVideos: embeddable,
-              titles: titles,
               noResults: false,
-              category: category
+              titles,
+              category,
+              durations
             })
           } else {
             this.setState({
               noResults: true,
-              category: category
+              category,
+              durations
             })
           }
         })
     }
+  }
+
+  getDurations = (videos) => {
+    let durations = videos.map(video => {
+      let duration = video.contentDetails.duration;
+      let min, sec
+      if(duration.indexOf('M') > 0 && duration.indexOf('S') > 0) {
+        min = duration.slice(2, duration.indexOf('M'))
+        sec = duration.slice(duration.indexOf('M') + 1, duration.indexOf('S'))
+      } else if (duration.indexOf('M') === -1){
+        min = '0'
+        sec = duration.slice(2, duration.indexOf('S'))
+      } else if (duration.indexOf('S') === -1){
+        min = duration.slice(2, duration.indexOf('M'))
+        sec = '00'
+      }
+      return sec.length === 1 ? min + ':0' + sec : min + ':' + sec;
+    })
+    return durations;
   }
 
   render() {
@@ -108,6 +133,7 @@ class TrendingComponent extends Component {
                 return (
                   <div className="mini-vid" key={video.id} onClick={(event) => this.props.handleClick(event, video.id)}>
                     <ThumbnailCard id={video.id} />
+                    <span className="duration-text">{this.state.durations[index]}</span>
                     <p className="trending-text">{this.state.titles[index]}</p>
                   </div>
                 )
