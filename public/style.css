@@ -363,10 +363,15 @@ body {
   }
 
   /* SHARE BUTOTNS */
+  @media screen and (min-width: 800px) {
+    .share-btns {
+      flex-direction: column;
+    }
+  }
+
   .share-btns {
     margin-top: 20px;
     display: flex;
-    flex-direction: column;
     margin-right: 10px;
   }
 
@@ -626,7 +631,7 @@ body {
 
   .App-header {
     background-color: #222;
-    height: 100px;
+    height: 10vw;
     padding: 20px;
     color: white;
   }
@@ -763,7 +768,7 @@ body {
   color: #2B93FA;
   font-family: 'Raleway', sans-serif;
   /* font-family: 'Audiowide', cursive; */
-  font-size:58px;
+  font-size: 5vw;
   letter-spacing:10px;
   margin: 0;
   animation: text-flicker 3s linear infinite;
