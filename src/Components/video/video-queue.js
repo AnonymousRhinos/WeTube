@@ -53,28 +53,3 @@ class Queue extends Component {
 
 export default Queue;
 
-{/* <Queue
-  videoId={this.state.videoId}
-  roomId={this.state.roomId}
-  playlist={this.state.playlist}
-  ItemView={(category) => (
-    <CategoryCardView
-      key={videoId}
-     />
-  )}
-  BlankSlate={() => (
-    <div>
-      There are No Videos in Playlist
-    </div>
-  )}
-/>
-
-const CollectionComponent = (props) => {
-  const {items, ItemView, BlankSlate} = props;
-  if (items && items.length > 0) {
-    return items.map(item => <CategoryCardView item={item}/>)
-  }
-  else {
-    return <BlankSlate/>
-  }
-} */}

@@ -93,7 +93,7 @@ class Video extends Component {
           myFirebase.database().ref('users/' + this.state.roomId + '/' + newName).set({ newName, enterTime, token });
           const message = {
             user: 'Admin',
-            message: `${newName} has entered the theatre`,
+            message: `${newName} has entered the theater`,
             time: enterTime
           };
           this.joinRef.push(message);
@@ -105,7 +105,7 @@ class Video extends Component {
   }
 
   listenToFirebase = () => {
-    let { roomId, videoId, name } = this.state;
+    let { roomId, name } = this.state;
 
     let startListeningRoom = () => {
       this.roomRef.on('value', snapshot => {
@@ -118,7 +118,7 @@ class Video extends Component {
             if (this.player.seekTo) this.player.seekTo(0)
           })
           //can't get the player to stop at beginning of first video when deleting last video
-          if(status === 2 && this.player.stopVideo) {
+          if (status === 2 && this.player.stopVideo) {
             //getting here but ignoring the stopvideo command
             this.player.stopVideo();
           }
@@ -379,7 +379,7 @@ class Video extends Component {
 
   removeFromPlaylist = removedVideo => {
     let removedIndex;
-    let { currentIndex, videoId } = this.state;
+    let { currentIndex } = this.state;
     const filteredPlaylist = this.state.playlist.filter((id, index) => {
       if (id === removedVideo) removedIndex = index;
       return id !== removedVideo;
@@ -390,7 +390,7 @@ class Video extends Component {
       playlist: filteredPlaylist,
       playlistAddedTime: filteredPlaylistAddedTime
     }, () => {
-      if(this.state.playlist.length === 0){
+      if (this.state.playlist.length === 0) {
         //do something when the last video has been removed
       }
       if (removedVideo === this.state.videoId) {

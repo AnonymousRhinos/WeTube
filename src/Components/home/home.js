@@ -14,7 +14,6 @@ export class Home extends Component {
     super(props);
     if(props.match.params.videoId){
       //grab the video ID
-      console.log('doing something right');
       this.state = {
         videoUrl: "https://www.youtube.com/watch?v=" + props.match.params.videoId,
         userName: this.props.userName
@@ -38,7 +37,7 @@ export class Home extends Component {
     evt.preventDefault();
     let { videoUrl } = this.state;
     let videoId;
-    if(videoUrl.indexOf('youtu.be/') > -1){
+    if (videoUrl.indexOf('youtu.be/') > -1) {
       videoId = videoUrl.split('.be/')[1]
     } else {
       let begIndex = videoUrl.indexOf('v=') + 2;
