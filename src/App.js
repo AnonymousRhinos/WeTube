@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Navbar from './Components/navbar';
-import Video from './Components/video/video';
-import Home from './Components/home/home';
-import Footer from './Components/footer'
+import { Navbar, Video, Home, Footer, Notification } from './Components/index';
 import myFirebase from './Firebase/firebaseInit';
+
+function getParent(snapshot) {
+  var ref = snapshot.ref();
+  return ref.parent().name();
+}
 
 class App extends Component {
 
@@ -35,17 +37,25 @@ class App extends Component {
         let { uid, displayName } = myFirebase.auth().currentUser
         this.invitationsRef = myFirebase.database().ref('active/' + uid + '/invitations')
         this.invitationsRef.on('child_added', snapshot => {
-          let invitations = snapshot.val();
+          let parent = snapshot.key
+          let invitation = snapshot.val();
+          invitation.id = parent;
+          console.log('invite added', invitation)
           this.setState({
-            invitations: invitations
+            invitations: [...this.state.invitations, invitation]
           })
         })
 
         this.invitationsRef.on('child_removed', snapshot => {
-          let invitations = snapshot.val();
-          this.setState({
-            invitations: invitations
+          let removed = snapshot.key
+          console.log(removed)
+          let invitations = this.state.invitations.filter(invite => {
+            console.log("ID: ", invite.id, "removed: ", removed)
+            return invite.id !== removed
           })
+            this.setState({
+              invitations: invitations
+            })
         })
       }
     }
@@ -62,6 +72,13 @@ class App extends Component {
     console.log("and the state is: ", this.state)
     return (
       <div className="App">
+      <div className="invite-list">
+      {
+        this.state.invitations.map(invite => {
+          return <Notification key={invite.id} invite={invite} />
+        })
+      }
+      </div>
         <Navbar setUser={this.setUser} />
         <Switch>
           <Route path="/room/:id" render={() => <Video userName={this.state.name} />} />
