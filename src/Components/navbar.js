@@ -34,7 +34,7 @@ class MyNavbar extends Component {
           <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
             <img src="/images/YouTube.jpg" alt="YouTube" id="youtube-img" />
           </a>
-          <div>
+          <div id="copy-url-btn">
             <a href="#" onClick={this.addToClipboard}>
               <img src="/images/copy-url.png" alt="copy-url" id="copy-url-img" />
               <span className="url-btn">Copy URL</span>

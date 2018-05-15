@@ -16,12 +16,17 @@ button:hover {
 }
 
 #logout {
-  border: 2px solid black;
-  border-radius: 10px;
-  padding: 5px;
-  margin-right: 5px;
-  background-color: rgb(226, 226, 226);
-  font-size: 16px;
+  color: #2B93FA;
+  border: none;
+  background-color: none;
+  font-size: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  text-decoration: none;
+  margin-left: 2px;
+}
+
+#logout:hover {
+  opacity: .4;
 }
 
 .btn {
@@ -131,6 +136,10 @@ body {
     font-family: 'Audiowide', cursive;
     font-size: 30px;
     color: black;
+  }
+
+  .navbar a:hover {
+    opacity: .4;
   }
 
   /* Dropdown */
