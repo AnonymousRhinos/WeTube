@@ -14,7 +14,7 @@ class Notification extends Component {
         let { id, room } = this.props.invite
         let { uid } = myFirebase.auth().currentUser
         myFirebase.database().ref('active/' + uid + '/invitations/' + id).remove()
-        this.props.history.push(`/room/${room}`)
+        this.props.history.push(`/room/${room}`);
     }
 
     rejectInvite = () => {
@@ -24,7 +24,6 @@ class Notification extends Component {
     }
 
     render() {
-        console.log("INVITE IN NOTIFICATION", this.props.invite)
         return (
             <div id="notification">
                 <p className= "inviteText">You have a theater invitation from {this.props.invite.from}.</p>
