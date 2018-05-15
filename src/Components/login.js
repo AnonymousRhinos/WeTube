@@ -29,13 +29,15 @@ class Login extends Component {
 
     // Listen to the Firebase Auth state and set the local state.
     componentDidMount() {
+        let uid = ''
         this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
             (user) => this.setState({
                 isSignedIn: !!user,
                 name: firebase.auth().currentUser ? firebase.auth().currentUser.displayName : ''
             }, () => {
                 if (this.state.isSignedIn) {
-                    let { uid, displayName, email, photoURL } = firebase.auth().currentUser
+                    let { displayName, email, photoURL } = firebase.auth().currentUser
+                    uid = firebase.auth().currentUser.uid
                     this.props.setUser(this.state.name)
                     firebase.database().ref('active/' + uid).set({
                             uid,
@@ -44,12 +46,9 @@ class Login extends Component {
                             photoURL,
                             invitations: []
                           })
-                          //seed for testing
-                          .then(() => {
-                              firebase.database().ref('active/' + uid + '/invitations').push({from: "Other test friend", room: "1526395229832&j4KvrAUjn6c"})
-                              firebase.database().ref('active/' + uid + '/invitations').push({from: "test friend", room: "1526395229832&j4KvrAUjn6c"})
-                          })
                     firebase.database().ref('active/' + uid).onDisconnect().remove()
+                    } else {
+                        firebase.database().ref('active/' + uid).remove()
                     }
             })
         );
