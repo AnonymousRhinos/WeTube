@@ -3,7 +3,7 @@ import OnlineUser from './online-user'
 
 const OnlineUserList = (props) => {
 
-  const userList = ['nick123', 'nick456', 'jamie', 'dlu77', 'johnFromAmtrack', 'therealestandillestkillerstiedupinaknot']
+  const userList = [{ name: 'nick123' }, { name: 'nick456' }, { name: 'jamie' }, { name: 'dlu77' }, { name: 'johnFromAmtrack' }, { name: 'therealestandillestkillerstiedupinaknot' }]
 
   return (
     <div id="online-userlist">

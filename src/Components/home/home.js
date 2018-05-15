@@ -12,17 +12,13 @@ const secret = tokbox.secret
 export class Home extends Component {
   constructor(props) {
     super(props);
-    console.log('props are: ', this.props)
-    console.log('props are: ', props)
     if (props.match.params.videoId) {
       //grab the video ID
-      console.log('doing something right');
       this.state = {
         videoUrl: "https://www.youtube.com/watch?v=" + props.match.params.videoId,
       }
     }
     else {
-      console.log('wrong')
       this.state = {
         videoUrl: '',
       };
