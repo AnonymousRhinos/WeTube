@@ -58,7 +58,7 @@ class Video extends Component {
       this.joinRoom(this.state.name)
     }
   }
-  
+
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps.userName !== this.props.userName) {
       this.joinRoom(this.props.userName)
@@ -115,7 +115,9 @@ class Video extends Component {
         if (value.currentVideo !== this.state.videoId) {
           const newIndex = this.state.playlist.indexOf(value.currentVideo)
           this.setState({ videoId: value.currentVideo, currentIndex: newIndex }, () => {
-            if (this.player.seekTo) this.player.seekTo(0)
+            if (this.player.seekTo) {
+              this.player.seekTo(0)
+            }
           })
           //can't get the player to stop at beginning of first video when deleting last video
           if(status === 2 && this.player.stopVideo) {
@@ -169,11 +171,11 @@ class Video extends Component {
         }
       }, 1000)
     }
-    
+
     let listenForNewTimes = () => {
       setTimeout( () => {
         let targetTime = 0;
-        let packLeader = false; 
+        let packLeader = false;
         let myTime = 0;
         if(this.player.getCurrentTime){
           myTime = this.player.getCurrentTime()
@@ -185,7 +187,7 @@ class Video extends Component {
 
         })
         .then( () => {
-          
+
           if(this.player.getCurrentTime && (Math.abs(this.player.getCurrentTime() - targetTime) > 0.75)){
 
             //inside this promise we need to determine who the front runner is and assign packleader
@@ -207,7 +209,7 @@ class Video extends Component {
               // }
 
               // console.log('the second promise is done: ')
-              // console.log('TS Date: ', timeStuffDateObj.getTime()); 
+              // console.log('TS Date: ', timeStuffDateObj.getTime());
 
             })
 
@@ -244,7 +246,7 @@ class Video extends Component {
     //           targetTime = snapshot2.val().currentTime;
     //         })
     //       .then( () => {
-            
+
     //         // //now we loops through each user
     //         // for (let key in snapshot.val()) {
     //         //   let timeStuff = snapshot.val()[key].enterTime.split(':');
@@ -261,7 +263,7 @@ class Video extends Component {
     //         //   pmCheck();
     //         //   timeStuff[2] = timeStuff[2].slice(0,2);
     //         //   timeStuffDateObj.setHours(timeStuff[0], timeStuff[1], timeStuff[2]);
-              
+
     //           //check to see if the user is "new" (e.g. joined the room less than 10 seconds ago)
     //           console.log(timeStuffDateObj.getTime(), 'Join Time ')
     //           console.log(new Date().getTime(), 'Now Time ')
@@ -392,9 +394,10 @@ class Video extends Component {
       playlistAddedTime: filteredPlaylistAddedTime
     }, () => {
       if(this.state.playlist.length === 0){
-        //do something when the last video has been removed
-      }
-      if (removedVideo === this.state.videoId) {
+        this.roomRef.update({
+          playerStatus: 0
+        })
+      } else if (removedVideo === this.state.videoId) {
         console.log('currentindex', currentIndex, 'playlist', this.state.playlist[0])
         if (this.state.currentIndex < this.state.playlist.length)
           this.roomRef.update({
@@ -408,8 +411,6 @@ class Video extends Component {
             currentTime: 0,
             playerStatus: 2
           })
-          // console.log('hitting the end, so stop')
-          // this.player.cueVideoById(this.state.playlist[0]);
         }
       }
 
@@ -498,8 +499,6 @@ class Video extends Component {
                       </div>
                     </div>
                     <Chat
-                      // videoId={this.state.videoId}
-                      playlist={this.state.playlist}
                       roomId={this.state.roomId}
                       token={this.state.token}
                       guestName={this.state.name}
