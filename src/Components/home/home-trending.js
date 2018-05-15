@@ -49,7 +49,6 @@ class TrendingComponent extends Component {
     if (category !== this.state.category) {
       if (category !== 'all') {
         let categoryId = +categories[category]
-        console.log("state: ", this.state.category, "event: ", category, categoryId)
         requestUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,status,snippet&chart=mostPopular&videoCategoryId=${categoryId}&maxResults=20&key=AIzaSyBZgswVANLvCdoyNvTtjDtUa6Ou4DAg9pE`
       }
       axios.get(requestUrl)
