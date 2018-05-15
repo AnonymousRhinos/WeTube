@@ -5,7 +5,6 @@ import { TrendingComponent } from '../index.js';
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
 import tokbox from '../../tokboxConfig'
-import OnlineUserList from '../online-userlist';
 const apiKey = tokbox.apiKey
 const secret = tokbox.secret
 
@@ -15,14 +14,14 @@ export class Home extends Component {
     super(props);
     console.log('props are: ', this.props)
     console.log('props are: ', props)
-    if(props.match.params.videoId){
+    if (props.match.params.videoId) {
       //grab the video ID
       console.log('doing something right');
       this.state = {
         videoUrl: "https://www.youtube.com/watch?v=" + props.match.params.videoId,
       }
     }
-    else{
+    else {
       console.log('wrong')
       this.state = {
         videoUrl: '',
@@ -40,7 +39,7 @@ export class Home extends Component {
     evt.preventDefault();
     let { videoUrl } = this.state;
     let videoId;
-    if(videoUrl.indexOf('youtu.be/') > -1){
+    if (videoUrl.indexOf('youtu.be/') > -1) {
       videoId = videoUrl.split('.be/')[1]
     } else {
       let begIndex = videoUrl.indexOf('v=') + 2;
@@ -74,8 +73,8 @@ export class Home extends Component {
       })
 
       self.props.history.push({
-       pathname:  `/room/${roomId}`,
-       state: {sessionId: sessionId}
+        pathname: `/room/${roomId}`,
+        state: { sessionId: sessionId }
       });
 
     })
@@ -90,7 +89,7 @@ export class Home extends Component {
             <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
           </div>
         </header>
-        <OnlineUserList />
+        {/* <OnlineUserList /> */}
         <div className="theater-form">
           <h2 id="input-header">Create a Theater:</h2>
           <form onSubmit={this.handleSubmit}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import OnlineUserList from './online-userlist';
 
 class MyNavbar extends Component {
 
@@ -22,16 +23,14 @@ class MyNavbar extends Component {
         </section>
         <section className="navbar-section">
           <div className="dropdown">
-            <button className="dropbtn">Dropdown
-      <i className="fa fa-caret-down"></i>
+            <button className="dropbtn" id="online-btn">Online
+              <i className="fa fa-caret-down"></i>
             </button>
             <div className="dropdown-content">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
+              <OnlineUserList />
             </div>
           </div>
-          <a href="https://www.youtube.com/" target="_blank">
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
             <img src="/images/YouTube.jpg" alt="YouTube" id="youtube-img" />
           </a>
           <div>
