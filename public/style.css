@@ -15,6 +15,15 @@ button:hover {
   cursor: pointer;
 }
 
+#logout {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+  background-color: rgb(226, 226, 226);
+  font-size: 16px;
+}
+
 .btn {
   color: white;
   border-radius: 10px;
@@ -643,6 +652,40 @@ body {
     background-size: cover;
   }
 
+  .inviteText {
+    font-size: 14px;
+    padding: 2px 5px;
+    margin: 0 2px;
+  }
+
+.inviteButton {
+  font-size: 12px;
+}
+
+#notification {
+  display: inline-block;
+  background-color: rgb(60, 206, 152);
+  color: black;
+  border: solid 2px rgb(14, 51, 38);
+  margin: 3px auto;
+  border-radius: 20px;
+  padding-bottom: 3px;
+  transition: all 1s ease-out;
+}
+
+#notification:hover {
+  transform: translateX(-380px)
+}
+
+.invite-list {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  position: absolute;
+  z-index: 2;
+  transform: translateY(60px);
+  right: -375px;
+}
 
 
 /* playing with CSS text  */

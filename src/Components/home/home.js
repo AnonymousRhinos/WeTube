@@ -12,15 +12,17 @@ const secret = tokbox.secret
 export class Home extends Component {
   constructor(props) {
     super(props);
-    if (props.match.params.videoId) {
+    if(props.match.params.videoId){
       //grab the video ID
       this.state = {
         videoUrl: "https://www.youtube.com/watch?v=" + props.match.params.videoId,
+        userName: this.props.userName
       }
     }
-    else {
+    else{
       this.state = {
         videoUrl: '',
+        userName: this.props.userName
       };
     }
   }
@@ -69,8 +71,10 @@ export class Home extends Component {
       })
 
       self.props.history.push({
-        pathname: `/room/${roomId}`,
-        state: { sessionId: sessionId }
+       pathname:  `/room/${roomId}`,
+       state: {
+         sessionId: sessionId
+        }
       });
 
     })
@@ -85,7 +89,7 @@ export class Home extends Component {
             <h2 id="open-text">Welcome To We<span id="offset">T</span>ube</h2>
           </div>
         </header>
-        {/* <OnlineUserList /> */}
+        <div>
         <div className="theater-form">
           <h2 id="input-header">Create a Theater:</h2>
           <form onSubmit={this.handleSubmit}>
@@ -103,6 +107,7 @@ export class Home extends Component {
           </form>
         </div>
         <TrendingComponent handleClick={this.handleSubmit} />
+        </div>
       </div>
     );
   }

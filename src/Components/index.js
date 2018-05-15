@@ -12,7 +12,7 @@ export {default as VideoShare} from './video/video-share'
 export {default as OnlineUserList} from './online-userlist'
 export {default as OnlineUser} from './online-user'
 
+export {default as Login} from './login'
 export {default as Footer} from './footer'
-export {default as MyNavbar} from './navbar'
-
-
+export {default as Notification} from './invite-notification'
+export {default as Navbar} from './navbar'

@@ -12,9 +12,7 @@ class Queue extends Component {
           timeAdded: this.props.playlistAddedTime[i]
         })
       }
-      console.log('unsorted playlistinfo', playlistInfo)
       playlistInfo.sort((a, b) => a.timeAdded - b.timeAdded)
-      console.log('sorted playlistinfo', playlistInfo)
     }
     let currentVideo = this.props.videoId
 

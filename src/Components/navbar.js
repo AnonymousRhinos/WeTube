@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './login'
 import { Link } from 'react-router-dom';
 import OnlineUserList from './online-userlist';
 
@@ -38,7 +39,10 @@ class MyNavbar extends Component {
               <img src="/images/copy-url.png" alt="copy-url" id="copy-url-img" />
               <span className="url-btn">Copy URL</span>
             </a>
-          </div>
+            <button
+            onClick={this.addToClipboard} className="url-btn">Copy URL</button>
+            </div>
+            <Login setUser={this.props.setUser} />
         </section>
       </header>
     );

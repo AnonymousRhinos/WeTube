@@ -14,6 +14,7 @@ class Chat extends Component {
       users: [],
     };
 
+    this.roomRef = myFirebase.database().ref('rooms/' + this.props.roomId);
     this.userRef = myFirebase.database().ref('users/' + this.props.roomId + "/" + this.state.name);
     this.usersRef = myFirebase.database().ref('users/' + this.props.roomId);
     this.messagesRef = myFirebase.database().ref('messages/' + this.props.roomId);
@@ -56,25 +57,9 @@ class Chat extends Component {
       });
     };
 
-    let timedoutUserRemove = () => {
-
-      setTimeout(() => {
-        this.usersRef.once('value', snapshot => {
-          const time = new Date().getTime()
-          for (let key in snapshot.val()) {
-            if ((time - snapshot.val()[key].handshake) > 3000) {
-              let deletedRef = myFirebase.database().ref('users/' + this.props.roomId + '/' + key)
-              deletedRef.remove();
-            }
-          }
-        })
-        if (this.stopTicking !== true) {
-          timedoutUserRemove();
-        }
-      }, 1000)
-    }
-
     let listenUserRemove = () => {
+      this.userRef.onDisconnect().remove();
+
       this.usersRef.on('child_removed', snapshot => {
         let exitTime = this.getCurrentTime();
         let user = snapshot.key;
@@ -95,6 +80,7 @@ class Chat extends Component {
             });
           })
         }
+
       });
     };
 
@@ -107,7 +93,6 @@ class Chat extends Component {
 
     startListeningUsers();
     listenUserRemove();
-    timedoutUserRemove();
     startListeningMessages();
   }
 
