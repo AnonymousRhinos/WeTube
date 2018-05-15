@@ -11,22 +11,26 @@ class Notification extends Component {
 
     enterRoom = (evt) => {
         evt.preventDefault();
-        this.props.history.push(`/room/${this.props.room}`)
+        let { id, room } = this.props.invite
+        let { uid } = myFirebase.auth().currentUser
+        myFirebase.database().ref('active/' + uid + '/invitations/' + id).remove()
+        this.props.history.push(`/room/${room}`)
     }
 
     rejectInvite = () => {
         let id = this.props.invite.id
         let { uid } = myFirebase.auth().currentUser
-        this.invitationsRef = myFirebase.database().ref('active/' + uid + '/invitations/' + id).remove()
+        myFirebase.database().ref('active/' + uid + '/invitations/' + id).remove()
     }
 
     render() {
+        console.log("INVITE IN NOTIFICATION", this.props.invite)
         return (
             <div id="notification">
                 <p className= "inviteText">You have a theater invitation from {this.props.invite.from}.</p>
                 <p className= "inviteText">Would you like to join theater {this.props.invite.room}?</p>
-                <button id="join" onClick={this.enterRoom}>Yes</button>
-                <button id="reject" onClick={this.rejectInvite}>No Thanks</button>
+                <button className="inviteButton" id="join" onClick={this.enterRoom}>Yes</button>
+                <button className="inviteButton" id="reject" onClick={this.rejectInvite}>No Thanks</button>
             </div>
         );
     }
