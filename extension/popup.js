@@ -82,7 +82,7 @@ document.addEventListener('click', () => {
             
             chrome
                 .tabs
-                .update({url: `http://localhost:3000/home/${videoId}`})
+                .update({url: `http://wetube-rhinos.herokuapp.com/home/${videoId}`})
 
         })
 })
