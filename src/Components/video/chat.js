@@ -21,14 +21,6 @@ class Chat extends Component {
     this.stopTicking = false;
   }
 
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.color !== this.props.color) {
-      this.setState({
-        color: this.props.color
-      })
-    }
-  }
-
   getCurrentTime = () => {
     let time = new Date().toUTCString().slice(-12, -4).split(':');
     let meridian;
@@ -118,6 +110,11 @@ class Chat extends Component {
     if (prevProps.roomId !== this.props.roomId) {
       this.stopListening();
       this.listenToFirebase();
+    }
+    if (prevProps.color !== this.props.color) {
+      this.setState({
+        color: this.props.color
+      })
     }
     return this.container.scrollTop = this.container.scrollHeight
   }
