@@ -19,11 +19,8 @@ class MyNavbar extends Component {
           </Link>
         </section>
         <section className="navbar-section">
-          <OnlineUserList roomId={window.location.pathname.slice(6)} userName={this.props.userName} />
-          {/* <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
-            <img src="/images/YouTube.jpg" alt="YouTube" id="youtube-img" />
-          </a> */}
           <YouTube />
+          <OnlineUserList roomId={window.location.pathname.slice(6)} userName={this.props.userName} />
           <CopyUrl />
           <Login setUser={this.props.setUser} />
         </section>
