@@ -14,5 +14,6 @@ export {default as OnlineUser} from './online-user'
 
 export {default as Login} from './login'
 export {default as Footer} from './footer'
+export {default as InvitationList} from './invitation-list'
 export {default as Notification} from './invite-notification'
 export {default as Navbar} from './navbar'

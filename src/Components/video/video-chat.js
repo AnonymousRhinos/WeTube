@@ -44,7 +44,6 @@ class VideoChat extends Component {
 
   handleScroll = () => {
     const scrollPosition = window.scrollY;
-    console.log('scrollposition', scrollPosition)
     if(scrollPosition > 82){
       this.setState({isFixed: true})
     } else {

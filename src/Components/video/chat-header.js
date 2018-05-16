@@ -37,7 +37,8 @@ class ChatHeader extends Component {
       time: messageTime
     };
     messagesRef.push(message);
-    event.target.text.value = ""
+    event.target.text.value = ''
+    this.setState({message: ''});
   };
 
   messagesRef = myFirebase
