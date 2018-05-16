@@ -24,7 +24,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("STATE IN APP", this.state)
     return (
       <div className="App">
           <InvitationList currentUser={myFirebase.auth().currentUser} />
