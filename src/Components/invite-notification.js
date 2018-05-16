@@ -29,7 +29,7 @@ class Notification extends Component {
             <div id="notification">
                 <p className="inviteText">You have a theater invitation from {this.props.invite.from}.</p>
                 <p className="inviteText">Would you like to join theater {room}?</p>
-                    <button className="inviteButton" id="join" onClick={this.enterRoom}>Yes</button>
+                    <button className="inviteButton" id="join" onClick={this.enterRoom}>Join Now</button>
                 <button className="inviteButton" id="reject" onClick={this.rejectInvite}>No Thanks</button>
             </div>
         );

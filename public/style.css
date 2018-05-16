@@ -689,15 +689,21 @@ body {
 
 .inviteButton {
   font-size: 12px;
+  opacity: .6;
+}
+
+.inviteButton:hover {
+  opacity: 1;
 }
 
 #notification {
   display: inline-block;
-  background-color: rgb(60, 206, 152);
-  color: black;
-  border: solid 2px rgb(14, 51, 38);
+  /* background-color: rgb(60, 206, 152); */
+  background-color: rgba(217, 221, 224, .5);
+  color: white;
   margin: 3px auto;
-  border-radius: 20px;
+  box-shadow: rgba(0,0,0,0.1) 0px 2px 3px, inset rgba(0,0,0,0.1) 0px -1px 2px;
+  /* border-radius: 20px; */
   padding-bottom: 3px;
   transition: all 1s ease-out;
 }
