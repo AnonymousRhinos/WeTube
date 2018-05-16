@@ -5,7 +5,16 @@ class ChatHeader extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      message: ''
+      message: '',
+      color: this.props.color
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.color !== this.props.color) {
+      this.setState({
+        color: this.props.color
+      })
     }
   }
 
@@ -28,7 +37,8 @@ class ChatHeader extends Component {
       time: messageTime
     };
     messagesRef.push(message);
-    event.target.text.value = ""
+    event.target.text.value = ''
+    this.setState({message: ''});
   };
 
   messagesRef = myFirebase

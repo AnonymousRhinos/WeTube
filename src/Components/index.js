@@ -19,5 +19,6 @@ export {default as ChatMembers} from './video/chat-members'
 export {default as ChatHeader} from './video/chat-header'
 
 export {default as Footer} from './footer'
+export {default as InvitationList} from './invitation-list'
 export {default as Navbar} from './navbar'
 

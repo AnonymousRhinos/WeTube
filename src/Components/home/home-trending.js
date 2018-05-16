@@ -86,18 +86,38 @@ class TrendingComponent extends Component {
   getDurations = (videos) => {
     let durations = videos.map(video => {
       let duration = video.contentDetails.duration;
-      let min, sec
-      if(duration.indexOf('M') > 0 && duration.indexOf('S') > 0) {
-        min = duration.slice(2, duration.indexOf('M'))
-        sec = duration.slice(duration.indexOf('M') + 1, duration.indexOf('S'))
-      } else if (duration.indexOf('M') === -1){
-        min = '0'
-        sec = duration.slice(2, duration.indexOf('S'))
-      } else if (duration.indexOf('S') === -1){
-        min = duration.slice(2, duration.indexOf('M'))
-        sec = '00'
+      let hr, min, sec
+      if (duration.indexOf('H') > 0) {
+        hr = duration.slice(2, duration.indexOf('H'))
+        if (duration.indexOf('M') > 0 && duration.indexOf('S') > 0) {
+          min = duration.slice(duration.indexOf('H') + 1, duration.indexOf('M'))
+          sec = duration.slice(duration.indexOf('M') + 1, duration.indexOf('S'))
+        } else {
+          if (duration.indexOf('M') === -1) {
+            min = '00'
+            sec = duration.slice(duration.indexOf('H') + 1, duration.indexOf('S'))
+          }
+          if (duration.indexOf('S') === -1) {
+            min = duration.slice(duration.indexOf('H') + 1, duration.indexOf('M'))
+            sec = '00'
+          }
+        }
+        if (min.length === 1) min = '0' + min;
+        if (sec.length === 1) sec = '0' + sec;
+        return hr + ':' + min + ':' + sec;
+      } else {
+        if (duration.indexOf('M') > 0 && duration.indexOf('S') > 0) {
+          min = duration.slice(2, duration.indexOf('M'))
+          sec = duration.slice(duration.indexOf('M') + 1, duration.indexOf('S'))
+        } else if (duration.indexOf('M') === -1) {
+          min = '0'
+          sec = duration.slice(2, duration.indexOf('S'))
+        } else if (duration.indexOf('S') === -1) {
+          min = duration.slice(2, duration.indexOf('M'))
+          sec = '00'
+        }
+        return sec.length === 1 ? min + ':0' + sec : min + ':' + sec;
       }
-      return sec.length === 1 ? min + ':0' + sec : min + ':' + sec;
     })
     return durations;
   }

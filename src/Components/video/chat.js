@@ -111,6 +111,11 @@ class Chat extends Component {
       this.stopListening();
       this.listenToFirebase();
     }
+    if (prevProps.color !== this.props.color) {
+      this.setState({
+        color: this.props.color
+      })
+    }
     return this.container.scrollTop = this.container.scrollHeight
   }
 

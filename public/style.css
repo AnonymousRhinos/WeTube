@@ -16,12 +16,17 @@ button:hover {
 }
 
 #logout {
-  border: 2px solid black;
-  border-radius: 10px;
-  padding: 5px;
-  margin-right: 5px;
-  background-color: rgb(226, 226, 226);
-  font-size: 16px;
+  color: #2B93FA;
+  border: none;
+  background-color: none;
+  font-size: 20px;
+  font-family: 'Ubuntu', sans-serif;
+  text-decoration: none;
+  margin-left: 2px;
+}
+
+#logout:hover {
+  opacity: .4;
 }
 
 .btn {
@@ -133,6 +138,10 @@ body {
     color: black;
   }
 
+  .navbar a:hover {
+    opacity: .4;
+  }
+
   /* Dropdown */
   .dropdown {
   overflow: hidden;
@@ -175,7 +184,7 @@ body {
     align-items: center;
     background-color: rgb(215, 222, 232);
     border: dotted black .5px;
-    width: 70%;
+    width: 250px;
   }
 
 
@@ -316,7 +325,7 @@ body {
     color: white;
     background-color: black;
     height: 18px;
-    width: 32px;
+    width: 40px;
     font-size: 12px;
     text-align: center;
     border-radius: 2px;
@@ -324,7 +333,7 @@ body {
     margin: 4px;
     position: relative;
     bottom: 50px;
-    left: 170px;
+    left: 162px;
   }
 
   .mini-vid {
@@ -602,6 +611,19 @@ body {
     float: left;
   }
 
+  /* VIDEOCHAT */
+
+    /* .center-all {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+  } */
+  .videochat-box-fixed {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+  }
+
   .mute-btn-container {
     display: flex;
     justify-content: flex-start;
@@ -676,19 +698,26 @@ body {
     font-size: 14px;
     padding: 2px 5px;
     margin: 0 2px;
+    color: black
   }
 
 .inviteButton {
   font-size: 12px;
+  opacity: .6;
+}
+
+.inviteButton:hover {
+  opacity: 1;
 }
 
 #notification {
   display: inline-block;
-  background-color: rgb(60, 206, 152);
-  color: black;
-  border: solid 2px rgb(14, 51, 38);
+  /* background-color: rgb(60, 206, 152); */
+  background-color: rgba(255, 255, 255, 0.5);
+  color: white;
   margin: 3px auto;
-  border-radius: 20px;
+  box-shadow: rgba(0,0,0,0.1) 0px 2px 3px, inset rgba(0,0,0,0.1) 0px -1px 2px;
+  /* border-radius: 20px; */
   padding-bottom: 3px;
   transition: all 1s ease-out;
 }
@@ -701,9 +730,9 @@ body {
   display: flex;
   flex-direction: column;
   align-content: stretch;
-  position: absolute;
-  z-index: 2;
-  transform: translateY(60px);
+  position: fixed;
+  z-index: 3;
+  top: 50px;
   right: -375px;
 }
 
