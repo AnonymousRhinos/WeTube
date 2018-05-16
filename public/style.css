@@ -611,6 +611,19 @@ body {
     float: left;
   }
 
+  /* VIDEOCHAT */
+
+    /* .center-all {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+  } */
+  .videochat-box-fixed {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+  }
+
   .mute-btn-container {
     display: flex;
     justify-content: flex-start;

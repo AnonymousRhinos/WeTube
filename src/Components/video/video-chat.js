@@ -29,8 +29,27 @@ class VideoChat extends Component {
       joinChat: false,
       myAudioOn: false,
       myVideoOn: true,
-      allAudioOn: true
+      allAudioOn: true,
+      isFixed: false
     };
+  }
+
+  componentDidMount = () => {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    const scrollPosition = window.scrollY;
+    console.log('scrollposition', scrollPosition)
+    if(scrollPosition > 82){
+      this.setState({isFixed: true})
+    } else {
+      this.setState({isFixed: false})
+    }
   }
 
   joinVideo = () => {
@@ -58,8 +77,9 @@ class VideoChat extends Component {
   }
 
   render() {
+    let videoClass = this.state.isFixed ? "videochat-box-fixed": null;
     return (
-      <div className="center-all">
+      <div className="video-chat">
         {
           this.state.joinChat ?
             <div className="row">
@@ -69,7 +89,7 @@ class VideoChat extends Component {
                   onClick={this.joinVideo}
                 >Exit Video Chat</button>
               </div>
-              <div className="col s8">
+              <div className={videoClass}>
                 <OTSession
                   apiKey={apiKey}
                   sessionId={this.props.sessionId}

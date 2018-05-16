@@ -186,14 +186,13 @@ class Video extends Component {
           this.roomRef.once('value', snapshot => {
             if (snapshot.val().currentTime > 1) {
               if(this.player.seekTo){
-                
                 this.player.seekTo(snapshot.val().currentTime);
                 this.setState({
                   playerTime: snapshot.val().currentTime
                 })
               }
-            } 
-            
+            }
+
           })
           this.readyDone = false;
         }
