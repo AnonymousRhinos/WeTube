@@ -9,8 +9,9 @@ class Login extends Component {
         super(props);
         this.state = {
             isSignedIn: false, // Local signed-in state.
-            name: ''
+            name: '',
         };
+        this.uid = ''
     }
 
     // Configure FirebaseUI.
@@ -29,7 +30,6 @@ class Login extends Component {
 
     // Listen to the Firebase Auth state and set the local state.
     componentDidMount() {
-        let uid = ''
         this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
             (user) => {
             return this.setState({
@@ -38,20 +38,19 @@ class Login extends Component {
             }, () => {
                 if (this.state.isSignedIn) {
                     let { displayName, email, photoURL } = firebase.auth().currentUser
-                    uid = firebase.auth().currentUser.uid
+                    console.log("current user: ", firebase.auth().currentUser)
+                    this.uid = firebase.auth().currentUser.uid
                     this.props.setUser(this.state.name)
-                    firebase.database().ref('active/' + uid).set({
-                            uid,
+                    firebase.database().ref('active/' + this.uid).set({
+                            uid: this.uid,
                             displayName,
                             email,
                             photoURL,
                             invitations: []
                           })
                           if ( firebase.auth().currentUser ) {
-                              firebase.database().ref('active/' + uid).onDisconnect().remove()
+                              firebase.database().ref('active/' + this.uid).onDisconnect().remove()
                           }
-                    } else if (uid) {
-                        firebase.database().ref('active/' + uid).remove()
                     }
             })
         }
@@ -63,7 +62,16 @@ class Login extends Component {
         this.unregisterAuthObserver();
     }
 
+    onLogout = () => {
+        console.log("this onlogout thing is running")
+        firebase.database().ref('active/' + this.uid).remove()
+        firebase.auth().signOut()
+    }
+
     render() {
+        console.log("PROPS", this.props)
+        console.log("STATE", this.state)
+        console.log("UID", this.uid)
         if (!this.state.isSignedIn) {
             return (
                 <div>
@@ -73,7 +81,7 @@ class Login extends Component {
         }
         return (
             <div>
-                <Link id="logout" to="/home" onClick={() => firebase.auth().signOut()}>Sign-out</Link>
+                <Link id="logout" to="/home" onClick={this.onLogout}>Sign-out</Link>
             </div>
         );
     }
