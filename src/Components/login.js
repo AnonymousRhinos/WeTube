@@ -31,7 +31,8 @@ class Login extends Component {
     componentDidMount() {
         let uid = ''
         this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-            (user) => this.setState({
+            (user) => {
+            return this.setState({
                 isSignedIn: !!user,
                 name: firebase.auth().currentUser ? firebase.auth().currentUser.displayName : ''
             }, () => {
@@ -46,11 +47,14 @@ class Login extends Component {
                             photoURL,
                             invitations: []
                           })
-                    firebase.database().ref('active/' + uid).onDisconnect().remove()
-                    } else {
+                          if ( firebase.auth().currentUser ) {
+                              firebase.database().ref('active/' + uid).onDisconnect().remove()
+                          }
+                    } else if (uid) {
                         firebase.database().ref('active/' + uid).remove()
                     }
             })
+        }
         );
     }
 
