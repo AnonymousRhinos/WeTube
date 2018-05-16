@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import myFirebase from '../Firebase/firebaseInit';
 
 class Notification extends Component {
@@ -24,11 +24,12 @@ class Notification extends Component {
     }
 
     render() {
+        let room = this.props.invite.room
         return (
             <div id="notification">
-                <p className= "inviteText">You have a theater invitation from {this.props.invite.from}.</p>
-                <p className= "inviteText">Would you like to join theater {this.props.invite.room}?</p>
-                <button className="inviteButton" id="join" onClick={this.enterRoom}>Yes</button>
+                <p className="inviteText">You have a theater invitation from {this.props.invite.from}.</p>
+                <p className="inviteText">Would you like to join theater {room}?</p>
+                    <button className="inviteButton" id="join" onClick={this.enterRoom}>Yes</button>
                 <button className="inviteButton" id="reject" onClick={this.rejectInvite}>No Thanks</button>
             </div>
         );
