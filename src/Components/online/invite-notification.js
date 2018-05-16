@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import myFirebase from '../Firebase/firebaseInit';
+import myFirebase from '../../Firebase/firebaseInit';
 
 class Notification extends Component {
     constructor(props) {

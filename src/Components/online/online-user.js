@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from '../Firebase/firebaseInit';
+import firebase from '../../Firebase/firebaseInit';
 
 class OnlineUser extends Component  {
 

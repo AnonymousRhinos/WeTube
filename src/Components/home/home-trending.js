@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { ThumbnailCard } from '../index.js'
+// import {ThumbnailCard} from '../index'
+import ThumbnailCard from '../video/thumbnail-card'
 import categories from '../../youtube-cats'
-// import ThumbnailCard from '../index.js'
 
 class TrendingComponent extends Component {
   constructor(props) {
