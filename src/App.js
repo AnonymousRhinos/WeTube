@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
-import './App.css';
 import { Navbar, Video, Home, Footer, Notification } from './Components/index';
 import myFirebase from './Firebase/firebaseInit';
 
