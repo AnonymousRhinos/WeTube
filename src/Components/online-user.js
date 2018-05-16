@@ -7,7 +7,8 @@ class OnlineUser extends Component  {
     super(props);
     this.state = {
       userList: [],
-      name: this.props.userName
+      name: this.props.userName,
+      filtered: []
     };
     this.activeRef = firebase.database().ref('active')
 }
@@ -16,6 +17,13 @@ componentDidUpdate = (prevProps) => {
   if (prevProps.userName !== this.props.userName) {
     this.setState({
       name: this.props.userName
+    }, () => {
+      let filtered = this.state.userList.filter(user => {
+        return user.displayName !== this.state.name
+      })
+      this.setState({
+        userList: filtered
+      })
     })
   }
 }
@@ -36,9 +44,9 @@ startlistening = () => {
       uid: user.uid,
       email: user.email
     }
-    this.setState({
-      userList: [...this.state.userList, newUser]
-    })
+      this.setState({
+        userList: [...this.state.userList, newUser]
+      })
   })
 
   this.activeRef.on('child_removed', snapshot => {
