@@ -76,6 +76,7 @@ class Video extends Component {
   componentWillUnmount = () => {
     this.stopListening();
     this.stopTicking = true;
+    myFirebase.database().ref('users/' + this.state.roomId + '/' + this.state.name).remove();
     window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
@@ -171,6 +172,8 @@ class Video extends Component {
         }
         if (this.stopTicking !== true) {
           startPresence()
+        } else {
+          myFirebase.database().ref('users/' + this.state.roomId + '/' + this.state.name).remove();
         }
       }, 1000)
     }

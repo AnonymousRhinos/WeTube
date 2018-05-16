@@ -14,7 +14,10 @@ class Notification extends Component {
         let { id, room } = this.props.invite
         let { uid } = myFirebase.auth().currentUser
         myFirebase.database().ref('active/' + uid + '/invitations/' + id).remove()
-        this.props.history.push(`/room/${room}`);
+        this.props.history.push(`/`);
+        setTimeout(() => {
+            this.props.history.push(`/room/${room}`);
+        }, 5)
     }
 
     rejectInvite = () => {
