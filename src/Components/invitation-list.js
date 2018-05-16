@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Notification } from './online/invite-notification';
+import Notification from './online/invite-notification';
 import myFirebase from '../Firebase/firebaseInit';
 
 
