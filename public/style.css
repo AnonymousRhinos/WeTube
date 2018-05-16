@@ -685,6 +685,7 @@ body {
     font-size: 14px;
     padding: 2px 5px;
     margin: 0 2px;
+    color: black
   }
 
 .inviteButton {
@@ -699,7 +700,7 @@ body {
 #notification {
   display: inline-block;
   /* background-color: rgb(60, 206, 152); */
-  background-color: rgba(217, 221, 224, .5);
+  background-color: rgba(255, 255, 255, 0.5);
   color: white;
   margin: 3px auto;
   box-shadow: rgba(0,0,0,0.1) 0px 2px 3px, inset rgba(0,0,0,0.1) 0px -1px 2px;
@@ -716,7 +717,7 @@ body {
   display: flex;
   flex-direction: column;
   align-content: stretch;
-  position: absolute;
+  position: fixed;
   z-index: 2;
   transform: translateY(60px);
   right: -375px;

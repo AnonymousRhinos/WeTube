@@ -17,7 +17,7 @@ class Notification extends Component {
         this.props.history.push(`/`);
         setTimeout(() => {
             this.props.history.push(`/room/${room}`);
-        }, 5)
+        }, 0)
     }
 
     rejectInvite = () => {
