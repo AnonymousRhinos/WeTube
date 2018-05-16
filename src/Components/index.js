@@ -9,11 +9,16 @@ export {default as Video} from './video/video'
 export {default as JoinChat} from './video/join-chat'
 export {default as Queue} from './video/video-queue'
 export {default as VideoShare} from './video/video-share'
-export {default as OnlineUserList} from './online-userlist'
-export {default as OnlineUser} from './online-user'
 
-export {default as Login} from './login'
+export {default as OnlineUserList} from './online/online-userlist'
+export {default as OnlineUser} from './online/online-user'
+export {default as Login} from './online/login'
+export {default as Notification} from './online/invite-notification'
+
+export {default as ChatMembers} from './video/chat-members'
+export {default as ChatHeader} from './video/chat-header'
+
 export {default as Footer} from './footer'
 export {default as InvitationList} from './invitation-list'
-export {default as Notification} from './invite-notification'
 export {default as Navbar} from './navbar'
+

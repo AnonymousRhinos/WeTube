@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat, TrendingComponent } from '../index.js';
+import { Queue, VideoChat, Chat, VideoShare, VideoSearch, JoinChat, TrendingComponent } from '../.';
 import { withRouter } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import myFirebase from '../../Firebase/firebaseInit';

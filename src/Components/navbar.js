@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Login from './login'
+import Login from './online/login.js'
 import { Link } from 'react-router-dom';
-import OnlineUserList from './online-userlist';
+import OnlineUserList from './online/online-userlist';
 import CopyUrl from './copy-url';
 import YouTube from './navbar-youtube';
 

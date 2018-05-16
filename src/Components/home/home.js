@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-// import TrendingComponent from './home-trending';
-import { TrendingComponent } from '../index.js';
+// import {TrendingComponent} from '../.';
+import TrendingComponent from './home-trending';
 import myFirebase from '../../Firebase/firebaseInit';
 import OpenTok from "opentok";
 import tokbox from '../../tokboxConfig'
