@@ -186,14 +186,14 @@ class Video extends Component {
               console.log('time already established, lets jump to it')
               if(this.player.seekTo){
                 console.log('palyer defined')
-                
+
                 this.player.seekTo(snapshot.val().currentTime);
                 this.setState({
                   playerTime: snapshot.val().currentTime
                 })
               }
-            } 
-            
+            }
+
           })
           this.readyDone = false;
         }
@@ -317,7 +317,6 @@ class Video extends Component {
           playerStatus: 0
         })
       } else if (removedVideo === this.state.videoId) {
-        console.log('currentindex', currentIndex, 'playlist', this.state.playlist[0])
         if (this.state.currentIndex < this.state.playlist.length)
           this.roomRef.update({
             currentVideo: this.state.playlist[this.state.currentIndex],
