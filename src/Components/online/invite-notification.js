@@ -3,11 +3,6 @@ import { withRouter } from 'react-router-dom';
 import myFirebase from '../../Firebase/firebaseInit';
 
 export class Notification extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
 
     enterRoom = (evt) => {
         evt.preventDefault();
