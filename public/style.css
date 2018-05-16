@@ -325,7 +325,7 @@ body {
     color: white;
     background-color: black;
     height: 18px;
-    width: 32px;
+    width: 40px;
     font-size: 12px;
     text-align: center;
     border-radius: 2px;
@@ -333,7 +333,7 @@ body {
     margin: 4px;
     position: relative;
     bottom: 50px;
-    left: 170px;
+    left: 162px;
   }
 
   .mini-vid {

@@ -44,6 +44,7 @@ class Video extends Component {
       currentIndex: 0,
       theaterMode: false,
       windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
     };
     this.readyDone = false;
     this.player = {};
@@ -341,20 +342,21 @@ class Video extends Component {
     this.setState({
       theaterMode: !this.state.theaterMode,
     }, () => {
-      let width = this.state.theaterMode ? (this.state.windowWidth).toString() : '640';
-      let height = this.state.theaterMode ? (this.state.windowWidth / 640 * 390).toString() : '390';
+      let width = this.state.theaterMode ? Math.min(this.state.windowWidth, (this.state.windowHeight * 640 / 390)).toString() : '640';
+      let height = this.state.theaterMode ? Math.min((this.state.windowWidth / 640 * 390), this.state.windowHeight).toString() : '390';
       this.player.setSize(width, height)
     })
   }
 
   updateDimensions() {
-    if (this.state.windowWidth !== window.innerWidth - 100) {
+    if (this.state.windowWidth !== window.innerWidth - 100 || this.state.windowHeight !== window.innerHeight - 100) {
       this.setState({
-        windowWidth: window.innerWidth - 100
+        windowWidth: window.innerWidth - 100,
+        windowHeight: window.innerHeight - 100,
       }, () => {
         if (this.state.theaterMode) {
-          let width = (this.state.windowWidth).toString();
-          let height = (this.state.windowWidth / 640 * 390).toString();
+          let width = Math.min(this.state.windowWidth, (this.state.windowHeight * 640 / 390)).toString();
+          let height = Math.min((this.state.windowWidth / 640 * 390), this.state.windowHeight).toString();
           this.player.setSize(width, height)
         }
       });
