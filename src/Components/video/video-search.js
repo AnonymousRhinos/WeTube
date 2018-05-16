@@ -39,7 +39,7 @@ class VideoSearch extends Component {
   };
 
   render() {
-    const isInvalidUrl = this.state.videoUrl.toLowerCase().indexOf('youtube.com') === -1 && this.state.videoUrl.toLowerCase().indexOf('youtu.be') === -1
+    const isInvalidUrl = this.state.videoUrl.toLowerCase().indexOf('youtube.com/watch?v=') === -1 && this.state.videoUrl.toLowerCase().indexOf('youtu.be') === -1
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
