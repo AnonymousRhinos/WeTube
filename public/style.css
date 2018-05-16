@@ -731,8 +731,8 @@ body {
   flex-direction: column;
   align-content: stretch;
   position: fixed;
-  z-index: 2;
-  transform: translateY(60px);
+  z-index: 3;
+  top: 50px;
   right: -375px;
 }
 
