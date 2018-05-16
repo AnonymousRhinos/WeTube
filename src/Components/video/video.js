@@ -86,7 +86,6 @@ class Video extends Component {
     this.roomRef.once('value')
       .then(snapshot => {
         let value = snapshot.val()
-
         token = opentok.generateToken(value.sessionId)
         this.setState({ sessionId: value.sessionId, token: token })
         let enterTime = getTime();
@@ -185,11 +184,8 @@ class Video extends Component {
         if(this.readyDone === true){
 
           this.roomRef.once('value', snapshot => {
-            console.log('snapshot is: ', snapshot.val())
             if (snapshot.val().currentTime > 1) {
-              console.log('time already established, lets jump to it')
               if(this.player.seekTo){
-                console.log('palyer defined')
                 
                 this.player.seekTo(snapshot.val().currentTime);
                 this.setState({
@@ -212,7 +208,6 @@ class Video extends Component {
 
         this.roomRef.once('value', snapshot => {
           targetTime = snapshot.val().currentTime;
-          // console.log('Room time is: ', targetTime)
 
         })
         .then( () => {
@@ -311,7 +306,6 @@ class Video extends Component {
       return id !== removedVideo;
     })
     const filteredPlaylistAddedTime = this.state.playlistAddedTime.filter((item, index) => index !== removedIndex)
-    console.log('before remove: playlist', this.state.playlist)
     this.setState({
       playlist: filteredPlaylist,
       playlistAddedTime: filteredPlaylistAddedTime
@@ -321,7 +315,6 @@ class Video extends Component {
           playerStatus: 0
         })
       } else if (removedVideo === this.state.videoId) {
-        console.log('currentindex', currentIndex, 'playlist', this.state.playlist[0])
         if (this.state.currentIndex < this.state.playlist.length)
           this.roomRef.update({
             currentVideo: this.state.playlist[this.state.currentIndex],

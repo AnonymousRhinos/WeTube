@@ -5,7 +5,16 @@ class ChatHeader extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      message: ''
+      message: '',
+      color: this.props.color
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.color !== this.props.color) {
+      this.setState({
+        color: this.props.color
+      })
     }
   }
 
