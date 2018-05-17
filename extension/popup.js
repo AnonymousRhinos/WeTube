@@ -18,43 +18,6 @@ console.log('where am I?')
 // })     self.props.history.push({      pathname:  `/room/${roomId}`,
 // state: {sessionId: sessionId}     });   })
 
-var readyStateCheckInterval = setInterval(function () {
-    if (document.readyState === "complete") {
-
-        // var list = document.getElementsByTagName("ytd-popup-container")[0];
-        // console.log('the answer is: ', list) list.addEventListener('click', () => {
-        //   console.log('i clicked it fam') })
-        chrome
-            .tabs
-            .query({
-                active: true,
-                currentWindow: true
-            }, function (tabs) {
-                chrome
-                    .tabs
-                    .sendMessage(tabs[0].id, {
-                        greeting: "hello"
-                    }, function (response) {
-                        console.log('testingone two three');
-                        console.log(response.farewell);
-                    });
-            });
-
-        console.log('look here');
-
-        chrome
-            .tabs
-            .query({
-                active: true,
-                currentWindow: true
-            }, function (tabs) {
-                console.log(tabs[0].url);
-            });
-        // console.log(chrome.tabs.query({'active': true, 'lastFocusedWindow': true},
-        // function (tabs) {     var url = tabs[0].url; }));
-
-    }
-}, 1000)
 
 document.addEventListener('click', () => {
     console.log('firebase is: ', typeof myFirebaseRef);
@@ -82,7 +45,7 @@ document.addEventListener('click', () => {
             
             chrome
                 .tabs
-                .update({url: `http://wetube-rhinos.herokuapp.com/home/${videoId}`})
+                .update({url: `https://wetube-rhinos.herokuapp.com/home/${videoId}`})
 
         })
 })
