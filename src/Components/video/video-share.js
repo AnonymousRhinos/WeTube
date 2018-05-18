@@ -28,37 +28,37 @@ const VideoShare = (props) => {
   return (
     <div className="share-btns">
           <FacebookShareButton
-            url={'https://wetube-rhinos.herokuapp.com/room/' + props.roomId}
+            url={'https://www.wetubelive.com/room/' + props.roomId}
             className="share-button"
           >
             <FacebookIcon size={32} round />
           </FacebookShareButton>
           <EmailShareButton
-            url={'https://wetube-rhinos.herokuapp.com/room/' + props.roomId}
+            url={'https://www.wetubelive.com/room/' + props.roomId}
             className="share-button"
           >
             <EmailIcon size={32} round />
           </EmailShareButton>
           <TwitterShareButton
-            url={'https://wetube-rhinos.herokuapp.com/room/' + props.roomId}
+            url={'https://www.wetubelive.com/room/' + props.roomId}
             className="share-button"
           >
             <TwitterIcon size={32} round />
           </TwitterShareButton>
           <RedditShareButton
-            url={'https://wetube-rhinos.herokuapp.com/room/' + props.roomId}
+            url={'https://www.wetubelive.com/room/' + props.roomId}
             className="share-button"
           >
             <RedditIcon size={32} round />
           </RedditShareButton>
           <GooglePlusShareButton
-            url={'https://wetube-rhinos.herokuapp.com/room/' + props.roomId}
+            url={'https://www.wetubelive.com/room/' + props.roomId}
             className="share-button"
           >
             <GooglePlusIcon size={32} round />
           </GooglePlusShareButton>
           <WhatsappShareButton
-            url={'https://wetube-rhinos.herokuapp.com/room/' + props.roomId}
+            url={'https://www.wetubelive.com/room/' + props.roomId}
             className="share-button"
           >
             <WhatsappIcon size={32} round />
