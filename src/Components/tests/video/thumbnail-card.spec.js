@@ -12,13 +12,16 @@ enzyme.configure({ adapter });
 
 describe('Thumbnail Card', () => {
   let thumbnailCard;
+  let video = {id: 'Wpm07-BGJnE'}
 
 //I CANNOT DO THIS AS CHAT IMPORTS FROM OPENTOK AND RUINS THINGS
   beforeEach(() => {
-    thumbnailCard = shallow(<ThumbnailCard />);
+    thumbnailCard = shallow(<ThumbnailCard id={video.id} />);
   });
-    it('true is true', () => {
-    expect(true).to.equal(true);
+    it('video id is passed in correctly', () => {
+      console.log(thumbnailCard.props())
+      expect(thumbnailCard.props('key')).to.equal('img');
+    // expect(thumbnailCard.instance().props('id')).to.equal('Wpm07-BGJnE');
   });
 
 //   it('has one input tag', () => {
